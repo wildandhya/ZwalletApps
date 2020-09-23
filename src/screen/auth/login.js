@@ -3,7 +3,8 @@ import { View, StyleSheet, Text, Dimensions, TextInput, Button} from 'react-nati
 import { primary, background, white, drak, secondry, subTitle , btn} from '../../assets/color/color'
 import {Formik} from 'formik'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Feather';
+import Email from 'react-native-vector-icons/EvilIcons';
 import { Input} from 'react-native-elements';
 
 
@@ -30,10 +31,10 @@ const Login = ({navigation})=> {
                             <View style={styles.emailWrapp}>
                                 <Input 
                                 leftIcon={
-                                    <Icon
-                                    name='user'
+                                    <Email
+                                    name='envelope'
                                     color= {secondry}
-                                    size={24}
+                                    size={35}
                             
                                     />
                                 }
@@ -41,7 +42,27 @@ const Login = ({navigation})=> {
                                 placeholder='Enter your e-mail'/>
                             </View>
                             <View style={styles.passwordWrapp}>
-                                <Input style={styles.input} placeholder='Enter your password'/>
+                                <Input 
+                                 leftIcon={
+                                    <Icon
+                                    name='lock'
+                                    color= {secondry}
+                                    size={30}
+                            
+                                    />
+                                 }
+                                 rightIcon={
+                                    <Icon
+                                    name='eye'
+                                    color= {secondry}
+                                    size={30}
+                            
+                                    />
+
+                                 }
+                                style={styles.input} 
+                                placeholder='Enter your password'
+                                />
                             </View>
                             <TouchableOpacity style={{alignItems:'flex-end', paddingRight:19, }}>
                                 <Text>Forgot password?</Text>
@@ -75,7 +96,8 @@ const styles = StyleSheet.create({
     title:{
         fontSize:29,
         textAlign:'center',
-        color:primary
+        color:primary,
+        fontWeight:'bold',
     },
     loginWraper:{
         borderTopLeftRadius:35,

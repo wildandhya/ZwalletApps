@@ -10,26 +10,21 @@ import * as yup from 'yup'
 
 
 
-const SignUp = ({navigation})=> {
+const CreatePin = ({navigation})=> {
 
     const handleGoTo = (screen)=>{
         navigation.navigate(screen)
     }
 
-    const formValidation = yup.object().shape({
-        username:yup.string(),
-        email:yup.string().email(),
-        password:yup.string().required()
-    })
-
     return (
         <View style={styles.container}>
-            <View style={{marginVertical:60}}>
+            <View style={{marginVertical:60,}}>
                <Text style={styles.title}>Zwallet</Text>
             </View>
             <View style={styles.loginWraper}>
-                <Text style={styles.loginTitle}>Sign Up</Text>
-                <Text style={styles.loginDesc}>Create to your account to access Zwallet</Text>
+                <Text style={styles.loginTitle}>Create Security PIN</Text>
+                <Text style={styles.loginDesc}>Create a PIN that’s contain 6 digits number for </Text>
+                <Text style={styles.loginDesc}>security purpose in Zwallet.</Text>
             <View style={styles.form}>
                 <Formik 
                 initialValues={{username:'', email:'', password:''}}
@@ -41,16 +36,7 @@ const SignUp = ({navigation})=> {
                         <View style={styles.formWrapp}>
                             <View style={styles.emailWrapp}>
                                 <Input 
-                                leftIcon={
-                                    <Icon
-                                    name='user'
-                                    color= {secondry}
-                                    size={24}
-                            
-                                    />
-                                }
                                 style={styles.input} 
-                                placeholder='Enter your username'
                                 value={formikProps.values.username}
                                 onChange={formikProps.handleChange('username')}
                                 />
@@ -58,7 +44,7 @@ const SignUp = ({navigation})=> {
                             <View style={styles.passwordWrapp}>
                                 <Input 
                                 style={styles.input} 
-                                placeholder='Enter your e-mail'
+                                placeholder=''
                                 value={formikProps.values.email}
                                 onChange={formikProps.handleChange('email')}
                                 />
@@ -66,49 +52,70 @@ const SignUp = ({navigation})=> {
                             <View style={styles.passwordWrapp}>
                                 <Input 
                                 style={styles.input} 
-                                placeholder='Enter your password'
+                                placeholder=''
+                                value={formikProps.values.password}
+                                onChange={formikProps.handleChange('password')}
+                                />
+                            </View>
+                            <View style={styles.passwordWrapp}>
+                                <Input 
+                                style={styles.input} 
+                                placeholder=''
+                                value={formikProps.values.password}
+                                onChange={formikProps.handleChange('password')}
+                                />
+                            </View>
+                            <View style={styles.passwordWrapp}>
+                                <Input 
+                                style={styles.input} 
+                                placeholder=''
+                                value={formikProps.values.password}
+                                onChange={formikProps.handleChange('password')}
+                                />
+                            </View>
+                            <View style={styles.passwordWrapp}>
+                                <Input 
+                                style={styles.input} 
+                                placeholder=''
                                 value={formikProps.values.password}
                                 onChange={formikProps.handleChange('password')}
                                 />
                             </View>
                             
-                            <TouchableOpacity style={styles.btn} onPress={()=> handleGoTo('CreatePin')}>
-                                <Text style={styles.btnText}>Sign Up</Text>
-                           </TouchableOpacity>
-                           <View style={styles.signUpWrap}>
-                                  <Text>Already have an account? Let's </Text>
-                                 <TouchableOpacity onPress={()=> handleGoTo('Login')}>
-                                     <Text style={{color:primary}}>Login</Text>
-                                 </TouchableOpacity>
-                           </View>
+                           
                            </View>    
                         )}
                 </Formik>
             </View>
             </View>
+            <View style={styles.btnWarp}>
+            <TouchableOpacity style={styles.btn} onPress={()=> handleGoTo('PinSuccess')}>
+                    <Text style={styles.btnText}>Confirm</Text>
+            </TouchableOpacity>
+            </View>
         </View>
     )
 }
 
-export default SignUp
+export default CreatePin
 
 const {height, width} = Dimensions.get('screen')
 const styles = StyleSheet.create({
     container:{
         backgroundColor:background,
-        height
+        flex:1
     },
     title:{
         fontSize:29,
-        textAlign:'center',
-        color:primary,
         fontWeight:'bold',
+        textAlign:'center',
+        color:primary
     },
     loginWraper:{
         borderTopLeftRadius:35,
         borderTopRightRadius:35,
         backgroundColor:white,
-        height
+        flex:1
     },
     loginTitle:{
         marginTop:40,
@@ -124,17 +131,29 @@ const styles = StyleSheet.create({
         marginBottom:10,
         fontSize:16
     },
+    formWrapp:{
+        flexDirection:'row',
+        marginVertical:20,
+        marginHorizontal:10,
+        justifyContent:'space-evenly'
+    },
     input:{
-        color:secondry,
-        borderBottomWidth:1,
-        borderBottomColor:secondry
+        borderWidth:1,
+        borderColor:secondry,
+        paddingHorizontal:25,
+        paddingVertical:14,
+        borderRadius:10
     },
-    emailWrapp:{
-        paddingHorizontal:19,
-        paddingTop:53
-    },
-    passwordWrapp:{
-        paddingHorizontal:19,
+    // pinWrapp:{
+    //     paddingHorizontal:19,
+    //     paddingTop:53
+    // },
+    // passwordWrapp:{
+    //     paddingHorizontal:19,
+    // },
+    btnWarp:{
+        backgroundColor:white,
+        paddingBottom:20
     },
     btn:{
         backgroundColor:btn,
@@ -149,11 +168,6 @@ const styles = StyleSheet.create({
         color:'#88888f'
 
     },
-    signUpWrap:{
-        alignItems:'center',
-        flexDirection:'row',
-        justifyContent:'center',
-        marginTop:20
-    }
+   
 
 })
