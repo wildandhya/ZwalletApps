@@ -1,0 +1,8 @@
+export const  primary = '#6379f4' 
+export const  drak = '#3A3D42' 
+export const white = '#FFFFFF'
+export const error = '#FF5B37'
+export const secondry = 'rgba(99, 121, 244, 0.2)'
+export const background = '#e5e5e5'
+export const subTitle = 'rgba(58, 61, 66, 0.6)'
+export const btn = '#dadada'
