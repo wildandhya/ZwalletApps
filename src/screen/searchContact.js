@@ -4,12 +4,13 @@ import { primary, background, white, drak, secondry, subTitle , btn, success, bg
 
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler'
 import { prof2, bell, arrowUp, plus, prof3, spotify, netflix } from '../assets'
+import Icon from 'react-native-vector-icons/AntDesign'
+import { SearchBar, Input } from 'react-native-elements';
 
 
 
 
-
-const Home = ({navigation})=> {
+const SearchContact = ({navigation})=> {
 
     const handleGoTo = (screen)=>{
         navigation.navigate(screen)
@@ -17,29 +18,36 @@ const Home = ({navigation})=> {
 
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                 <Image source={prof2} />
-                <View style={{marginRight:90}}>
-                  <Text style={styles.title}>Balance</Text>
-                   <Text style={styles.price}>Rp120.000</Text>
+             <View style={styles.header}>
+                 <View style={{flexDirection:'row', marginTop:50, marginLeft:17}}>
+                <TouchableOpacity onPress={()=> handleGoTo('Home')}>
+                 <Icon 
+                 name='arrowleft'
+                 size={28}
+                 color={white}
+                  />
+                  </TouchableOpacity>
+                <Text style={styles.title}>Find Receiver</Text>
                 </View>
-                <Image source={bell} />
+                <View style={{backgroundColor:white, height:50, marginTop:20, borderRadius:12, alignItems:'center', marginHorizontal:16}}>
+                    <Input 
+                    style={styles.searchWarp}
+                    leftIcon={
+                        <Icon
+                        name='search1'
+                        size={24}
+                        color='#a9a9a9'
+                        />
+
+                    }
+                    placeholder='Search receiver here'
+                    />
+                </View>
+                  
             </View>
-            <View style={styles.btnWrap}>
-                <TouchableOpacity style={styles.btnTrans} onPress={()=>handleGoTo('SearchContact')}>
-                    <Image source={arrowUp}/>
-                    <Text style={{fontSize:18, marginLeft:10}}>Transfer</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.btnTrans}>
-                    <Image source={plus}/>
-                    <Text style={{fontSize:18, marginLeft:10}}>Top Up</Text>
-                </TouchableOpacity>
-            </View>
-            <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center',marginHorizontal:16, marginTop:25}}>
-                <Text style={{fontSize:18, fontWeight:'700'}}>Transaction History</Text>
-                <TouchableOpacity onPress={()=>handleGoTo('TransactionHistory')}>
-                    <Text style={{fontSize:14, fontWeight:'600', color:primary}}>See all</Text>
-                </TouchableOpacity>
+            <View style={{ marginHorizontal:16, marginTop:20}}>
+                <Text style={{fontSize:18, fontWeight:'700'}}>Contact</Text>
+                <Text style={{fontSize:14, fontFamily:'NunitoSans-Regular', color:'#8f8f8f', paddingTop:10}}>17 Contact Founds</Text>
             </View>
             <ScrollView>
             <View style={{marginTop:10}}>
@@ -93,7 +101,7 @@ const Home = ({navigation})=> {
     )
 }
 
-export default Home
+export default SearchContact
 
 const {height, width} = Dimensions.get('screen')
 const styles = StyleSheet.create({
@@ -103,18 +111,15 @@ const styles = StyleSheet.create({
     },
     header:{
         backgroundColor:primary,
-        height:'18%',
+        height:'21%',
         borderBottomLeftRadius:25,
         borderBottomRightRadius:25,
-        flexDirection:'row',
-        justifyContent:'space-between',
-        paddingHorizontal:30,
-        paddingTop:25,
-        alignItems:'center'
     },
     title:{
-        color:'#d0d0d0',
-        fontSize:15
+        color:white,
+        fontSize:20,
+        fontFamily:'NunitoSans-Bold',
+        marginLeft:20,
     },
     price:{
         color:white,
@@ -126,20 +131,10 @@ const styles = StyleSheet.create({
         marginTop:20
         
     },
-    btnTrans:{
-        backgroundColor:trans,
-        borderColor:'#eee',
-        borderWidth:1,
-        borderRadius:10,
-        paddingHorizontal:27,
-        paddingVertical:16,
-        flexDirection:'row',
-        marginHorizontal:15,
-    },
     card:{
         flexDirection:'row',
         backgroundColor:white,
-        paddingVertical:23,
+        paddingVertical:20,
         paddingHorizontal:16,
         borderRadius:10,
         justifyContent:'space-between',
@@ -158,6 +153,10 @@ const styles = StyleSheet.create({
         width:90,
         height:56,
         backgroundColor:'red'
+    },
+    searchWarp:{
+        backgroundColor:white,
+    
     }
     
     

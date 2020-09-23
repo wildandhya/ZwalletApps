@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {createStackNavigator} from '@react-navigation/stack'
-import {SplashScreen, Login, SignUp, CreatePin, PinSuccess, Home} from "../screen/index"
+import {SplashScreen, Login, SignUp, CreatePin, PinSuccess, Home, TransactionHistory, SearchContact} from "../screen/index"
 
 const Stack = createStackNavigator()
 
@@ -14,6 +14,8 @@ const Router = ()=>{
             <Stack.Screen name='CreatePin' component={CreatePin} options={{headerShown:false}}/>
             <Stack.Screen name='PinSuccess' component={PinSuccess} options={{headerShown:false}}/>
             <Stack.Screen name='Home' component={Home} options={{headerShown:false}}/>
+            <Stack.Screen name='TransactionHistory' component={TransactionHistory} options={{headerShown:false}}/>
+            <Stack.Screen name='SearchContact' component={SearchContact} options={{headerShown:false}}/>
         </Stack.Navigator>
     )
 }
