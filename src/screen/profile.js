@@ -2,7 +2,7 @@ import React from 'react'
 import { View, StyleSheet, Text, Dimensions, TextInput, Button, Image} from 'react-native'
 import { primary,  white, drak, Bold, regular} from '../assets/color/color'
 
-import { TouchableOpacity} from 'react-native-gesture-handler'
+import { TouchableOpacity, FlatList} from 'react-native-gesture-handler'
 import { userIcon } from '../assets'
 import Icon from 'react-native-vector-icons/AntDesign'
 import Pencil from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -21,21 +21,29 @@ const Profile = ({navigation})=> {
 
     const list = [
         {
-            title:'Personal Information'
+            title:'Personal Information',
+            goTo: ()=> navigation.navigate('Home')
         },
         {
-            title:'Change Password'
+            title:'Change Password',
+            // goTo: handleGoTo('ChangePassword')
         },
         {
-            title:'Change PIN'
+            title:'Change PIN',
+            // goTo: handleGoTo('ChangePin')
         },
         {
-            title:'Notification'
+            title:'Notification',
+            // goTo: handleGoTo('Notif')
         },
         {
             title:'Logout'
         }
     ]
+
+   
+       
+    
 
     return (
         <View style={styles.container}>
@@ -66,12 +74,18 @@ const Profile = ({navigation})=> {
                 <Text style={{fontSize:16, fontFamily:regular, marginTop:10}}>+62 813-9387-7946</Text>
             </View>
             <View style={{marginTop:10, marginHorizontal:16}}>     
-                 <ListItem containerStyle={{backgroundColor:'#e5e8ed', borderRadius:10, marginBottom:10}}>
-                     <ListItem.Content>
-                         <ListItem.Title>Personal Information</ListItem.Title>
-                     </ListItem.Content>
-                     <ListItem.Chevron/>
-                 </ListItem>  
+                 {
+                     list.map((item, i)=>{
+                         return(
+                            <ListItem key={i} bottomDivider containerStyle={styles.listWrapp} onPress={item.goTo}>
+                            <ListItem.Content>
+                                <ListItem.Title>{item.title}</ListItem.Title>
+                            </ListItem.Content>
+                            <ListItem.Chevron size={30}/>
+                          </ListItem>  
+                         )
+                     })
+                 }
             </View>
         </View>
     )
@@ -134,6 +148,11 @@ const styles = StyleSheet.create({
        textAlign:'center',
        backgroundColor:'red'
     
+    },
+    listWrapp:{
+        backgroundColor:'#e5e8ed',
+        marginTop:15,
+        borderRadius:10
     }
     
 })
