@@ -4,9 +4,14 @@ export const white = '#FFFFFF'
 export const error = '#FF5B37' 
 export const secondry = 'rgba(99, 121, 244, 0.2)'
 export const background = '#e5e5e5' 
-export const subTitle = 'rgba(58, 61, 66, 0.6)'
+export const subTitle = '#7a7886'
 export const btn = '#dadada'
 export const success = '#1ec15f'
 export const bgImge = '#ebeef2'
 export const trans = '#e5e8ed'
+
+
+
+export const regular = 'NunitoSans-Regular'
+export const Bold = 'NunitoSans-Bold'
 

@@ -51,50 +51,29 @@ const SearchContact = ({navigation})=> {
             </View>
             <ScrollView>
             <View style={{marginTop:10}}>
-                
+                <TouchableOpacity onPress={()=> handleGoTo('Transfer')}>
                 <View style={styles.card}>
                     <Image source={prof3}/>
-                    <View style={{marginRight:70}}>
+                    <View style={{marginLeft:15}}>
                           <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>Samuel Suhi</Text>
-                          <Text style={{fontSize:14, fontWeight:'400', marginTop:9}}>Transfer</Text>
+                          <Text style={{fontSize:14, fontFamily:'NunitoSans_Regular', marginTop:5, color:'#7a7886'}}>+62 813-8492-9994</Text>
                    </View>
-                   <View style={{justifyContent:'center'}}>
-                       <Text style={{color:success, fontSize:18, fontWeight:'700'}}>+Rp50.000</Text>
-                   </View>
-                </View>
-                <View style={styles.card}>
-                    <View style={styles.imgWarpp}>
-                      <Image source={spotify}/>
-                    </View>
-                    <View style={{marginRight:70}}>
-                          <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>Spotify</Text>
-                          <Text style={{fontSize:14, fontWeight:'400', marginTop:9}}>Subcription</Text>
-                   </View>
-                   <View style={{justifyContent:'center'}}>
-                       <Text style={{color:error, fontSize:18, fontWeight:'700'}}>-Rp50.000</Text>
-                   </View>
-                </View>
-                <View style={styles.card}>
-                    <Image source={netflix} style={{backgroundColor:background}}/>
-                    <View style={{marginRight:70}}>
-                          <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>Samuel Suhi</Text>
-                          <Text style={{fontSize:14, fontWeight:'400', marginTop:9}}>Transfer</Text>
-                   </View>
-                   <View style={{justifyContent:'center'}}>
-                       <Text style={{color:success, fontSize:18, fontWeight:'700'}}>+Rp50.000</Text>
-                   </View>
-                </View>
+                </View>  
+                </TouchableOpacity>
                 <View style={styles.card}>
                     <Image source={prof3}/>
-                    <View style={{marginRight:70}}>
+                    <View style={{marginLeft:15}}>
                           <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>Samuel Suhi</Text>
-                          <Text style={{fontSize:14, fontWeight:'400', marginTop:9}}>Transfer</Text>
+                          <Text style={{fontSize:14, fontFamily:'NunitoSans_Regular', marginTop:5, color:'#7a7886'}}>+62 813-8492-9994</Text>
                    </View>
-                   <View style={{justifyContent:'center'}}>
-                       <Text style={{color:success, fontSize:18, fontWeight:'700'}}>+Rp50.000</Text>
+                </View>               
+                <View style={styles.card}>
+                    <Image source={prof3}/>
+                    <View style={{marginLeft:15}}>
+                          <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>Samuel Suhi</Text>
+                          <Text style={{fontSize:14, fontFamily:'NunitoSans_Regular', marginTop:5, color:'#7a7886'}}>+62 813-8492-9994</Text>
                    </View>
-                </View>
-                
+                </View>                                                          
             </View>
             </ScrollView>
         </View>
@@ -137,17 +116,16 @@ const styles = StyleSheet.create({
         paddingVertical:20,
         paddingHorizontal:16,
         borderRadius:10,
-        justifyContent:'space-between',
         marginTop:15,
         shadowOffset:{
-            width:0,
-             height:5
+            width:-5,
+             height:-10
             },
         shadowColor:'#000',
-        shadowOpacity:5,
+        shadowOpacity:1,
         shadowRadius:20,
         elevation:3,
-        shadowRadius:10,
+        shadowRadius:15,
     },
     imgWrapp:{
         width:90,

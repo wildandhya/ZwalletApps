@@ -18,7 +18,9 @@ const Home = ({navigation})=> {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                 <Image source={prof2} />
+                <TouchableOpacity onPress={()=> handleGoTo('Profile')}>
+                <Image source={prof2} />
+                </TouchableOpacity>
                 <View style={{marginRight:90}}>
                   <Text style={styles.title}>Balance</Text>
                    <Text style={styles.price}>Rp120.000</Text>
@@ -160,8 +162,4 @@ const styles = StyleSheet.create({
         backgroundColor:'red'
     }
     
-    
-   
-   
-
 })

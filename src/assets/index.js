@@ -7,6 +7,7 @@ import prof3 from './images/prof3.png'
 import arrowUp from './icon/arrow-up.png'
 import plus from './icon/plus.png'
 import bell from './icon/bell.png'
+import userIcon from './icon/user.png'
 
 
-export {successIcon, netflix, spotify, prof3, prof2, prof1, arrowUp, plus, bell}
+export {successIcon, netflix, spotify, prof3, prof2, prof1, arrowUp, plus, bell, userIcon}
