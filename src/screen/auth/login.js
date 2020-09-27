@@ -1,18 +1,44 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, StyleSheet, Text, Dimensions, TextInput, Button, StatusBar} from 'react-native'
-import { primary, background, white, drak, secondry, subTitle , btn, Bold} from '../../assets/color/color'
+import { primary, background, white, drak, secondry, subTitle , btn, Bold, error} from '../../assets/color/color'
 import {Formik} from 'formik'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/Feather';
 import Email from 'react-native-vector-icons/EvilIcons';
 import { Input} from 'react-native-elements';
+import { useDispatch, useSelector } from 'react-redux'
+import * as yup from 'yup'
+
+import {loginAction} from '../../redux/action/auth'
 
 
 
 const Login = ({navigation})=> {
 
+    const handleGoTo =(screen)=>{
+        navigation.navigate(screen)
+    }
+
+    const dispatch = useDispatch()
+    const {isError, isLogged} = useSelector(state => state.auth)
+
     const [show, setShow] = React.useState(false)
     const [focused, setFocused] = React.useState(false)
+    const [showError, setShowError] = React.useState(false)
+
+    const formValidation = yup.object().shape({
+        email:yup.string().required().label('email').email(),
+        password:yup.string().required().label('password').min(5, 'too short').max(15)
+    })
+
+   useEffect(()=>{
+       if(isLogged){
+           setShowError(false)
+           navigation.navigate('Home')
+       }else{
+           setShowError(true)
+       }
+   })
 
     return (
         <View style={styles.container}>
@@ -27,26 +53,35 @@ const Login = ({navigation})=> {
             <View style={styles.form}>
                 <Formik 
                 initialValues={{email:'', password:''}}
-                onSubmit={(values)=>{
-                    alert(JSON.stringify(values))
+                validationSchema={formValidation}
+                onSubmit={(values, action)=>{
+                    action.resetForm()
+                    dispatch(loginAction(values))
                 }}
                 >
-                {(formikProps) => (
-                        <View style={styles.formWrapp}>
+                {(formikProps) => (                       
+                     <View style={styles.formWrapp}>
                             <View style={styles.emailWrapp}>
                                 <Input 
                                 leftIcon={
                                     <Email
                                     name='envelope'
-                                    color= {focused? primary : secondry}
+                                    color= {focused? primary : secondry  && isError? error : primary}
                                     size={30}
                             
                                     />
                                 }
-                                inputContainerStyle={focused? {borderBottomColor:primary, borderBottomWidth:2}:{borderBottomColor:secondry, borderBottomWidth:1}} 
+                                inputContainerStyle={focused? 
+                                    {borderBottomColor:primary, borderBottomWidth:2}:{borderBottomColor:secondry, borderBottomWidth:1} 
+                                    && isError? {borderBottomColor:error, borderBottomWidth:2}:{borderBottomColor:primary, borderBottomWidth:1}
+                                } 
+                                containerStyle={{height:50}}
                                 placeholder='Enter your e-mail'
                                 onFocus={()=> setFocused(!focused)}
+                                value={formikProps.values.email}
+                                onChangeText={formikProps.handleChange('email')}
                                 />
+                                <Text style={styles.msgError}>{formikProps.errors.email}</Text>
                             </View>
                             <View style={styles.passwordWrapp}>
                                 <Input 
@@ -54,7 +89,7 @@ const Login = ({navigation})=> {
                                  leftIcon={
                                     <Icon
                                     name='lock'
-                                    color= {focused? primary : secondry}
+                                    color= {focused? primary : secondry && isError? error : primary}
                                     size={25}
                             
                                     />
@@ -66,28 +101,37 @@ const Login = ({navigation})=> {
                                      }}>
                                           <Icon
                                               name={show === false? 'eye-off' : 'eye'}
-                                              color= {focused? primary : secondry}
+                                              color= {focused? primary : secondry && isError? error : primary}
                                               size={23}
                                     />
                                      </TouchableOpacity>
                                  }
-                                 inputContainerStyle={focused? {borderBottomColor:primary, borderBottomWidth:2}:{borderBottomColor:secondry, borderBottomWidth:1}}
+                                 inputContainerStyle={focused? 
+                                    {borderBottomColor:primary, borderBottomWidth:2}:{borderBottomColor:secondry, borderBottomWidth:1}
+                                    && isError? {borderBottomColor:error, borderBottomWidth:2}:{borderBottomColor:primary, borderBottomWidth:1}
+                                }
+                                containerStyle={{height:50, marginTop:10}}
                                 placeholder='Enter your password'
+                                value={formikProps.values.password}
+                                onChangeText={formikProps.handleChange('password')}
                                 />
+                                <Text style={styles.msgError}>{formikProps.errors.email}</Text>
                             </View>
-                            <TouchableOpacity style={{alignItems:'flex-end', paddingRight:19, }}>
+                              <TouchableOpacity style={{alignItems:'flex-end', paddingRight:19, }}>
                                 <Text>Forgot password?</Text>
-                            </TouchableOpacity >
-                            <TouchableOpacity style={focused? {...styles.btn, backgroundColor:primary} :styles.btn}
-                            onPress={()=> navigation.navigate('Home')}>
+                              </TouchableOpacity >
+                              {isError?(<Text style={styles.textError}>Email or Password Invalid</Text>
+                             ):null}
+                               <TouchableOpacity style={focused? {...styles.btn, backgroundColor:primary} :styles.btn}
+                               onPress={formikProps.handleSubmit}>
                                 <Text style={focused?{...styles.btnText, color:white} :styles.btnText}>Login</Text>
-                           </TouchableOpacity>
-                           <View style={styles.signUpWrap}>
+                             </TouchableOpacity>
+                             <View style={styles.signUpWrap}>
                                   <Text>Don't have an account? Let's </Text>
                                  <TouchableOpacity onPress={()=> navigation.navigate('SignUp')} >
                                      <Text style={{color:primary}}>Sign Up</Text>
                                  </TouchableOpacity>
-                           </View>
+                             </View>
                            </View>    
                         )}
                 </Formik>
@@ -141,7 +185,7 @@ const styles = StyleSheet.create({
     },
     emailWrapp:{
         paddingHorizontal:19,
-        paddingTop:53
+        paddingTop:53,
     },
     passwordWrapp:{
         paddingHorizontal:19,
@@ -151,7 +195,7 @@ const styles = StyleSheet.create({
         marginHorizontal:19,
         paddingVertical:16,
         marginTop:25,
-        borderRadius:12
+        borderRadius:12,
     },
     btnText:{
         textAlign:'center',
@@ -164,6 +208,19 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'center',
         marginTop:20
+    },
+    textError:{
+        color:error,
+        fontSize:16,
+        fontFamily:'NunitoSans-Semi-bold',
+        alignSelf:'center',
+        marginTop:15
+    },
+    msgError:{
+        color:error,
+        marginHorizontal:19,
+        marginTop:5,
+        paddingTop:0
     }
 
 })
