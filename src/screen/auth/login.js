@@ -1,6 +1,6 @@
 import React from 'react'
-import { View, StyleSheet, Text, Dimensions, TextInput, Button} from 'react-native'
-import { primary, background, white, drak, secondry, subTitle , btn} from '../../assets/color/color'
+import { View, StyleSheet, Text, Dimensions, TextInput, Button, StatusBar} from 'react-native'
+import { primary, background, white, drak, secondry, subTitle , btn, Bold} from '../../assets/color/color'
 import {Formik} from 'formik'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/Feather';
@@ -10,8 +10,13 @@ import { Input} from 'react-native-elements';
 
 
 const Login = ({navigation})=> {
+
+    const [show, setShow] = React.useState(false)
+    const [focused, setFocused] = React.useState(false)
+
     return (
         <View style={styles.container}>
+            <StatusBar backgroundColor={background}/>
             <View style={{marginVertical:60}}>
                <Text style={styles.title}>Zwallet</Text>
             </View>
@@ -33,42 +38,49 @@ const Login = ({navigation})=> {
                                 leftIcon={
                                     <Email
                                     name='envelope'
-                                    color= {secondry}
-                                    size={35}
+                                    color= {focused? primary : secondry}
+                                    size={30}
                             
                                     />
                                 }
-                                style={styles.input} 
-                                placeholder='Enter your e-mail'/>
+                                inputContainerStyle={focused? {borderBottomColor:primary, borderBottomWidth:2}:{borderBottomColor:secondry, borderBottomWidth:1}} 
+                                placeholder='Enter your e-mail'
+                                onFocus={()=> setFocused(!focused)}
+                                />
                             </View>
                             <View style={styles.passwordWrapp}>
                                 <Input 
+                                secureTextEntry={!show}
                                  leftIcon={
                                     <Icon
                                     name='lock'
-                                    color= {secondry}
-                                    size={30}
+                                    color= {focused? primary : secondry}
+                                    size={25}
                             
                                     />
                                  }
                                  rightIcon={
-                                    <Icon
-                                    name='eye'
-                                    color= {secondry}
-                                    size={30}
-                            
+                                     <TouchableOpacity onPress={()=>{
+                                        setShow(!show)
+                                        
+                                     }}>
+                                          <Icon
+                                              name={show === false? 'eye-off' : 'eye'}
+                                              color= {focused? primary : secondry}
+                                              size={23}
                                     />
-
+                                     </TouchableOpacity>
                                  }
-                                style={styles.input} 
+                                 inputContainerStyle={focused? {borderBottomColor:primary, borderBottomWidth:2}:{borderBottomColor:secondry, borderBottomWidth:1}}
                                 placeholder='Enter your password'
                                 />
                             </View>
                             <TouchableOpacity style={{alignItems:'flex-end', paddingRight:19, }}>
                                 <Text>Forgot password?</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.btn}>
-                                <Text style={styles.btnText}>Login</Text>
+                            </TouchableOpacity >
+                            <TouchableOpacity style={focused? {...styles.btn, backgroundColor:primary} :styles.btn}
+                            onPress={()=> navigation.navigate('Home')}>
+                                <Text style={focused?{...styles.btnText, color:white} :styles.btnText}>Login</Text>
                            </TouchableOpacity>
                            <View style={styles.signUpWrap}>
                                   <Text>Don't have an account? Let's </Text>
@@ -97,13 +109,15 @@ const styles = StyleSheet.create({
         fontSize:29,
         textAlign:'center',
         color:primary,
-        fontWeight:'bold',
+        fontFamily:Bold,
+        // fontWeight:'bold',
     },
     loginWraper:{
         borderTopLeftRadius:35,
         borderTopRightRadius:35,
         backgroundColor:white,
-        height
+        height,
+        elevation:10,
     },
     loginTitle:{
         marginTop:40,
@@ -120,9 +134,10 @@ const styles = StyleSheet.create({
         fontSize:16
     },
     input:{
-        color:secondry,
+        color:drak,
         borderBottomWidth:1,
-        borderBottomColor:secondry
+        borderBottomColor:secondry,
+
     },
     emailWrapp:{
         paddingHorizontal:19,

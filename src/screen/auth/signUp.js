@@ -1,9 +1,10 @@
 import React from 'react'
-import { View, StyleSheet, Text, Dimensions, TextInput, Button} from 'react-native'
+import { View, StyleSheet, Text, Dimensions, TextInput, Button, LayoutAnimation} from 'react-native'
 import { primary, background, white, drak, secondry, subTitle , btn} from '../../assets/color/color'
 import {Formik} from 'formik'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Feather';
+import Email from 'react-native-vector-icons/EvilIcons';
 import { Input} from 'react-native-elements';
 import * as yup from 'yup'
 
@@ -15,6 +16,8 @@ const SignUp = ({navigation})=> {
     const handleGoTo = (screen)=>{
         navigation.navigate(screen)
     }
+    const [show, setShow] = React.useState(false)
+    const [focused, setFocused] = React.useState(false)
 
     const formValidation = yup.object().shape({
         username:yup.string(),
@@ -29,7 +32,7 @@ const SignUp = ({navigation})=> {
             </View>
             <View style={styles.loginWraper}>
                 <Text style={styles.loginTitle}>Sign Up</Text>
-                <Text style={styles.loginDesc}>Create to your account to access Zwallet</Text>
+                <Text style={styles.loginDesc}>Create your account to access Zwallet</Text>
             <View style={styles.form}>
                 <Formik 
                 initialValues={{username:'', email:'', password:''}}
@@ -44,36 +47,70 @@ const SignUp = ({navigation})=> {
                                 leftIcon={
                                     <Icon
                                     name='user'
-                                    color= {secondry}
+                                    color= {focused? primary : secondry}
                                     size={24}
                             
                                     />
                                 }
-                                style={styles.input} 
+                                inputContainerStyle={focused? {borderBottomColor:primary, borderBottomWidth:2}:{borderBottomColor:secondry, borderBottomWidth:1}} 
                                 placeholder='Enter your username'
                                 value={formikProps.values.username}
                                 onChange={formikProps.handleChange('username')}
+                                onFocus={()=> setFocused(!focused)}
                                 />
                             </View>
                             <View style={styles.passwordWrapp}>
                                 <Input 
-                                style={styles.input} 
+
+                                inputContainerStyle={focused? {borderBottomColor:primary, borderBottomWidth:2}:{borderBottomColor:secondry, borderBottomWidth:1}} 
                                 placeholder='Enter your e-mail'
                                 value={formikProps.values.email}
                                 onChange={formikProps.handleChange('email')}
+                                leftIcon={
+                                    <Email
+                                    name='envelope'
+                                    color= {focused? primary : secondry}
+                                    size={30}
+                                    
+                                    
+                            
+                                    />
+                                    
+                                }
+                                onFocus={()=> setFocused(!focused)}
                                 />
                             </View>
                             <View style={styles.passwordWrapp}>
                                 <Input 
-                                style={styles.input} 
+                                secureTextEntry={!show}
+                                inputContainerStyle={focused? {borderBottomColor:primary, borderBottomWidth:2}:{borderBottomColor:secondry, borderBottomWidth:1}} 
                                 placeholder='Enter your password'
                                 value={formikProps.values.password}
                                 onChange={formikProps.handleChange('password')}
+                                leftIcon={
+                                    <Icon
+                                    name='lock'
+                                    color= {focused? primary : secondry}
+                                    size={25}
+                            
+                                    />
+                                 }
+                                 rightIcon={
+                                     <TouchableOpacity onPress={()=>{
+                                        setShow(!show)
+                                     }}>
+                                          <Icon
+                                              name={show === false? 'eye-off' : 'eye'}
+                                              color= {focused? primary : secondry}
+                                              size={23}
+                                    />
+                                     </TouchableOpacity>
+                                 }
                                 />
                             </View>
                             
-                            <TouchableOpacity style={styles.btn} onPress={()=> handleGoTo('CreatePin')}>
-                                <Text style={styles.btnText}>Sign Up</Text>
+                            <TouchableOpacity style={focused? {...styles.btn, backgroundColor:primary} : styles.btn} onPress={()=> handleGoTo('CreatePin')}>
+                                <Text style={focused?{...styles.btnText, color:white} :styles.btnText}>Sign Up</Text>
                            </TouchableOpacity>
                            <View style={styles.signUpWrap}>
                                   <Text>Already have an account? Let's </Text>
@@ -96,7 +133,7 @@ const {height, width} = Dimensions.get('screen')
 const styles = StyleSheet.create({
     container:{
         backgroundColor:background,
-        height
+        flex:1
     },
     title:{
         fontSize:29,
@@ -108,7 +145,8 @@ const styles = StyleSheet.create({
         borderTopLeftRadius:35,
         borderTopRightRadius:35,
         backgroundColor:white,
-        height
+        flex:1,
+        elevation:10
     },
     loginTitle:{
         marginTop:40,
@@ -125,8 +163,6 @@ const styles = StyleSheet.create({
         fontSize:16
     },
     input:{
-        color:secondry,
-        borderBottomWidth:1,
         borderBottomColor:secondry
     },
     emailWrapp:{

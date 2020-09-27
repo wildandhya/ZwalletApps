@@ -19,16 +19,16 @@ const PinSuccess = ({navigation})=> {
             <View style={{marginVertical:125,}}>
                <Text style={styles.title}>Zwallet</Text>
             </View>
-            <View style={styles.loginWraper}>
+            <View style={styles.pinWraper}>
                 <View style={styles.icon}>
                    <Image source={successIcon} />
                 </View>
-                <Text style={styles.loginTitle}>PIN Successfully Created</Text>
-                <Text style={styles.loginDesc}>Your PIN was successfully created and you can</Text>
-                <Text style={styles.loginDesc}>now access all the features in Zwallet. Login to</Text>
-                <Text style={styles.loginDesc}> your new account and start exploring!</Text>
+                <Text style={styles.pinTitle}>PIN Successfully Created</Text>
+                <Text style={styles.pinDesc}>Your PIN was successfully created and you can</Text>
+                <Text style={styles.pinDesc}>now access all the features in Zwallet. Login to</Text>
+                <Text style={styles.pinDesc}> your new account and start exploring!</Text>
             <View style={styles.btnWarp}>
-            <TouchableOpacity style={styles.btn} onPress={()=> handleGoTo('Home')}>
+            <TouchableOpacity style={styles.btn} onPress={()=> handleGoTo('Login')}>
                     <Text style={styles.btnText}>Login Now</Text>
             </TouchableOpacity>
             </View>
@@ -52,13 +52,14 @@ const styles = StyleSheet.create({
         textAlign:'center',
         color:primary
     },
-    loginWraper:{
+    pinWraper:{
         borderTopLeftRadius:35,
         borderTopRightRadius:35,
         backgroundColor:white,
-        height
+        height,
+        elevation:10
     },
-    loginTitle:{
+    pinTitle:{
         marginTop:30,
         textAlign:'center',
         fontSize:24,
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
         marginBottom:20,
         fontWeight:'bold'
     },
-    loginDesc:{
+    pinDesc:{
         textAlign:'center',
         color:subTitle,
         marginBottom:10,

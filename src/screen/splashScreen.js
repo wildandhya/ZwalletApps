@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import { primary, white } from '../assets/color/color'
+import { View, Text, StyleSheet, StatusBar } from 'react-native'
+import { primary, white, regular, Bold } from '../assets/color/color'
 import { Dimensions } from 'react-native'
 
 const SplashScreen = ({navigation})=>{
@@ -11,6 +11,7 @@ const SplashScreen = ({navigation})=>{
     })
     return(
         <View style={styles.container}>
+            <StatusBar backgroundColor={primary}/>
             <Text style={styles.title}>Zwallet</Text>
         </View>
     )
@@ -28,6 +29,7 @@ const styles = StyleSheet.create({
     },
     title:{
         fontSize:32,
-        color:white
+        color:white,
+        fontFamily:Bold
     }
 })

@@ -1,11 +1,10 @@
 import React from 'react'
 import { View, StyleSheet, Text, Dimensions, TextInput, Button} from 'react-native'
-import { primary, background, white, drak, secondry, subTitle , btn} from '../../assets/color/color'
+import { primary, background, white, drak, secondry, subTitle , btn, error} from '../../assets/color/color'
 import {Formik} from 'formik'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Input} from 'react-native-elements';
-import * as yup from 'yup'
+import SmoothPinCodeInput from 'react-native-smooth-pincode-input'
 
 
 
@@ -16,83 +15,41 @@ const CreatePin = ({navigation})=> {
         navigation.navigate(screen)
     }
 
+    const [focused, setFocused] = React.useState(false)
+    const [msg, setMsg] = React.useState(false)
+    const [pin, setPin] = React.useState('')
+
     return (
         <View style={styles.container}>
             <View style={{marginVertical:60,}}>
                <Text style={styles.title}>Zwallet</Text>
             </View>
-            <View style={styles.loginWraper}>
-                <Text style={styles.loginTitle}>Create Security PIN</Text>
-                <Text style={styles.loginDesc}>Create a PIN that’s contain 6 digits number for </Text>
-                <Text style={styles.loginDesc}>security purpose in Zwallet.</Text>
+            <View style={styles.Wraper}>
+                <Text style={styles.pinTitle}>Create Security PIN</Text>
+                <Text style={styles.pinDesc}>Create a PIN that’s contain 6 digits number for </Text>
+                <Text style={styles.pinDesc}>security purpose in Zwallet.</Text>
             <View style={styles.form}>
-                <Formik 
-                initialValues={{username:'', email:'', password:''}}
-                onSubmit={(values)=>{
-                    alert(JSON.stringify(values))
-                }}
-                >
-                {(formikProps) => (
-                        <View style={styles.formWrapp}>
-                            <View style={styles.emailWrapp}>
-                                <Input 
-                                style={styles.input} 
-                                value={formikProps.values.username}
-                                onChange={formikProps.handleChange('username')}
-                                />
-                            </View>
-                            <View style={styles.passwordWrapp}>
-                                <Input 
-                                style={styles.input} 
-                                placeholder=''
-                                value={formikProps.values.email}
-                                onChange={formikProps.handleChange('email')}
-                                />
-                            </View>
-                            <View style={styles.passwordWrapp}>
-                                <Input 
-                                style={styles.input} 
-                                placeholder=''
-                                value={formikProps.values.password}
-                                onChange={formikProps.handleChange('password')}
-                                />
-                            </View>
-                            <View style={styles.passwordWrapp}>
-                                <Input 
-                                style={styles.input} 
-                                placeholder=''
-                                value={formikProps.values.password}
-                                onChange={formikProps.handleChange('password')}
-                                />
-                            </View>
-                            <View style={styles.passwordWrapp}>
-                                <Input 
-                                style={styles.input} 
-                                placeholder=''
-                                value={formikProps.values.password}
-                                onChange={formikProps.handleChange('password')}
-                                />
-                            </View>
-                            <View style={styles.passwordWrapp}>
-                                <Input 
-                                style={styles.input} 
-                                placeholder=''
-                                value={formikProps.values.password}
-                                onChange={formikProps.handleChange('password')}
-                                />
-                            </View>
-                            
-                           
-                           </View>    
-                        )}
-                </Formik>
+            <SmoothPinCodeInput
+                codeLength={6}
+                cellStyle={focused?{...styles.inputWrap, borderColor:primary, borderWidth:2}: styles.inputWrap}
+                cellStyleFocused={{...styles.inputWrap, borderColor:primary, borderWidth:2}}
+                keyboardType='numeric'
+                value={pin.toString()}
+                onTextChange={(pin)=> setPin(pin)}
+                onFulfill={()=> setFocused(true)}
+                onBackspace={()=> setMsg(true)}
+                />       
             </View>
-            </View>
+            {msg?(<Text style={{color:error}}>Please, Input your PIN</Text>):null}
             <View style={styles.btnWarp}>
-            <TouchableOpacity style={styles.btn} onPress={()=> handleGoTo('PinSuccess')}>
-                    <Text style={styles.btnText}>Confirm</Text>
+            <TouchableOpacity 
+            style={focused? {...styles.btn, backgroundColor:primary} :styles.btn} 
+            onPress={()=> handleGoTo('PinSuccess')}>
+                    <Text style={focused?{...styles.btnText, color:white} :styles.btnText}>Confirm</Text>
             </TouchableOpacity>
             </View>
+            </View>
+            
         </View>
     )
 }
@@ -103,7 +60,7 @@ const {height, width} = Dimensions.get('screen')
 const styles = StyleSheet.create({
     container:{
         backgroundColor:background,
-        flex:1
+        height
     },
     title:{
         fontSize:29,
@@ -111,13 +68,14 @@ const styles = StyleSheet.create({
         textAlign:'center',
         color:primary
     },
-    loginWraper:{
+    Wraper:{
         borderTopLeftRadius:35,
         borderTopRightRadius:35,
         backgroundColor:white,
-        flex:1
+        height,
+        elevation:10
     },
-    loginTitle:{
+    pinTitle:{
         marginTop:40,
         textAlign:'center',
         fontSize:24,
@@ -125,35 +83,26 @@ const styles = StyleSheet.create({
         marginBottom:20,
         fontWeight:'bold'
     },
-    loginDesc:{
+    pinDesc:{
         textAlign:'center',
         color:subTitle,
         marginBottom:10,
         fontSize:16
     },
-    formWrapp:{
-        flexDirection:'row',
-        marginVertical:20,
-        marginHorizontal:10,
-        justifyContent:'space-evenly'
+    form:{
+       alignSelf:'center',
+       marginTop:50
     },
-    input:{
+    inputWrap:{
         borderWidth:1,
-        borderColor:secondry,
-        paddingHorizontal:25,
-        paddingVertical:14,
-        borderRadius:10
+        borderRadius:10,
+        borderColor:'#a9a9a9',
+        height:60
+        
     },
-    // pinWrapp:{
-    //     paddingHorizontal:19,
-    //     paddingTop:53
-    // },
-    // passwordWrapp:{
-    //     paddingHorizontal:19,
-    // },
     btnWarp:{
-        backgroundColor:white,
-        paddingBottom:20
+        backgroundColor:'#fff',
+        marginTop:200
     },
     btn:{
         backgroundColor:btn,

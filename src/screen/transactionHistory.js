@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Text, Dimensions, TextInput, Button, Image} from 'react-native'
+import { View, StyleSheet, Text, Dimensions, TextInput, Button, Image, StatusBar} from 'react-native'
 import { primary, background, white, drak, secondry, subTitle , btn, success, bgImge, error, trans} from '../assets/color/color'
 
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler'
@@ -20,6 +20,7 @@ const TransactionHistory = ({navigation})=> {
 
     return (
         <View style={styles.container}>
+            <StatusBar backgroundColor={background}/>
             <View style={styles.header}>
                 <TouchableOpacity onPress={()=> handleGoTo('Home')}>
                  <Icon 
@@ -143,23 +144,17 @@ const styles = StyleSheet.create({
     card:{
         flexDirection:'row',
         backgroundColor:white,
-        paddingVertical:23,
+        paddingVertical:18,
         paddingHorizontal:16,
         borderRadius:10,
         justifyContent:'space-between',
-        shadowOffset:{
-            width:0,
-             height:4
-            },
-        shadowColor:'#000',
-        shadowOpacity:5,
-        shadowRadius:20,
         elevation:3,
         marginTop:20
     },
     imgWrapp:{
         width:90,
         height:56,
+        backgroundColor:'#5e5e5e'
         
     },
     btnFilter:{
@@ -167,13 +162,6 @@ const styles = StyleSheet.create({
         paddingHorizontal:18,
         paddingVertical:14,
         borderRadius:12,
-        shadowOffset:{
-            width:0,
-             height:5
-            },
-        shadowColor:'#000',
-        shadowOpacity:5,
-        shadowRadius:20,
         elevation:3,
         shadowRadius:10,
     },
@@ -187,17 +175,6 @@ const styles = StyleSheet.create({
         borderRadius:12,
         paddingHorizontal:38,
         paddingVertical:16,
-        shadowOffset:{width:1, height:5},
-        shadowColor:'#000',
-        shadowOpacity:6,
-        shadowRadius:20,
-        shadowOffset:{
-            width:0,
-             height:4
-            },
-        shadowColor:'#000',
-        shadowOpacity:5,
-        shadowRadius:20,
         elevation:3,
         marginLeft:5
     }

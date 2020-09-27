@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Text, Dimensions, TextInput, Button, Image} from 'react-native'
+import { View, StyleSheet, Text, Dimensions, TextInput, Button, Image, Switch} from 'react-native'
 import { primary,  white, drak, Bold, regular} from '../assets/color/color'
 
 import { TouchableOpacity, FlatList} from 'react-native-gesture-handler'
@@ -19,6 +19,7 @@ const Profile = ({navigation})=> {
         navigation.navigate(screen)
     }
 
+    const [isSwitchEnable, setSwitch] = React.useState(false)
     const list = [
         {
             title:'Personal Information',
@@ -26,11 +27,11 @@ const Profile = ({navigation})=> {
         },
         {
             title:'Change Password',
-            // goTo: handleGoTo('ChangePassword')
+            goTo: ()=> navigation.navigate('ChangePassword')
         },
         {
             title:'Change PIN',
-            // goTo: handleGoTo('ChangePin')
+            goTo: ()=> navigation.navigate('ChangePin')
         },
         {
             title:'Notification',
@@ -40,10 +41,6 @@ const Profile = ({navigation})=> {
             title:'Logout'
         }
     ]
-
-   
-       
-    
 
     return (
         <View style={styles.container}>
@@ -81,7 +78,18 @@ const Profile = ({navigation})=> {
                             <ListItem.Content>
                                 <ListItem.Title>{item.title}</ListItem.Title>
                             </ListItem.Content>
-                            <ListItem.Chevron size={30}/>
+                            {item.title === 'Notification'? (
+                            <Switch
+                            value={isSwitchEnable}
+                            onValueChange={(value)=>setSwitch(value)}
+                            trackColor={{true:primary, false:'#a9a9a9'}}
+                            thumbColor={isSwitchEnable? '#fff': '#fff'}
+                            />
+                            ) :(item.title === 'Logout'? null : (
+                                <ListItem.Chevron size={30} color='#7e7d84'/>
+                            )
+                                
+                            )}
                           </ListItem>  
                          )
                      })

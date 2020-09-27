@@ -51,13 +51,11 @@ const SearchContact = ({navigation})=> {
             </View>
             <ScrollView>
             <View style={{marginTop:10}}>
-                <TouchableOpacity onPress={()=> handleGoTo('Transfer')}>
-                <View style={styles.card}>
+                <TouchableOpacity onPress={()=> handleGoTo('Transfer')} style={styles.card}>
                     <Image source={prof3}/>
                     <View style={{marginLeft:15}}>
                           <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>Samuel Suhi</Text>
                           <Text style={{fontSize:14, fontFamily:'NunitoSans_Regular', marginTop:5, color:'#7a7886'}}>+62 813-8492-9994</Text>
-                   </View>
                 </View>  
                 </TouchableOpacity>
                 <View style={styles.card}>
@@ -113,18 +111,11 @@ const styles = StyleSheet.create({
     card:{
         flexDirection:'row',
         backgroundColor:white,
-        paddingVertical:20,
+        paddingVertical:18,
         paddingHorizontal:16,
         borderRadius:10,
         marginTop:15,
-        shadowOffset:{
-            width:-5,
-             height:-10
-            },
-        shadowColor:'#000',
-        shadowOpacity:1,
-        shadowRadius:20,
-        elevation:3,
+        elevation:5,
         shadowRadius:15,
     },
     imgWrapp:{
