@@ -2,14 +2,27 @@ import {createStore, applyMiddleware} from 'redux'
 
 import rpm from 'redux-promise-middleware'
 
+import {persistStore, persistReducer} from 'redux-persist'
+import createAsyncStorage from '@react-native-community/async-storage';
+
 import mainReducer from './reducer/index'
-import {createLogger} from 'redux-logger'
+const enhancer = applyMiddleware(rpm)
 
+const storage = createAsyncStorage
 
-const logger = createLogger()
-const enhancer = applyMiddleware(rpm, logger)
+const persistConfig = {
+    key:'root',
+    storage
+}
 
-const store = createStore(mainReducer, enhancer)
+const persistedReducer = persistReducer(persistConfig, mainReducer)
 
+export default ()=>{
+    let store = createStore(persistedReducer, enhancer)
+    let persistor = persistStore(store)
+    return {
+        store,
+        persistor
+    }
 
-export default store
+}

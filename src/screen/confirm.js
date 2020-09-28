@@ -1,23 +1,53 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, StyleSheet, Text, Dimensions, TextInput, Button, Image} from 'react-native'
 import { primary,  white, drak, btn, regular, Bold, subTitle} from '../assets/color/color'
 
 import { TouchableOpacity, ScrollView, FlatList } from 'react-native-gesture-handler'
-import { prof2, bell, arrowUp, plus, prof3, spotify, netflix } from '../assets'
+import { userIcon } from '../assets'
 import Icon from 'react-native-vector-icons/AntDesign'
-import { SearchBar, Input } from 'react-native-elements';
-import { useSelector } from 'react-redux'
+import { DateTime } from "luxon"
+import { useSelector, useDispatch } from 'react-redux'
+import {transferAction} from '../redux/action/transfer'
 
 
 
 
 const Confirm = ({navigation})=> {
 
+    const dispatch = useDispatch()
+
     const {form} = useSelector(state => state.contact)
+    const auth = useSelector(state => state.auth.user)
+    console.log(auth)
+
+    const datetime = DateTime.local()
 
     const handleGoTo = (screen)=>{
         navigation.navigate(screen)
     }
+
+    const [data, setData] = useState({
+        sender_id:'',
+        reciever_id:'',
+        amount:'',
+        notes:'',
+        transfer_date:''
+    })
+
+    const sendData = ()=>{
+        setData({
+            sender_id:auth.id,
+            reciever_id:form[0].username,
+            amount:form[1].amount,
+            notes:form[1].notes,
+            transfer_date:datetime.toFormat('LLL dd, yyyy HH.mm')
+        })
+
+        // alert(JSON.stringify(data))
+        dispatch(transferAction(data))
+    }
+
+    
 
     const localhost = '192.168.43.107'
 
@@ -35,9 +65,12 @@ const Confirm = ({navigation})=> {
                 <Text style={styles.title}>Confirmation</Text>
                 </View>
                         <View style={styles.card}>
-                        <Image source={{uri:form[0].image.replace('localhost', localhost)}} style={{width:58, height:58, borderRadius:8}}/>
+                        {form[0].image === null?(<Image source={userIcon} style={styles.img}/>):(
+                            <Image source={{uri:form[0].image.replace('localhost', localhost)}} style={styles.img}/>
+                        )}
+                        
                         <View style={{marginLeft:15}}>
-                              <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>{form[0].username}</Text>
+                             <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>{form[0].username}</Text>
                              <Text style={{fontSize:14, marginTop:5, color:'#7a7886'}}>{form[0].phone_number}</Text>
                        </View>
                     </View>                
@@ -45,33 +78,33 @@ const Confirm = ({navigation})=> {
             <View>      
                     <View style={styles.resiWrapp}>
                     <View style={styles.resi}>
-                          <Text style={{fontSize:16, fontFamily:regular, color:subTitle}}>Amount</Text>
-                         <Text style={{fontSize:18, fontFamily:Bold, marginTop:5, color:drak}}>{form[1].amount}</Text>
+                          <Text style={styles.textTitle}>Amount</Text>
+                         <Text style={styles.textSub}>Rp.{form[1].amount}</Text>
                    </View>
                    <View  style={styles.resi}>
-                          <Text style={{fontSize:16, fontFamily:regular, color:subTitle}}>Balance left</Text>
-                          <Text style={{fontSize:18, fontFamily:Bold, marginTop:5, color:drak}}>Rp.20.000</Text>
+                          <Text style={styles.textTitle}>Balance left</Text>
+                          <Text style={styles.textSub}>Rp.20.000</Text>
                    </View>
                    </View>
                    <View style={styles.secResiWrapp}>
                     <View style={styles.resi}>
-                          <Text style={{fontSize:16, fontFamily:regular, color:subTitle}}>Date</Text>
-                          <Text style={{fontSize:18, fontFamily:Bold, marginTop:5, color:drak}}>May 11, 2020</Text>
+                          <Text style={styles.textTitle}>Date</Text>
+                          <Text style={styles.textSub}>{datetime.toFormat('LLL dd, yyyy')}</Text>
                    </View>
                    <View  style={styles.resi}>
-                          <Text style={{fontSize:16, fontFamily:regular, color:subTitle}}>Time</Text>
-                          <Text style={{fontSize:18, fontFamily:Bold, marginTop:5, color:drak}}>12.20</Text>
+                          <Text style={styles.textTitle}>Time</Text>
+                        <Text style={styles.textSub}>{datetime.toFormat('HH.mm')}</Text>
                    </View>
                    </View>
                    <View style={styles.thirdResiWrapp}>
                     <View>
-                          <Text style={{fontSize:16, fontFamily:regular, color:subTitle}}>Notes</Text>
-                           <Text style={{fontSize:18, fontFamily:Bold, marginTop:5, color:drak}}>{form[1].notes}</Text>
+                          <Text style={styles.textTitle}>Notes</Text>
+                           <Text style={styles.textSub}>{form[1].notes}</Text>
                    </View>
                    </View>
                                                                      
             </View>
-            <TouchableOpacity style={styles.btn} onPress={()=>handleGoTo('InputPin')}>
+            <TouchableOpacity style={styles.btn} onPress={sendData}>
                 <Text style={styles.btnText}>Continue</Text>
             </TouchableOpacity>
            
@@ -93,6 +126,11 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius:25,
         borderBottomRightRadius:25,
     },
+    img:{
+        width:58, 
+        height:58, 
+        borderRadius:8
+    },
     title:{
         color:white,
         fontSize:20,
@@ -102,6 +140,16 @@ const styles = StyleSheet.create({
     price:{
         color:white,
         fontSize:24
+    },
+    textTitle:{
+        fontSize:16,
+         fontFamily:regular, 
+         color:subTitle
+    },
+    textSub:{
+        fontSize:18, 
+        fontFamily:Bold,
+         marginTop:5, color:drak
     },
     btnWrap:{
         flexDirection:'row',

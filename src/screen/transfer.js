@@ -13,17 +13,14 @@ import {addToConfirmAction} from '../redux/action/transfer'
 
 const Transfer = ({navigation})=> {
 
-    const contact = useSelector(state => state.contact.data)
+    const {data} = useSelector(state => state.contact)
     const dispatch = useDispatch()
-
-
-
 
     const [form, setForm ]=useState({
         amount:'',
         notes:''
     })
-    console.log('conac', contact)
+    console.log('conac', data)
     const handleGoTo = (screen)=>{
         navigation.navigate(screen)
     }
@@ -41,7 +38,7 @@ const Transfer = ({navigation})=> {
     const localhost = '192.168.43.107'
 
     return (
-        <View style={styles.container}>
+        <View style={styles.container} >
              <View style={styles.header}>
                  <View style={{flexDirection:'row', marginTop:50, marginLeft:17}}>
                 <TouchableOpacity onPress={()=> handleGoTo('SearchContact')}>
@@ -55,24 +52,19 @@ const Transfer = ({navigation})=> {
                 </View>                  
             </View>
             <View style={styles.cardWrap}>
-                {
-                    contact.map(item=>{
-                        return(
-                            <View style={styles.card}>
-                                {item.image === null?(
+                        <View style={styles.card}>
+                                {data[0].image === null?(
                                      <Image source={userIcon}/>
                                 ):(
-                                    <Image source={{uri:item.image.replace('localhost', localhost)}} style={styles.img}/>
+                                    <Image source={{uri:data[0].image.replace('localhost', localhost)}} style={styles.img}/>
                                 )}
                               
                                <View style={{marginLeft:15}}>
-                                 <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>{item.username}</Text>
-                                 <Text style={{fontSize:14, fontFamily:'NunitoSans_Regular', marginTop:5, color:'#7a7886'}}>{item.phone_number}</Text>
+                                 <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>{data[0].username}</Text>
+                                 <Text style={{fontSize:14, fontFamily:'NunitoSans_Regular', marginTop:5, color:'#7a7886'}}>{data[0].phone_number}</Text>
                               </View>
                            </View>               
-                        )
-                    })
-                }
+                        
                               
             </View>
             <View style={styles.content}>

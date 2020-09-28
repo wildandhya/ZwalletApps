@@ -20,7 +20,10 @@ const Login = ({navigation})=> {
     }
 
     const dispatch = useDispatch()
-    const {isError, isLogged} = useSelector(state => state.auth)
+    const {isError, user, isLogged,} = useSelector(state => state.auth)
+    console.log('ini',user)
+    console.log('login',isLogged)
+
 
     const [show, setShow] = React.useState(false)
     const [focused, setFocused] = React.useState(false)

@@ -7,7 +7,7 @@ import contactReducer from './transfer'
 const mainReducer = combineReducers({
     auth:authReducer,
     user:userReducer,
-    contact:contactReducer
+    contact:contactReducer,
 })
 
 export default mainReducer

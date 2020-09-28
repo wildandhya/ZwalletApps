@@ -1,13 +1,30 @@
-import {addToConfrim, addContact} from './actionType'
+import {addToConfrim, transfer, getHistory} from './actionType'
 
-import {getContactApi, searchContactApi} from '../../utils/api'
-import { Value } from 'react-native-reanimated';
+import {transferApi, getHistoryApi} from '../../utils/api'
+
 
 
 export const addToConfirmAction = (data) => {
     return{
         type:addToConfrim,
         payload:data
+    };
+
+}
+
+export const transferAction = (data) => {
+    console.log(data)
+    return{
+        type:transfer,
+        payload:transferApi(data)
+    };
+
+}
+
+export const getHistoryAction = (id) => {
+    return{
+        type:getHistory,
+        payload:getHistoryApi(id)
     };
 
 }

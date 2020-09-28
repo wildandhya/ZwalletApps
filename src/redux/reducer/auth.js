@@ -4,7 +4,8 @@ import {
     pending,
     fulfilled,
     rejected,
-    createPin
+    createPin,
+    logout
   } from "../action/actionType";
   
   const initialState = {
@@ -116,6 +117,12 @@ import {
                 isLogged:true,
                 isError:false
                
+              }
+          case logout:
+              return {
+                  ...prevState,
+                  user: [],
+                  isLogged:false
               }
       default:
         return prevState;

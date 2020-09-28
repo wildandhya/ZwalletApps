@@ -4,13 +4,17 @@ import {
     fulfilled,
     rejected,
     addContact,
-    addToConfrim
+    addToConfrim,
+    transfer,
+    getHistory
   } from "../action/actionType";
   
   const initialState = {
     data: [],
     form:[],
     error: [],
+    nota:[],
+    history:[]
 
   };
   
@@ -28,9 +32,60 @@ import {
         form: [...prevState.data, payload]
             
       };
+      case transfer + pending:
+        return {
+          ...prevState,
+          isPending: true,
+          
+        };
   
+      case transfer + rejected:
+        return {
+          ...prevState,
+          isRejected: true,
+          error: payload,
+          isPending: false,
+          
+        };
+      case transfer + fulfilled:
+        console.log(payload.data.data)
+          return {
+            ...prevState,
+            isFulfilled: true,
+            nota: payload.data.data,
+            isPending: false,
+            isLogged:true,
+            isError:false
+           
+          }
 
-        
+          case getHistory + pending:
+            return {
+              ...prevState,
+              isPending: true,
+              
+            };
+      
+          case getHistory + rejected:
+            return {
+              ...prevState,
+              isRejected: true,
+              error: payload,
+              isPending: false,
+              
+            };
+          case getHistory + fulfilled:
+            console.log(payload.data.data)
+    
+              return {
+                ...prevState,
+                isFulfilled: true,
+                history: payload.data.data,
+                isPending: false,
+                isLogged:true,
+                isError:false
+               
+              }
       default:
         return prevState;
     }

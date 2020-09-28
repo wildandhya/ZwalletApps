@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, StyleSheet, Text, Dimensions, StatusBar, Image} from 'react-native'
 import { primary, background, white, drak, secondry, subTitle , btn, success, bgImge, error, trans, shadowStyle} from '../assets/color/color'
 
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler'
 import { prof2, bell, arrowUp, plus, prof3, spotify, netflix } from '../assets'
+import { useDispatch, useSelector } from 'react-redux'
+import { getHistoryAction} from '../redux/action/transfer'
 
 
 
@@ -11,9 +13,21 @@ import { prof2, bell, arrowUp, plus, prof3, spotify, netflix } from '../assets'
 
 const Home = ({navigation})=> {
 
+    const dispatch = useDispatch()
+
+    const {user} = useSelector(state=>state.auth)
+    const {history} = useSelector(state => state.contact)
+    console.log(history)
+    console.log(user)
+
     const handleGoTo = (screen)=>{
         navigation.navigate(screen)
     }
+    
+    useEffect(()=>{
+        const {id} = user
+        dispatch(getHistoryAction(user.id))
+    })
 
     return (
         <View style={styles.container}>
@@ -48,49 +62,24 @@ const Home = ({navigation})=> {
             </View>
             <ScrollView>
             <View style={{marginTop:10}}>
+
+                {
+                    history.map(item =>{
+                        return(
+                        <View style={styles.card}>
+                            <Image source={prof3}/>
+                                <View style={{marginRight:70}}>
+                                   <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>{item.reciever_id}</Text>
+                                <Text style={{fontSize:14, fontWeight:'400', marginTop:9}}>Transfer</Text>
+                             </View>
+                             <View style={{justifyContent:'center'}}>
+                                <Text style={{color:success, fontSize:18, fontWeight:'700'}}>+{item.amount}</Text>
+                            </View>
+                        </View>
+                        )
+                    })
+                }
                 
-                <View style={styles.card}>
-                    <Image source={prof3}/>
-                    <View style={{marginRight:70}}>
-                          <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>Samuel Suhi</Text>
-                          <Text style={{fontSize:14, fontWeight:'400', marginTop:9}}>Transfer</Text>
-                   </View>
-                   <View style={{justifyContent:'center'}}>
-                       <Text style={{color:success, fontSize:18, fontWeight:'700'}}>+Rp50.000</Text>
-                   </View>
-                </View>
-                <View style={styles.card}>
-                    <View style={styles.imgWarpp}>
-                      <Image source={spotify}/>
-                    </View>
-                    <View style={{marginRight:70}}>
-                          <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>Spotify</Text>
-                          <Text style={{fontSize:14, fontWeight:'400', marginTop:9}}>Subcription</Text>
-                   </View>
-                   <View style={{justifyContent:'center'}}>
-                       <Text style={{color:error, fontSize:18, fontWeight:'700'}}>-Rp50.000</Text>
-                   </View>
-                </View>
-                <View style={styles.card}>
-                    <Image source={netflix} style={{backgroundColor:background}}/>
-                    <View style={{marginRight:70}}>
-                          <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>Samuel Suhi</Text>
-                          <Text style={{fontSize:14, fontWeight:'400', marginTop:9}}>Transfer</Text>
-                   </View>
-                   <View style={{justifyContent:'center'}}>
-                       <Text style={{color:success, fontSize:18, fontWeight:'700'}}>+Rp50.000</Text>
-                   </View>
-                </View>
-                <View style={styles.card}>
-                    <Image source={prof3}/>
-                    <View style={{marginRight:70}}>
-                          <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>Samuel Suhi</Text>
-                          <Text style={{fontSize:14, fontWeight:'400', marginTop:9}}>Transfer</Text>
-                   </View>
-                   <View style={{justifyContent:'center'}}>
-                       <Text style={{color:success, fontSize:18, fontWeight:'700'}}>+Rp50.000</Text>
-                   </View>
-                </View>
                 
             </View>
             </ScrollView>

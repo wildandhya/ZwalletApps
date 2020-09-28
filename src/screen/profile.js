@@ -8,6 +8,9 @@ import Icon from 'react-native-vector-icons/AntDesign'
 import Pencil from 'react-native-vector-icons/MaterialCommunityIcons'
 import { ListItem } from 'react-native-elements'
 
+import {loginAction, logoutAction} from '../redux/action/auth'
+import { useDispatch } from 'react-redux'
+
 
 
 
@@ -19,7 +22,13 @@ const Profile = ({navigation})=> {
         navigation.navigate(screen)
     }
 
+    const dispatch = useDispatch()
+
     const [isSwitchEnable, setSwitch] = React.useState(false)
+
+    const logoutProfile = ()=>{
+        dispatch(logoutAction())
+    }
     const list = [
         {
             title:'Personal Information',
@@ -38,7 +47,11 @@ const Profile = ({navigation})=> {
             // goTo: handleGoTo('Notif')
         },
         {
-            title:'Logout'
+            title:'Logout',
+             goTo: ()=>{
+                dispatch(logoutAction())
+                handleGoTo('Login')
+            }
         }
     ]
 

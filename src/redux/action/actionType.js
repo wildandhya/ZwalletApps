@@ -19,4 +19,10 @@ export const addContact = "ADD_CONTACT";
 
 export const addToConfrim = "ADD_TO_CONFRIM";
 
+export const logout = "LOGOUT";
+
+export const transfer = "TRANSFER";
+
+export const getHistory = "GET_HISTORY";
+
 

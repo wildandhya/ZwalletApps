@@ -83,12 +83,12 @@ const SearchContact = ({navigation})=> {
                 <Text style={{fontSize:14, fontFamily:'NunitoSans-Regular', color:'#8f8f8f', paddingTop:5}}>{user.length} Contact Founds</Text>
             </View>
             <ScrollView>
-                {user.map(item=>{
+                {user.map((item, index)=>{
                     return(
                         <TouchableOpacity onPress={()=>{
                             addContact(item.id, item.username, item.phone_number, item.image)
                              navigation.navigate('Transfer')
-                        }} style={styles.card} >
+                        }} style={styles.card} key={index}>
                             {item.image === null?(
                                 <Image source={userIcon}/>
                             ):(<Image source={{uri:item.image.replace('localhost',localhost)}} style={styles.img}/>)}
