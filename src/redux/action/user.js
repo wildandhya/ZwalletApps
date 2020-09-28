@@ -1,4 +1,4 @@
-import {getContact, searchContact} from './actionType'
+import {getContact, searchContact, addContact} from './actionType'
 
 import {getContactApi, searchContactApi} from '../../utils/api'
 
@@ -6,15 +6,22 @@ import {getContactApi, searchContactApi} from '../../utils/api'
 export const getContactAction = () => {
     return{
         type:getContact,
-        payload: getContact()
+        payload: getContactApi()
     };
 
 }
 
-export const searchContactAction = (data) => {
+export const searchContactAction = (username) => {
     return{
         type:searchContact,
-        payload: searchContactApi(data)
+        payload: searchContactApi(username)
+    };
+
+}
+export const addContactAction = (data) => {
+    return{
+        type:addContact,
+        payload: data
     };
 
 }

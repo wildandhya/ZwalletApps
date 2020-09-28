@@ -2,19 +2,24 @@ import React from 'react'
 import { View, StyleSheet, Text, Dimensions, TextInput, Button, Image} from 'react-native'
 import { primary,  white, drak, btn, regular, Bold, subTitle} from '../assets/color/color'
 
-import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler'
+import { TouchableOpacity, ScrollView, FlatList } from 'react-native-gesture-handler'
 import { prof2, bell, arrowUp, plus, prof3, spotify, netflix } from '../assets'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { SearchBar, Input } from 'react-native-elements';
+import { useSelector } from 'react-redux'
 
 
 
 
 const Confirm = ({navigation})=> {
 
+    const {form} = useSelector(state => state.contact)
+
     const handleGoTo = (screen)=>{
         navigation.navigate(screen)
     }
+
+    const localhost = '192.168.43.107'
 
     return (
         <View style={styles.container}>
@@ -29,20 +34,19 @@ const Confirm = ({navigation})=> {
                   </TouchableOpacity>
                 <Text style={styles.title}>Confirmation</Text>
                 </View>
-                <View style={styles.card}>
-                    <Image source={prof3}/>
-                    <View style={{marginLeft:15}}>
-                          <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>Samuel Suhi</Text>
-                          <Text style={{fontSize:14, marginTop:5, color:'#7a7886'}}>+62 813-8492-9994</Text>
-                   </View>
-                </View>         
-                  
+                        <View style={styles.card}>
+                        <Image source={{uri:form[0].image.replace('localhost', localhost)}} style={{width:58, height:58, borderRadius:8}}/>
+                        <View style={{marginLeft:15}}>
+                              <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>{form[0].username}</Text>
+                             <Text style={{fontSize:14, marginTop:5, color:'#7a7886'}}>{form[0].phone_number}</Text>
+                       </View>
+                    </View>                
             </View>
             <View>      
                     <View style={styles.resiWrapp}>
                     <View style={styles.resi}>
                           <Text style={{fontSize:16, fontFamily:regular, color:subTitle}}>Amount</Text>
-                          <Text style={{fontSize:18, fontFamily:Bold, marginTop:5, color:drak}}>Rp.100.000</Text>
+                         <Text style={{fontSize:18, fontFamily:Bold, marginTop:5, color:drak}}>{form[1].amount}</Text>
                    </View>
                    <View  style={styles.resi}>
                           <Text style={{fontSize:16, fontFamily:regular, color:subTitle}}>Balance left</Text>
@@ -62,7 +66,7 @@ const Confirm = ({navigation})=> {
                    <View style={styles.thirdResiWrapp}>
                     <View>
                           <Text style={{fontSize:16, fontFamily:regular, color:subTitle}}>Notes</Text>
-                          <Text style={{fontSize:18, fontFamily:Bold, marginTop:5, color:drak}}>For buying some socks</Text>
+                           <Text style={{fontSize:18, fontFamily:Bold, marginTop:5, color:drak}}>{form[1].notes}</Text>
                    </View>
                    </View>
                                                                      

@@ -1,23 +1,44 @@
-import React from 'react'
+import React, {useState}from 'react'
 import { View, StyleSheet, Text, Dimensions, TextInput, Button, Image} from 'react-native'
 import { primary, background, white, drak, secondry, subTitle , btn, success, bgImge, error, trans, shadowStyle} from '../assets/color/color'
 
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler'
-import { prof2, bell, arrowUp, plus, prof3, spotify, netflix } from '../assets'
+import { userIcon } from '../assets'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Arrow from 'react-native-vector-icons/AntDesign'
 import { SearchBar, Input } from 'react-native-elements';
-import SmoothPinCodeInput from 'react-native-smooth-pincode-input'
-
-
-
+import { useDispatch, useSelector } from 'react-redux'
+import {addToConfirmAction} from '../redux/action/transfer'
 
 
 const Transfer = ({navigation})=> {
 
+    const contact = useSelector(state => state.contact.data)
+    const dispatch = useDispatch()
+
+
+
+
+    const [form, setForm ]=useState({
+        amount:'',
+        notes:''
+    })
+    console.log('conac', contact)
     const handleGoTo = (screen)=>{
         navigation.navigate(screen)
     }
+
+    const sendData = ()=>{
+           dispatch(addToConfirmAction(form))
+        }
+    
+    const inputChange = (value, input)=>{
+        setForm({
+            ...form,
+            [input]: value,
+        })
+    }
+    const localhost = '192.168.43.107'
 
     return (
         <View style={styles.container}>
@@ -34,13 +55,25 @@ const Transfer = ({navigation})=> {
                 </View>                  
             </View>
             <View style={styles.cardWrap}>
-                <View style={styles.card}>
-                    <Image source={prof3}/>
-                    <View style={{marginLeft:15}}>
-                          <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>Samuel Suhi</Text>
-                          <Text style={{fontSize:14, fontFamily:'NunitoSans_Regular', marginTop:5, color:'#7a7886'}}>+62 813-8492-9994</Text>
-                   </View>
-                </View>                             
+                {
+                    contact.map(item=>{
+                        return(
+                            <View style={styles.card}>
+                                {item.image === null?(
+                                     <Image source={userIcon}/>
+                                ):(
+                                    <Image source={{uri:item.image.replace('localhost', localhost)}} style={styles.img}/>
+                                )}
+                              
+                               <View style={{marginLeft:15}}>
+                                 <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>{item.username}</Text>
+                                 <Text style={{fontSize:14, fontFamily:'NunitoSans_Regular', marginTop:5, color:'#7a7886'}}>{item.phone_number}</Text>
+                              </View>
+                           </View>               
+                        )
+                    })
+                }
+                              
             </View>
             <View style={styles.content}>
                 <Text style={styles.titleFilled}>Rp.120.000 Available</Text>
@@ -48,6 +81,8 @@ const Transfer = ({navigation})=> {
                 placeholder='0.00'
                 keyboardType='number-pad'
                 style={{marginVertical:40, fontSize:42}}
+                value={form.amount}
+                onChangeText={(value)=> inputChange(value, 'amount')}
                 />
                 <Input
                 placeholder='Add some notes'
@@ -58,9 +93,14 @@ const Transfer = ({navigation})=> {
                     color={subTitle}
                     />
                 }
+                value={form.notes}
+                onChangeText={(value)=> inputChange(value, 'notes')}
                 />
             </View>
-            <TouchableOpacity style={styles.btn} onPress={()=>handleGoTo('Confirm')}>
+            <TouchableOpacity style={styles.btn} onPress={()=>{
+                sendData()
+                handleGoTo('Confirm')
+                }}>
                 <Text style={styles.btnText}>Next</Text>
             </TouchableOpacity>
         </View>
@@ -88,6 +128,11 @@ const styles = StyleSheet.create({
     price:{
         color:white,
         fontSize:24
+    },
+    img:{
+        width:58,
+        height:58,
+        borderRadius:8
     },
     btnWrap:{
         flexDirection:'row',

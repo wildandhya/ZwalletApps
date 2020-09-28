@@ -5,19 +5,26 @@ import {Formik} from 'formik'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input'
+import { useSelector, useDispatch } from 'react-redux'
+import {createPinAction} from '../../redux/action/auth'
 
 
 
 
 const CreatePin = ({navigation})=> {
+    
 
-    const handleGoTo = (screen)=>{
-        navigation.navigate(screen)
-    }
+    const dispatch = useDispatch()
+
+    const {user} = useSelector(state => state.auth)
 
     const [focused, setFocused] = React.useState(false)
     const [msg, setMsg] = React.useState(false)
     const [pin, setPin] = React.useState('')
+
+    const sendPin = ()=>{
+
+    }
 
     return (
         <View style={styles.container}>
@@ -35,16 +42,15 @@ const CreatePin = ({navigation})=> {
                 cellStyleFocused={{...styles.inputWrap, borderColor:primary, borderWidth:2}}
                 keyboardType='numeric'
                 value={pin.toString()}
-                onTextChange={(pin)=> setPin(pin)}
+                onTextChange={(value)=> setPin(value)}
                 onFulfill={()=> setFocused(true)}
                 onBackspace={()=> setMsg(true)}
                 />       
             </View>
-            {msg?(<Text style={{color:error}}>Please, Input your PIN</Text>):null}
             <View style={styles.btnWarp}>
             <TouchableOpacity 
             style={focused? {...styles.btn, backgroundColor:primary} :styles.btn} 
-            onPress={()=> handleGoTo('PinSuccess')}>
+            onPress={dispatch(createPinAction())}>
                     <Text style={focused?{...styles.btnText, color:white} :styles.btnText}>Confirm</Text>
             </TouchableOpacity>
             </View>

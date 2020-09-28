@@ -1,6 +1,6 @@
-import {login, register, form} from './actionType'
+import {login, register, form, createPin} from './actionType'
 
-import {loginApi, registerApi} from '../../utils/api'
+import {loginApi, registerApi, createPinApi} from '../../utils/api'
 
 
 export const loginAction = (data) => {
@@ -16,6 +16,15 @@ export const registerAction = (data) => {
     return{
         type:register,
         payload: registerApi(data)
+    };
+
+}
+
+export const createPinAction = (id, data) => {
+    console.log(data)
+    return{
+        type:createPin,
+        payload: createPinApi(id, data)
     };
 
 }

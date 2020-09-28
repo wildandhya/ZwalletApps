@@ -1,33 +1,65 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, StyleSheet, Text, Dimensions, TextInput, Button, Image} from 'react-native'
 import { primary, background, white, drak, secondry, subTitle , btn, success, bgImge, error, trans, shadowStyle} from '../assets/color/color'
 
-import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler'
-import { prof2, bell, arrowUp, plus, prof3, spotify, netflix } from '../assets'
+import { TouchableOpacity, ScrollView, FlatList } from 'react-native-gesture-handler'
+import { userIcon} from '../assets'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { SearchBar, Input } from 'react-native-elements';
+import { useDispatch, useSelector } from 'react-redux'
+import {getContactAction, searchContactAction, addContactAction} from '../redux/action/user'
 
 
 
 
 const SearchContact = ({navigation})=> {
 
-    const handleGoTo = (screen)=>{
+
+    const handleGoto = (screen)=>{
         navigation.navigate(screen)
     }
 
+    const dispatch = useDispatch()
+
+    const user = useSelector(state => state.user.user)
+    const contact = useSelector(state => state.contact.data)
+
+    const addContact = (id, username, phone_number ,image) => {
+        const contactItem = contact;
+        let alreadyExist = false;
+        contactItem.forEach((item) => {
+          if (item.id === id) {
+            alreadyExist = true;
+          }
+        });
+        if (!alreadyExist) {
+          const contactData = {
+            id: id,
+            username: username,
+            phone_number: phone_number,
+            image: image,
+          };
+          dispatch(addContactAction(contactData));
+        }
+      };
+
+    useEffect(()=>{
+        dispatch(getContactAction())
+    }, [])
+
+    const localhost = '192.168.43.107'
     return (
         <View style={styles.container}>
              <View style={styles.header}>
                  <View style={{flexDirection:'row', marginTop:50, marginLeft:17}}>
-                <TouchableOpacity onPress={()=> handleGoTo('Home')}>
+                <TouchableOpacity onPress={()=> navigation.navigate('Home')}>
                  <Icon 
                  name='arrowleft'
                  size={28}
                  color={white}
                   />
                   </TouchableOpacity>
-                <Text style={styles.title}>Find Receiver</Text>
+                <Text style={styles.title}>Find Reciever</Text>
                 </View>
                 <View style={{backgroundColor:white, height:50, marginTop:20, borderRadius:12, alignItems:'center', marginHorizontal:16}}>
                     <Input 
@@ -41,38 +73,34 @@ const SearchContact = ({navigation})=> {
 
                     }
                     placeholder='Search receiver here'
+                    onChangeText={(text)=> dispatch(searchContactAction(text, 'username'))}
                     />
                 </View>
                   
             </View>
-            <View style={{ marginHorizontal:16, marginTop:20}}>
+            <View style={{ marginHorizontal:16, marginTop:20, paddingBottom:10}}>
                 <Text style={{fontSize:18, fontWeight:'700'}}>Contact</Text>
-                <Text style={{fontSize:14, fontFamily:'NunitoSans-Regular', color:'#8f8f8f', paddingTop:10}}>17 Contact Founds</Text>
+                <Text style={{fontSize:14, fontFamily:'NunitoSans-Regular', color:'#8f8f8f', paddingTop:5}}>{user.length} Contact Founds</Text>
             </View>
             <ScrollView>
-            <View style={{marginTop:10}}>
-                <TouchableOpacity onPress={()=> handleGoTo('Transfer')} style={styles.card}>
-                    <Image source={prof3}/>
-                    <View style={{marginLeft:15}}>
-                          <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>Samuel Suhi</Text>
-                          <Text style={{fontSize:14, fontFamily:'NunitoSans_Regular', marginTop:5, color:'#7a7886'}}>+62 813-8492-9994</Text>
-                </View>  
-                </TouchableOpacity>
-                <View style={styles.card}>
-                    <Image source={prof3}/>
-                    <View style={{marginLeft:15}}>
-                          <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>Samuel Suhi</Text>
-                          <Text style={{fontSize:14, fontFamily:'NunitoSans_Regular', marginTop:5, color:'#7a7886'}}>+62 813-8492-9994</Text>
-                   </View>
-                </View>               
-                <View style={styles.card}>
-                    <Image source={prof3}/>
-                    <View style={{marginLeft:15}}>
-                          <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>Samuel Suhi</Text>
-                          <Text style={{fontSize:14, fontFamily:'NunitoSans_Regular', marginTop:5, color:'#7a7886'}}>+62 813-8492-9994</Text>
-                   </View>
-                </View>                                                          
-            </View>
+                {user.map(item=>{
+                    return(
+                        <TouchableOpacity onPress={()=>{
+                            addContact(item.id, item.username, item.phone_number, item.image)
+                             navigation.navigate('Transfer')
+                        }} style={styles.card} >
+                            {item.image === null?(
+                                <Image source={userIcon}/>
+                            ):(<Image source={{uri:item.image.replace('localhost',localhost)}} style={styles.img}/>)}
+                         <View style={{marginLeft:15}}>
+                           <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>{item.username}</Text>
+                         <Text style={{fontSize:14, fontFamily:'NunitoSans_Regular', marginTop:5, color:'#7a7886'}}>{item.phone_number}</Text>
+                          </View>  
+                           </TouchableOpacity>      
+                    )
+                })}
+                          
+            
             </ScrollView>
         </View>
     )
@@ -101,6 +129,11 @@ const styles = StyleSheet.create({
     price:{
         color:white,
         fontSize:24
+    },
+    img:{
+        width:58,
+        height:58,
+        borderRadius:7
     },
     btnWrap:{
         flexDirection:'row',

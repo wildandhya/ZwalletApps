@@ -4,6 +4,7 @@ import {
     pending,
     fulfilled,
     rejected,
+    createPin
   } from "../action/actionType";
   
   const initialState = {
@@ -93,6 +94,29 @@ import {
                    
                   }
             }
+            case createPin + pending:
+            return {
+              ...prevState,
+              isPending: true,
+            };
+      
+          case createPin + rejected:
+            return {
+              ...prevState,
+              isRejected: true,
+              error: payload,
+              isPending: false,
+            };
+          case createPin + fulfilled:
+              return {
+                ...prevState,
+                isFulfilled: true,
+                user: payload.data.data,
+                isPending: false,
+                isLogged:true,
+                isError:false
+               
+              }
       default:
         return prevState;
     }
