@@ -20,10 +20,8 @@ const Login = ({navigation})=> {
     }
 
     const dispatch = useDispatch()
-    const {isError, user, isLogged,} = useSelector(state => state.auth)
-    console.log('ini',user)
-    console.log('login',isLogged)
-
+    const {isError, user, isLogged} = useSelector(state => state.auth)
+    console.log(isLogged)
 
     const [show, setShow] = React.useState(false)
     const [focused, setFocused] = React.useState(false)
@@ -41,7 +39,7 @@ const Login = ({navigation})=> {
        }else{
            setShowError(true)
        }
-   })
+   }, [isLogged])
 
     return (
         <View style={styles.container}>
@@ -69,14 +67,14 @@ const Login = ({navigation})=> {
                                 leftIcon={
                                     <Email
                                     name='envelope'
-                                    color= {focused? primary : secondry  && isError? error : primary}
+                                    color= {focused? primary : secondry  && isError? error : secondry}
                                     size={30}
                             
                                     />
                                 }
                                 inputContainerStyle={focused? 
                                     {borderBottomColor:primary, borderBottomWidth:2}:{borderBottomColor:secondry, borderBottomWidth:1} 
-                                    && isError? {borderBottomColor:error, borderBottomWidth:2}:{borderBottomColor:primary, borderBottomWidth:1}
+                                    && isError? {borderBottomColor:error, borderBottomWidth:2}:{borderBottomColor:secondry, borderBottomWidth:1}
                                 } 
                                 containerStyle={{height:50}}
                                 placeholder='Enter your e-mail'
@@ -92,7 +90,7 @@ const Login = ({navigation})=> {
                                  leftIcon={
                                     <Icon
                                     name='lock'
-                                    color= {focused? primary : secondry && isError? error : primary}
+                                    color= {focused? primary : secondry && isError? error : secondry}
                                     size={25}
                             
                                     />
@@ -104,14 +102,14 @@ const Login = ({navigation})=> {
                                      }}>
                                           <Icon
                                               name={show === false? 'eye-off' : 'eye'}
-                                              color= {focused? primary : secondry && isError? error : primary}
+                                              color= {focused? primary : secondry && isError? error : secondry}
                                               size={23}
                                     />
                                      </TouchableOpacity>
                                  }
                                  inputContainerStyle={focused? 
                                     {borderBottomColor:primary, borderBottomWidth:2}:{borderBottomColor:secondry, borderBottomWidth:1}
-                                    && isError? {borderBottomColor:error, borderBottomWidth:2}:{borderBottomColor:primary, borderBottomWidth:1}
+                                    && isError? {borderBottomColor:error, borderBottomWidth:2}:{borderBottomColor:secondry, borderBottomWidth:1}
                                 }
                                 containerStyle={{height:50, marginTop:10}}
                                 placeholder='Enter your password'

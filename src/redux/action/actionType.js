@@ -13,7 +13,7 @@ export const getContact = "GET_CONTACT";
 
 export const searchContact = "SEARCH_CONTACT";
 
-export const createPin = "CREATE_PIN";
+export const editUser = "EDIT_USER";
 
 export const addContact = "ADD_CONTACT";
 

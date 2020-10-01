@@ -45,6 +45,8 @@ const Confirm = ({navigation})=> {
 
         // alert(JSON.stringify(data))
         dispatch(transferAction(data))
+        handleGoTo('InputPin')
+
     }
 
     
@@ -105,6 +107,8 @@ const Confirm = ({navigation})=> {
                                                                      
             </View>
             <TouchableOpacity style={styles.btn} onPress={sendData}>
+               
+               
                 <Text style={styles.btnText}>Continue</Text>
             </TouchableOpacity>
            

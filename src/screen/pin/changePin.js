@@ -3,14 +3,23 @@ import { View, StyleSheet, Text, Dimensions, TextInput, Button} from 'react-nati
 import { primary, background, white, drak, secondry, subTitle , btn} from '../../assets/color/color'
 import {Formik} from 'formik'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import Icon from 'react-native-vector-icons/Feather';
-import Email from 'react-native-vector-icons/EvilIcons';
-import { Input} from 'react-native-elements';
 import Arrow from 'react-native-vector-icons/AntDesign'
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input'
+import { useSelector, useDispatch } from 'react-redux'
+import {editUserAction} from '../../redux/action/auth'
 
 
 const ChangePin = ({navigation})=> {
+
+
+    const [pin, setPin] = React.useState('')
+    const [focused, setFocused] = React.useState(false)
+    const dispatch = useDispatch()
+    const {user, isPin} = useSelector(state => state.auth)
+
+    if(isPin){
+        alert('ok')
+    }
     return (
         <View style={styles.container}>
              <View style={styles.header}>
@@ -30,13 +39,22 @@ const ChangePin = ({navigation})=> {
                 <View style={{alignItems:'center', marginTop:50}}>
                 <SmoothPinCodeInput
                 codeLength={6}
-                cellStyle={styles.inputWrap}
+                cellStyle={focused?{...styles.inputWrap, borderColor:primary, borderWidth:2}: styles.inputWrap}
+                cellStyleFocused={{...styles.inputWrap, borderColor:primary, borderWidth:2}}
                 keyboardType='numeric'
+                value={pin.toString()}
+                onTextChange={(pin)=> setPin(pin)}
+                onFulfill={()=> setFocused(true)}
+                onBackspace={()=> setMsg(true)}
                 />      
                 </View> 
             </View>    
-                <TouchableOpacity style={styles.btn}>
-                                <Text style={styles.btnText}>Continue</Text>
+                <TouchableOpacity style={focused? {...styles.btn, backgroundColor:primary} :styles.btn} onPress={()=>{
+                     if(pin.length === 6){
+                        dispatch(editUserAction(null, null, Number(pin), null, user.email))}
+                    }
+                }>
+                                <Text style={focused?{...styles.btnText, color:white} :styles.btnText}>Change Pin</Text>
                 </TouchableOpacity>   
         </View>
         
@@ -81,7 +99,7 @@ const styles = StyleSheet.create({
         backgroundColor:btn,
         marginHorizontal:19,
         paddingVertical:16,
-        marginBottom:70,
+        marginTop:10,
         borderRadius:12
     },
     btnText:{
@@ -106,9 +124,8 @@ const styles = StyleSheet.create({
         borderWidth:1,
         borderRadius:10,
         borderColor:'#a9a9a9',
-        backgroundColor:'white',
-        alignSelf:'center',
-        justifyContent:'center'
-    }
+        height:60
+        
+    },
 
 })

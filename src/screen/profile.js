@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, StyleSheet, Text, Dimensions, TextInput, Button, Image, Switch} from 'react-native'
 import { primary,  white, drak, Bold, regular} from '../assets/color/color'
 
@@ -8,8 +8,10 @@ import Icon from 'react-native-vector-icons/AntDesign'
 import Pencil from 'react-native-vector-icons/MaterialCommunityIcons'
 import { ListItem } from 'react-native-elements'
 
-import {loginAction, logoutAction} from '../redux/action/auth'
-import { useDispatch } from 'react-redux'
+import {loginAction, logoutAction, editUserAction} from '../redux/action/auth'
+import { useDispatch, useSelector } from 'react-redux'
+
+import ImagePicker from 'react-native-image-picker'
 
 
 
@@ -23,12 +25,16 @@ const Profile = ({navigation})=> {
     }
 
     const dispatch = useDispatch()
+    const [image, setImage] = useState(null)
+    const {user} = useSelector(state=>state.auth)
+    console.log(user)
 
     const [isSwitchEnable, setSwitch] = React.useState(false)
 
     const logoutProfile = ()=>{
         dispatch(logoutAction())
     }
+
     const list = [
         {
             title:'Personal Information',
@@ -54,12 +60,37 @@ const Profile = ({navigation})=> {
             }
         }
     ]
+    const handleChoosePhoto = ()=>{
+        const options ={
+            title:'Choose Images',
+            storageOptions:{
+                skipBackup:true,
+                path:'images'
+            },
+            noData:true
+            
+        }
+        ImagePicker.showImagePicker(options, Response =>{
+            console.log('respon', Response)
+            if(Response.didCancel){
+                console.log('Cancel')
+               
+            }else if(Response.error){
+                console.log('ImagePicker Error', Response.error)
+            }else if(Response.customButton){
+                console.log('User Tapped Custom Button', Response.customButton)
 
+            }else{
+                const source = Response
+                setImage( source)
+            }
+        })
+    }
     return (
         <View style={styles.container}>
              <View style={styles.header}>
                  <View style={{flexDirection:'row', marginTop:50, marginLeft:17}}>
-                <TouchableOpacity onPress={()=> handleGoTo('Home')}>
+                <TouchableOpacity onPress={()=> handleGoTo('Home') }>
                  <Icon 
                  name='arrowleft'
                  size={28}
@@ -73,14 +104,16 @@ const Profile = ({navigation})=> {
                  <View style={styles.imgBg}>
                      <Image source={userIcon} />
                 </View>
-                <View style={{flexDirection:'row', marginTop:10}}>
-                    <Pencil
-                    name='pencil-outline'
-                    size={20}
-                    />
-                    <Text style={{fontFamily:regular, fontSize:16, marginLeft:6}}>Edit</Text>
-                </View>
-                <Text style={{fontFamily:Bold, fontSize:24,marginTop:16}}>Wildan Dhya</Text>
+               
+                    <TouchableOpacity  style={{flexDirection:'row', marginTop:10}} onPress={()=> handleChoosePhoto()}>
+                       <Pencil
+                       name='pencil-outline'
+                       size={20}
+                       />
+                       <Text style={{fontFamily:regular, fontSize:16, marginLeft:6}}>Edit</Text>
+                    </TouchableOpacity>
+               
+                 <Text style={{fontFamily:Bold, fontSize:24,marginTop:16}}>{user.username}</Text>
                 <Text style={{fontSize:16, fontFamily:regular, marginTop:10}}>+62 813-9387-7946</Text>
             </View>
             <View style={{marginTop:10, marginHorizontal:16}}>     

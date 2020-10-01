@@ -4,6 +4,9 @@ import { primary,  white, drak, btn, regular, Bold, subTitle} from '../assets/co
 
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler'
 import { successIcon , prof3} from '../assets'
+import { DateTime } from "luxon"
+
+import { useSelector} from 'react-redux'
 
 
 
@@ -11,9 +14,17 @@ import { successIcon , prof3} from '../assets'
 
 const TransSuccess = ({navigation})=> {
 
+    const {form} = useSelector(state => state.contact)
+    const {nota} = useSelector(state => state.contact)
+    console.log('nini',form)
+
+    const datetime = DateTime.local()
+
     const handleGoTo = (screen)=>{
         navigation.navigate(screen)
     }
+
+    const localhost = '192.168.43.107'
 
     return (
         <View style={styles.container}>
@@ -25,7 +36,7 @@ const TransSuccess = ({navigation})=> {
                 <Text style={{fontFamily:Bold, fontSize:18}}>Details</Text>  
                     <View style={styles.resi}>
                           <Text style={{fontSize:16, fontFamily:regular, color:subTitle}}>Amount</Text>
-                          <Text style={{fontSize:18, fontFamily:Bold, marginTop:5, color:drak}}>Rp.100.000</Text>
+                          <Text style={{fontSize:18, fontFamily:Bold, marginTop:5, color:drak}}>Rp.{form[1].amount}</Text>
                    </View>
                    <View  style={styles.resi}>
                           <Text style={{fontSize:16, fontFamily:regular, color:subTitle}}>Balance left</Text>
@@ -34,26 +45,26 @@ const TransSuccess = ({navigation})=> {
                    
                     <View style={styles.resi}>
                           <Text style={{fontSize:16, fontFamily:regular, color:subTitle}}>Date</Text>
-                          <Text style={{fontSize:18, fontFamily:Bold, marginTop:5, color:drak}}>May 11, 2020</Text>
+                          <Text style={{fontSize:18, fontFamily:Bold, marginTop:5, color:drak}}>{datetime.toFormat('LLL dd, yyyy')}</Text>
                    </View>
                    <View  style={styles.resi}>
                           <Text style={{fontSize:16, fontFamily:regular, color:subTitle}}>Time</Text>
-                          <Text style={{fontSize:18, fontFamily:Bold, marginTop:5, color:drak}}>12.20</Text>
+                          <Text style={{fontSize:18, fontFamily:Bold, marginTop:5, color:drak}}>{datetime.toFormat('HH.mm')}</Text>
                    </View>
                    <View style={styles.resi}>
                    
                           <Text style={{fontSize:16, fontFamily:regular, color:subTitle}}>Notes</Text>
-                          <Text style={{fontSize:18, fontFamily:Bold, marginTop:5, color:drak}}>For buying some socks</Text>
+                          <Text style={{fontSize:18, fontFamily:Bold, marginTop:5, color:drak}}>{form[1].notes}</Text>
                    </View>
                                                                      
             </View>
             <View style={{marginHorizontal:17, marginTop:14}}>    
                 <Text style={{fontFamily:Bold, fontSize:18}}>Transfer to</Text>  
                 <View style={styles.card}>
-                    <Image source={prof3}/>
+                    <Image source={{uri:form[0].image.replace('localhost', localhost)}} style={styles.img}/>
                     <View style={{marginLeft:15}}>
-                          <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>Samuel Suhi</Text>
-                          <Text style={{fontSize:14, fontFamily:'NunitoSans-Regular', marginTop:5, color:'#7a7886'}}>+62 813-8492-9994</Text>
+                          <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>{form[0].username}</Text>
+                          <Text style={{fontSize:14, fontFamily:'NunitoSans-Regular', marginTop:5, color:'#7a7886'}}>{form[0].phone_number}</Text>
                    </View>
                 </View>            
             </View>
@@ -135,6 +146,11 @@ const styles = StyleSheet.create({
         shadowOpacity:1,
         shadowRadius:20,
         elevation:3,
+    },
+    img:{
+        width:58, 
+        height:58, 
+        borderRadius:8
     },
     
     

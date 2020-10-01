@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { View, StyleSheet, Text, Dimensions, TextInput, Button} from 'react-native'
 import { primary, background, white, drak, secondry, subTitle , btn, error} from '../../assets/color/color'
 import {Formik} from 'formik'
@@ -6,7 +6,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input'
 import { useSelector, useDispatch } from 'react-redux'
-import {createPinAction} from '../../redux/action/auth'
+import {editUserAction} from '../../redux/action/auth'
 
 
 
@@ -16,15 +16,23 @@ const CreatePin = ({navigation})=> {
 
     const dispatch = useDispatch()
 
-    const {user} = useSelector(state => state.auth)
+    const {user, isPin} = useSelector(state => state.auth)
+    console.log('pin', user)
 
     const [focused, setFocused] = React.useState(false)
-    const [msg, setMsg] = React.useState(false)
     const [pin, setPin] = React.useState('')
+    console.log('ini pin', pin)
 
-    const sendPin = ()=>{
-
-    }
+   useEffect(()=>{
+    if(isPin){
+           navigation.reset({
+               index:0,
+               routes:[{name: 'PinSuccess'}]
+           })
+           navigation.navigate('PinSuccess')
+       }
+   })
+    
 
     return (
         <View style={styles.container}>
@@ -33,7 +41,7 @@ const CreatePin = ({navigation})=> {
             </View>
             <View style={styles.Wraper}>
                 <Text style={styles.pinTitle}>Create Security PIN</Text>
-                <Text style={styles.pinDesc}>Create a PIN that’s contain 6 digits number for </Text>
+                <Text style={styles.pinDesc}>Create a PIN that's contain 6 digits number for </Text>
                 <Text style={styles.pinDesc}>security purpose in Zwallet.</Text>
             <View style={styles.form}>
             <SmoothPinCodeInput
@@ -42,15 +50,18 @@ const CreatePin = ({navigation})=> {
                 cellStyleFocused={{...styles.inputWrap, borderColor:primary, borderWidth:2}}
                 keyboardType='numeric'
                 value={pin.toString()}
-                onTextChange={(value)=> setPin(value)}
+                onTextChange={(pin)=> setPin(pin)}
                 onFulfill={()=> setFocused(true)}
                 onBackspace={()=> setMsg(true)}
                 />       
             </View>
             <View style={styles.btnWarp}>
             <TouchableOpacity 
-            style={focused? {...styles.btn, backgroundColor:primary} :styles.btn} 
-            onPress={dispatch(createPinAction())}>
+            style={focused? {...styles.btn, backgroundColor:primary} :styles.btn} onPress={()=> {
+                if(pin.length === 6){
+                    dispatch(editUserAction(null, null, Number(pin), null, user.email))}
+                }
+                }>
                     <Text style={focused?{...styles.btnText, color:white} :styles.btnText}>Confirm</Text>
             </TouchableOpacity>
             </View>

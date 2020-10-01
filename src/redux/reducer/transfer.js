@@ -1,5 +1,4 @@
 import {
-   
     pending,
     fulfilled,
     rejected,
@@ -75,7 +74,7 @@ import {
               
             };
           case getHistory + fulfilled:
-            console.log(payload.data.data)
+            console.log('inipayload',payload.data.data)
     
               return {
                 ...prevState,

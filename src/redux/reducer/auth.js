@@ -4,8 +4,9 @@ import {
     pending,
     fulfilled,
     rejected,
-    createPin,
-    logout
+    logout,
+    editUser,
+    
   } from "../action/actionType";
   
   const initialState = {
@@ -15,7 +16,9 @@ import {
     isFulfilled: false,
     isRejected: false,
     isLogged:false,
-    isError:false
+    isRegister:false,
+    isError:false,
+    isPin:false
   };
   
   const authReducer = (prevState = initialState, { type, payload }) => {
@@ -54,7 +57,8 @@ import {
                 error: payload.data,
                 isPending: false,
                 isLogged:false,
-                isError:true
+                isError:true,
+               
                
               }
         }
@@ -74,14 +78,13 @@ import {
             };
           case register + fulfilled:
             if(payload.data.success){
-              console.log(payload.data.data)
+              
               return {
                 ...prevState,
                 isFulfilled: true,
                 user: payload.data.data,
                 isPending: false,
-                isLogged:true,
-                isError:false
+                isRegister:true,
                
               }
             }else{
@@ -90,39 +93,51 @@ import {
                     isFulfilled: true,
                     error: payload.data,
                     isPending: false,
-                    isLogged:false,
-                    isError:true
+                    isRegister:false,
                    
                   }
             }
-            case createPin + pending:
+            case editUser + pending:
             return {
               ...prevState,
               isPending: true,
             };
       
-          case createPin + rejected:
+          case editUser + rejected:
             return {
               ...prevState,
               isRejected: true,
               error: payload,
               isPending: false,
             };
-          case createPin + fulfilled:
+          case editUser + fulfilled:
+            console.log(payload.data.data)
+            if(payload.data.success){
               return {
                 ...prevState,
                 isFulfilled: true,
                 user: payload.data.data,
                 isPending: false,
-                isLogged:true,
-                isError:false
+                isPin:true
                
               }
+            }else{
+                return {
+                    ...prevState,
+                    isFulfilled: true,
+                    error: payload.data,
+                    isPending: false,
+                    isPin:false
+                    
+                   
+                  }
+            }
           case logout:
               return {
                   ...prevState,
                   user: [],
-                  isLogged:false
+                  isLogged:false,
+                  isRegister:false,
               }
       default:
         return prevState;

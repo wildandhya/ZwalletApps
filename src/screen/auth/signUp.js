@@ -27,13 +27,16 @@ const SignUp = ({navigation})=> {
         password:yup.string().required().label('password').min(5, 'too short').max(15)
     })
 
-    const {isError, isLogged} = useSelector(state => state.auth)
+    const {isRegister} = useSelector(state => state.auth)
+    console.log('register', isRegister)
 
-    useEffect(()=>{
-        if(isLogged){
-            navigation.navigate('CreatePin')
-        }
-    })
+    useEffect(() => {
+       if(isRegister){
+           return navigation.navigate('CreatePin')
+       }
+    }, [isRegister])
+
+
  
     return (
         <KeyboardAvoidingView behavior="height" style={{flex:1}} enabled={enable}>
@@ -52,6 +55,7 @@ const SignUp = ({navigation})=> {
                 onSubmit={(values, action)=>{
                     action.resetForm()
                     dispatch(registerAction(values))
+                    
                 }}
                 >
                 {(formikProps) => (

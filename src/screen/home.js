@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, Dimensions, StatusBar, Image} from 'react-nativ
 import { primary, background, white, drak, secondry, subTitle , btn, success, bgImge, error, trans, shadowStyle} from '../assets/color/color'
 
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler'
-import { prof2, bell, arrowUp, plus, prof3, spotify, netflix } from '../assets'
+import { prof2, bell, arrowUp, plus, prof3, userIcon } from '../assets'
 import { useDispatch, useSelector } from 'react-redux'
 import { getHistoryAction} from '../redux/action/transfer'
 
@@ -18,23 +18,25 @@ const Home = ({navigation})=> {
     const {user} = useSelector(state=>state.auth)
     const {history} = useSelector(state => state.contact)
     console.log(history)
-    console.log(user)
+    console.log('iniuser',user)
 
     const handleGoTo = (screen)=>{
         navigation.navigate(screen)
     }
     
-    useEffect(()=>{
-        const {id} = user
-        dispatch(getHistoryAction(user.id))
-    })
+    // useEffect(()=>{
+    //     dispatch(getHistoryAction(user.id))
+    // })
 
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor={primary}/>
             <View style={styles.header}>
                 <TouchableOpacity onPress={()=> handleGoTo('Profile')}>
-                <Image source={prof2} />
+                    {user.image === undefined?(
+                        <Image source={userIcon}  style={styles.img}/>
+                    ):(<Image source={{uri:user.image.replace()}} />)}
+                
                 </TouchableOpacity>
                 <View style={{marginRight:90}}>
                   <Text style={styles.title}>Balance</Text>
@@ -62,24 +64,25 @@ const Home = ({navigation})=> {
             </View>
             <ScrollView>
             <View style={{marginTop:10}}>
-
-                {
-                    history.map(item =>{
-                        return(
-                        <View style={styles.card}>
+            <View style={styles.card}>
                             <Image source={prof3}/>
                                 <View style={{marginRight:70}}>
-                                   <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>{item.reciever_id}</Text>
+                                   <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>susi</Text>
                                 <Text style={{fontSize:14, fontWeight:'400', marginTop:9}}>Transfer</Text>
                              </View>
                              <View style={{justifyContent:'center'}}>
-                                <Text style={{color:success, fontSize:18, fontWeight:'700'}}>+{item.amount}</Text>
+                                <Text style={{color:success, fontSize:18, fontWeight:'700'}}>+40000</Text>
                             </View>
                         </View>
+
+                {/* {
+                    history.map(item =>{
+                        return(
+                        
                         )
                     })
                 }
-                
+                 */}
                 
             </View>
             </ScrollView>
@@ -94,6 +97,12 @@ const styles = StyleSheet.create({
     container:{
         backgroundColor:"#fafcff",
         height
+    },
+    img:{
+        width:58,
+        height:58,
+        borderRadius:8,
+        backgroundColor:background
     },
     header:{
         backgroundColor:primary,

@@ -1,6 +1,6 @@
-import {login, register, form, createPin, logout} from './actionType'
+import {login, register, editUser, createPin, logout} from './actionType'
 
-import {loginApi, registerApi, createPinApi} from '../../utils/api'
+import {loginApi, registerApi, editUserApi} from '../../utils/api'
 
 
 export const loginAction = (data) => {
@@ -12,7 +12,7 @@ export const loginAction = (data) => {
 }
 
 export const registerAction = (data) => {
-    console.log(data)
+    // console.log(data)
     return{
         type:register,
         payload: registerApi(data)
@@ -20,18 +20,17 @@ export const registerAction = (data) => {
 
 }
 export const logoutAction = (data) => {
-    console.log(data)
+    // console.log(data)
     return{
         type:logout
     };
 
 }
 
-export const createPinAction = (id, data) => {
-    console.log(data)
+export const editUserAction = (username, password, pin, image, email) => {
     return{
-        type:createPin,
-        payload: createPinApi(id, data)
+        type:editUser,
+        payload: editUserApi(username, password, pin, image, email)
     };
 
 }
