@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/AntDesign'
 import { DateTime } from "luxon"
 import { useSelector, useDispatch } from 'react-redux'
 import {transferAction} from '../redux/action/transfer'
+import {localhost} from '../utils/api'
 
 
 
@@ -18,7 +19,7 @@ const Confirm = ({navigation})=> {
 
     const {form} = useSelector(state => state.contact)
     const auth = useSelector(state => state.auth.user)
-    console.log(auth)
+    console.log(form)
 
     const datetime = DateTime.local()
 
@@ -35,23 +36,23 @@ const Confirm = ({navigation})=> {
     })
 
     const sendData = ()=>{
-        setData({
-            sender_id:auth.id,
-            reciever_id:form[0].username,
-            amount:form[1].amount,
-            notes:form[1].notes,
-            transfer_date:datetime.toFormat('LLL dd, yyyy HH.mm')
-        })
+        // setData({
+        //     sender_id:auth.id,
+        //     reciever_id:form[2].id,
+        //     amount:form[5].amount,
+        //     notes:form[5].notes,
+        //     transfer_date:datetime.toFormat('LLL dd, yyyy HH.mm')
+        // })
 
-        // alert(JSON.stringify(data))
-        dispatch(transferAction(data))
+        // // alert(JSON.stringify(data))
+        // dispatch(transferAction(data))
         handleGoTo('InputPin')
 
     }
 
     
 
-    const localhost = '192.168.43.107'
+    
 
     return (
         <View style={styles.container}>
@@ -85,7 +86,7 @@ const Confirm = ({navigation})=> {
                    </View>
                    <View  style={styles.resi}>
                           <Text style={styles.textTitle}>Balance left</Text>
-                          <Text style={styles.textSub}>Rp.20.000</Text>
+                        <Text style={styles.textSub}>{auth.balance - form[1].amount}</Text>
                    </View>
                    </View>
                    <View style={styles.secResiWrapp}>

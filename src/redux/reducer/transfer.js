@@ -5,7 +5,8 @@ import {
     addContact,
     addToConfrim,
     transfer,
-    getHistory
+    getHistory,
+    checkPin
   } from "../action/actionType";
   
   const initialState = {
@@ -13,7 +14,7 @@ import {
     form:[],
     error: [],
     nota:[],
-    history:[]
+    pin:[]
 
   };
   
@@ -74,7 +75,6 @@ import {
               
             };
           case getHistory + fulfilled:
-            console.log('inipayload',payload.data.data)
     
               return {
                 ...prevState,
@@ -85,6 +85,33 @@ import {
                 isError:false
                
               }
+              case checkPin + pending:
+                return {
+                  ...prevState,
+                  isPending: true,
+                  
+                };
+          
+              case checkPin + rejected:
+                return {
+                  ...prevState,
+                  isRejected: true,
+                  error: payload,
+                  isPending: false,
+                  
+                };
+              case checkPin + fulfilled:
+                console.log('inipayload',payload.data.data)
+        
+                  return {
+                    ...prevState,
+                    isFulfilled: true,
+                    data: payload.data.data,
+                    isPending: false,
+                    isLogged:true,
+                    isError:false
+                   
+                  }
       default:
         return prevState;
     }

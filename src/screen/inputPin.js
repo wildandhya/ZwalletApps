@@ -8,18 +8,39 @@ import Icon from 'react-native-vector-icons/AntDesign'
 
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input'
 
+import {checkPinAction, transferAction} from '../redux/action/transfer'
+import { useDispatch , useSelector} from 'react-redux'
+
 
 
 
 
 const InputPin = ({navigation})=> {
 
+    const dispatch = useDispatch()
+
     const [focused, setFocused] = React.useState(false)
-    const [msg, setMsg] = React.useState(false)
     const [pin, setPin] = React.useState('')
+    const {user} = useSelector(state=>state.auth)
+    const {form} = useSelector(state => state.contact)
+    const data = useSelector(state=> state.contact.data)
+    const [reciept, setReciept] = useState({
+        sender_id:'',
+        reciever_id:'',
+        amount:'',
+        notes:'',
+        transfer_date:''
+    })
+
+    console.log(pin)
+    console.log(user)
 
     const handleGoTo = (screen)=>{
         navigation.navigate(screen)
+    }
+
+    if(data.msg === 'Pin Match'){
+        dispatch(transferAction(form))
     }
 
     return (
@@ -46,13 +67,16 @@ const InputPin = ({navigation})=> {
                 cellStyleFocused={{...styles.inputWrap, borderColor:primary, borderWidth:2}}
                 keyboardType='numeric'
                 value={pin.toString()}
-                onTextChange={(pin)=> setPin(pin)}
+                onTextChange={(value)=> setPin(value)}
                 onFulfill={()=> setFocused(true)}
                 onBackspace={()=> setMsg(true)}
                 />       
                 </View>                                          
             </View>
-            <TouchableOpacity style={focused? {...styles.btn, backgroundColor:primary} :styles.btn} onPress={()=>handleGoTo('TransSuccess')}>
+            <TouchableOpacity style={focused? {...styles.btn, backgroundColor:primary} :styles.btn} onPress={
+                ()=> 
+                dispatch(checkPinAction(user.email, pin))
+                }>
                 <Text style={focused?{...styles.btnText, color:white} :styles.btnText}>Transfer Now</Text>
             </TouchableOpacity>
            

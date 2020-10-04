@@ -9,18 +9,19 @@ import Arrow from 'react-native-vector-icons/AntDesign'
 import { SearchBar, Input } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux'
 import {addToConfirmAction} from '../redux/action/transfer'
+import {localhost} from '../utils/api'
 
 
 const Transfer = ({navigation})=> {
 
     const {data} = useSelector(state => state.contact)
+    const {user} = useSelector(state=>state.auth)
     const dispatch = useDispatch()
 
     const [form, setForm ]=useState({
         amount:'',
         notes:''
     })
-    console.log('conac', data)
     const handleGoTo = (screen)=>{
         navigation.navigate(screen)
     }
@@ -35,7 +36,6 @@ const Transfer = ({navigation})=> {
             [input]: value,
         })
     }
-    const localhost = '192.168.43.107'
 
     return (
         <View style={styles.container} >
@@ -68,7 +68,9 @@ const Transfer = ({navigation})=> {
                               
             </View>
             <View style={styles.content}>
-                <Text style={styles.titleFilled}>Rp.120.000 Available</Text>
+            {user.balance === null?(<Text style={styles.titleFilled}>Rp.0 Available</Text>):(
+                      <Text style={styles.titleFilled}>Rp {user.balance} Available</Text>
+                  )}
                 <TextInput
                 placeholder='0.00'
                 keyboardType='number-pad'

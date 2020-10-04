@@ -1,6 +1,6 @@
-import {addToConfrim, transfer, getHistory} from './actionType'
+import {addToConfrim, transfer, getHistory, checkPin} from './actionType'
 
-import {transferApi, getHistoryApi} from '../../utils/api'
+import {transferApi, getHistoryApi, checkPinApi} from '../../utils/api'
 
 
 
@@ -21,10 +21,18 @@ export const transferAction = (data) => {
 
 }
 
-export const getHistoryAction = (id) => {
+export const getHistoryAction = (pin, email) => {
     return{
         type:getHistory,
-        payload:getHistoryApi(id)
+        payload:getHistoryApi(pin, email)
+    };
+
+}
+
+export const checkPinAction = (email, pin) => {
+    return{
+        type:checkPin,
+        payload:checkPinApi(email, pin)
     };
 
 }

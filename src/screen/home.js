@@ -3,9 +3,11 @@ import { View, StyleSheet, Text, Dimensions, StatusBar, Image} from 'react-nativ
 import { primary, background, white, drak, secondry, subTitle , btn, success, bgImge, error, trans, shadowStyle} from '../assets/color/color'
 
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler'
-import { prof2, bell, arrowUp, plus, prof3, userIcon } from '../assets'
+import { bell, arrowUp, plus, prof3, userIcon } from '../assets'
 import { useDispatch, useSelector } from 'react-redux'
 import { getHistoryAction} from '../redux/action/transfer'
+
+import {localhost} from '../utils/api'
 
 
 
@@ -35,12 +37,14 @@ const Home = ({navigation})=> {
                 <TouchableOpacity onPress={()=> handleGoTo('Profile')}>
                     {user.image === undefined?(
                         <Image source={userIcon}  style={styles.img}/>
-                    ):(<Image source={{uri:user.image.replace()}} />)}
+                    ):(<Image source={{uri:user.image.replace('localhost', localhost)}} style={styles.img} />)}
                 
                 </TouchableOpacity>
-                <View style={{marginRight:90}}>
+                <View style={{marginRight:100}}>
                   <Text style={styles.title}>Balance</Text>
-                   <Text style={styles.price}>Rp120.000</Text>
+                  {user.balance === null?(<Text style={styles.price}>Rp.0</Text>):(
+                      <Text style={styles.price}>Rp{user.balance}</Text>
+                  )}
                 </View>
                 <TouchableOpacity onPress={()=> handleGoTo('Notification')}>
                     <Image source={bell} />

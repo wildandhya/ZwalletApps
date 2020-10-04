@@ -9,6 +9,7 @@ import { SearchBar, Input } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux'
 import {getContactAction, searchContactAction, addContactAction} from '../redux/action/user'
 
+import {localhost} from '../utils/api'
 
 
 
@@ -46,8 +47,6 @@ const SearchContact = ({navigation})=> {
     useEffect(()=>{
         dispatch(getContactAction())
     }, [])
-
-    const localhost = '192.168.43.107'
     return (
         <View style={styles.container}>
              <View style={styles.header}>
@@ -94,7 +93,10 @@ const SearchContact = ({navigation})=> {
                             ):(<Image source={{uri:item.image.replace('localhost',localhost)}} style={styles.img}/>)}
                          <View style={{marginLeft:15}}>
                            <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>{item.username}</Text>
-                         <Text style={{fontSize:14, fontFamily:'NunitoSans_Regular', marginTop:5, color:'#7a7886'}}>{item.phone_number}</Text>
+                           {item.phone_number === null?(<Text style={{fontSize:14, fontFamily:'NunitoSans_Regular', marginTop:5, color:'#7a7886'}}>Phone Number not Found</Text>):(
+                               <Text style={{fontSize:14, fontFamily:'NunitoSans_Regular', marginTop:5, color:'#7a7886'}}>{item.phone_number}</Text>
+                           )}
+                         
                           </View>  
                            </TouchableOpacity>      
                     )

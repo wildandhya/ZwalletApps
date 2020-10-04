@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, Text, Dimensions, TextInput, Button, Image, Switch} from 'react-native'
-import { primary,  white, drak, Bold, regular} from '../assets/color/color'
+import { primary,  white, drak, Bold, regular, background} from '../assets/color/color'
 
 import { TouchableOpacity, FlatList} from 'react-native-gesture-handler'
 import { userIcon } from '../assets'
@@ -12,6 +12,7 @@ import {loginAction, logoutAction, editUserAction} from '../redux/action/auth'
 import { useDispatch, useSelector } from 'react-redux'
 
 import ImagePicker from 'react-native-image-picker'
+import {localhost} from '../utils/api'
 
 
 
@@ -102,7 +103,10 @@ const Profile = ({navigation})=> {
             </View>
             <View style={{alignItems:'center', marginTop:15}}>
                  <View style={styles.imgBg}>
-                     <Image source={userIcon} />
+                 {user.image === undefined?(
+                        <Image source={userIcon}  style={styles.img}/>
+                    ):(<Image source={{uri:user.image.replace('localhost', localhost)}} style={styles.img} />)}
+                
                 </View>
                
                     <TouchableOpacity  style={{flexDirection:'row', marginTop:10}} onPress={()=> handleChoosePhoto()}>
@@ -152,6 +156,11 @@ const styles = StyleSheet.create({
     container:{
         backgroundColor:"#fafcff",
         height
+    },
+    img:{
+        width:80,
+        height:80,
+        borderRadius:7,
     },
     header:{
     },

@@ -25,4 +25,6 @@ export const transfer = "TRANSFER";
 
 export const getHistory = "GET_HISTORY";
 
+export const checkPin = "CHECK_PIN";
+
 
