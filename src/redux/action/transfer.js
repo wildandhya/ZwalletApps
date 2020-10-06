@@ -13,7 +13,7 @@ export const addToConfirmAction = (data) => {
 }
 
 export const transferAction = (data) => {
-    console.log(data)
+    console.log('trans', data)
     return{
         type:transfer,
         payload:transferApi(data)

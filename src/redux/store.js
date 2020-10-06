@@ -14,7 +14,8 @@ const storage = createAsyncStorage
 
 const persistConfig = {
     key:'root',
-    storage
+    storage,
+    blacklist: ['contact']
 }
 
 const persistedReducer = persistReducer(persistConfig, mainReducer)

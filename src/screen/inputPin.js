@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { View, StyleSheet, Text, Dimensions, TextInput, Button, Image} from 'react-native'
 import { primary,  white, drak, btn, regular, Bold, subTitle} from '../assets/color/color'
 
@@ -10,6 +10,7 @@ import SmoothPinCodeInput from 'react-native-smooth-pincode-input'
 
 import {checkPinAction, transferAction} from '../redux/action/transfer'
 import { useDispatch , useSelector} from 'react-redux'
+import { DateTime } from "luxon"
 
 
 
@@ -17,31 +18,36 @@ import { useDispatch , useSelector} from 'react-redux'
 
 const InputPin = ({navigation})=> {
 
+    const datetime = DateTime.local()
     const dispatch = useDispatch()
 
     const [focused, setFocused] = React.useState(false)
     const [pin, setPin] = React.useState('')
+    const [msg, setMsg] = React.useState('')
     const {user} = useSelector(state=>state.auth)
-    const {form} = useSelector(state => state.contact)
-    const data = useSelector(state=> state.contact.data)
-    const [reciept, setReciept] = useState({
-        sender_id:'',
-        reciever_id:'',
-        amount:'',
-        notes:'',
-        transfer_date:''
-    })
-
-    console.log(pin)
-    console.log(user)
-
+    const {data} = useSelector(state => state.contact)
+    const pinConql = useSelector(state=> state.contact.pin)
+    const trans ={
+        sender_id:user.id,
+        reciever_id:data.id,
+        trans_amount:data.amount,
+        notes:data.notes
+    }
     const handleGoTo = (screen)=>{
         navigation.navigate(screen)
     }
 
-    if(data.msg === 'Pin Match'){
-        dispatch(transferAction(form))
-    }
+    useEffect(()=>{
+        if(pinConql.msg === "Pin Match"){
+            dispatch(transferAction(trans))
+            setMsg(null)
+            handleGoTo('TransSuccess')
+        }else{
+            setMsg('Your PIN Dont Match')
+        }
+    }, [pinConql.msg])
+
+
 
     return (
         <View style={styles.container}>
@@ -73,9 +79,10 @@ const InputPin = ({navigation})=> {
                 />       
                 </View>                                          
             </View>
+             {msg !== null? (<Text style={{color:'red'}}>{msg}</Text>):null}
             <TouchableOpacity style={focused? {...styles.btn, backgroundColor:primary} :styles.btn} onPress={
-                ()=> 
-                dispatch(checkPinAction(user.email, pin))
+                ()=> dispatch(checkPinAction(user.email, pin))
+                
                 }>
                 <Text style={focused?{...styles.btnText, color:white} :styles.btnText}>Transfer Now</Text>
             </TouchableOpacity>
@@ -113,7 +120,7 @@ const styles = StyleSheet.create({
         backgroundColor:btn,
         marginHorizontal:19,
         paddingVertical:16,
-        marginBottom:45,
+        marginBottom:25,
         borderRadius:12
     },
     btnText:{

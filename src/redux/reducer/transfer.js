@@ -10,11 +10,14 @@ import {
   } from "../action/actionType";
   
   const initialState = {
-    data: [],
-    form:[],
+    data: {},
     error: [],
     nota:[],
-    pin:[]
+    pin:[],
+    isPending:false,
+    isRejected:false,
+    isFulfilled:false,
+    isPinMatch:false
 
   };
   
@@ -23,13 +26,22 @@ import {
       case addContact :
         return {
           ...prevState,
-          data: [...prevState.data, payload]
+          data: {...prevState.data,
+            id:payload.id,
+            username:payload.username,
+            phone_number:payload.phone_number,
+            image:payload.image
+          }
           
         };
       case addToConfrim :
         return {
         ...prevState,
-        form: [...prevState.data, payload]
+        data: {...prevState.data,
+                amount: payload.amount,
+                notes:payload.notes
+
+              }
             
       };
       case transfer + pending:
@@ -43,18 +55,16 @@ import {
         return {
           ...prevState,
           isRejected: true,
-          error: payload,
+          error: payload.data,
           isPending: false,
           
         };
       case transfer + fulfilled:
-        console.log(payload.data.data)
           return {
             ...prevState,
             isFulfilled: true,
-            nota: payload.data.data,
+            nota:payload.data.data,
             isPending: false,
-            isLogged:true,
             isError:false
            
           }
@@ -81,8 +91,8 @@ import {
                 isFulfilled: true,
                 history: payload.data.data,
                 isPending: false,
-                isLogged:true,
-                isError:false
+                isError:false,
+                isPinMatch:false
                
               }
               case checkPin + pending:
@@ -101,17 +111,28 @@ import {
                   
                 };
               case checkPin + fulfilled:
-                console.log('inipayload',payload.data.data)
-        
+                if(payload.data.success === true){
                   return {
                     ...prevState,
                     isFulfilled: true,
-                    data: payload.data.data,
+                    pin: payload.data.data,
                     isPending: false,
-                    isLogged:true,
-                    isError:false
+                    isError:false,
+                    isPinMatch:true
                    
                   }
+                }else{
+                    return {
+                        ...prevState,
+                        isFulfilled: true,
+                        error: payload.data,
+                        isPending: false,
+                        isError:true,
+                        isPinMatch:false
+                       
+                       
+                  }
+                }
       default:
         return prevState;
     }

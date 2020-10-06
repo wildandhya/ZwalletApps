@@ -17,43 +17,17 @@ const Confirm = ({navigation})=> {
 
     const dispatch = useDispatch()
 
-    const {form} = useSelector(state => state.contact)
+    const {data} = useSelector(state => state.contact)
     const auth = useSelector(state => state.auth.user)
-    console.log(form)
-
     const datetime = DateTime.local()
 
     const handleGoTo = (screen)=>{
         navigation.navigate(screen)
     }
 
-    const [data, setData] = useState({
-        sender_id:'',
-        reciever_id:'',
-        amount:'',
-        notes:'',
-        transfer_date:''
-    })
-
     const sendData = ()=>{
-        // setData({
-        //     sender_id:auth.id,
-        //     reciever_id:form[2].id,
-        //     amount:form[5].amount,
-        //     notes:form[5].notes,
-        //     transfer_date:datetime.toFormat('LLL dd, yyyy HH.mm')
-        // })
-
-        // // alert(JSON.stringify(data))
-        // dispatch(transferAction(data))
         handleGoTo('InputPin')
-
     }
-
-    
-
-    
-
     return (
         <View style={styles.container}>
              <View style={styles.header}>
@@ -68,13 +42,13 @@ const Confirm = ({navigation})=> {
                 <Text style={styles.title}>Confirmation</Text>
                 </View>
                         <View style={styles.card}>
-                        {form[0].image === null?(<Image source={userIcon} style={styles.img}/>):(
-                            <Image source={{uri:form[0].image.replace('localhost', localhost)}} style={styles.img}/>
+                        {data.image === null?(<Image source={userIcon} style={styles.img}/>):(
+                            <Image source={{uri:data.image.replace('localhost', localhost)}} style={styles.img}/>
                         )}
                         
                         <View style={{marginLeft:15}}>
-                             <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>{form[0].username}</Text>
-                             <Text style={{fontSize:14, marginTop:5, color:'#7a7886'}}>{form[0].phone_number}</Text>
+                             <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>{data.username}</Text>
+                             <Text style={{fontSize:14, marginTop:5, color:'#7a7886'}}>{data.phone_number}</Text>
                        </View>
                     </View>                
             </View>
@@ -82,11 +56,11 @@ const Confirm = ({navigation})=> {
                     <View style={styles.resiWrapp}>
                     <View style={styles.resi}>
                           <Text style={styles.textTitle}>Amount</Text>
-                         <Text style={styles.textSub}>Rp.{form[1].amount}</Text>
+                         <Text style={styles.textSub}>Rp.{data.amount}</Text>
                    </View>
                    <View  style={styles.resi}>
                           <Text style={styles.textTitle}>Balance left</Text>
-                        <Text style={styles.textSub}>{auth.balance - form[1].amount}</Text>
+                        <Text style={styles.textSub}>{auth.balance - data.amount}</Text>
                    </View>
                    </View>
                    <View style={styles.secResiWrapp}>
@@ -102,7 +76,7 @@ const Confirm = ({navigation})=> {
                    <View style={styles.thirdResiWrapp}>
                     <View>
                           <Text style={styles.textTitle}>Notes</Text>
-                           <Text style={styles.textSub}>{form[1].notes}</Text>
+                           <Text style={styles.textSub}>{data.notes}</Text>
                    </View>
                    </View>
                                                                      

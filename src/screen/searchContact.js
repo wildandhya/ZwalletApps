@@ -23,27 +23,7 @@ const SearchContact = ({navigation})=> {
     const dispatch = useDispatch()
 
     const user = useSelector(state => state.user.user)
-    const contact = useSelector(state => state.contact.data)
-
-    const addContact = (id, username, phone_number ,image) => {
-        const contactItem = contact;
-        let alreadyExist = false;
-        contactItem.forEach((item) => {
-          if (item.id === id) {
-            alreadyExist = true;
-          }
-        });
-        if (!alreadyExist) {
-          const contactData = {
-            id: id,
-            username: username,
-            phone_number: phone_number,
-            image: image,
-          };
-          dispatch(addContactAction(contactData));
-        }
-      };
-
+   
     useEffect(()=>{
         dispatch(getContactAction())
     }, [])
@@ -85,7 +65,7 @@ const SearchContact = ({navigation})=> {
                 {user.map((item, index)=>{
                     return(
                         <TouchableOpacity onPress={()=>{
-                            addContact(item.id, item.username, item.phone_number, item.image)
+                            dispatch(addContactAction({id:item.id, username:item.username, phone_number:item.phone_number, image:item.image}))
                              navigation.navigate('Transfer')
                         }} style={styles.card} key={index}>
                             {item.image === null?(

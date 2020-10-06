@@ -53,15 +53,15 @@ const Transfer = ({navigation})=> {
             </View>
             <View style={styles.cardWrap}>
                         <View style={styles.card}>
-                                {data[0].image === null?(
+                                {data.image === null?(
                                      <Image source={userIcon}/>
                                 ):(
-                                    <Image source={{uri:data[0].image.replace('localhost', localhost)}} style={styles.img}/>
+                                    <Image source={{uri:data.image.replace('localhost', localhost)}} style={styles.img}/>
                                 )}
                               
                                <View style={{marginLeft:15}}>
-                                 <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>{data[0].username}</Text>
-                                 <Text style={{fontSize:14, fontFamily:'NunitoSans_Regular', marginTop:5, color:'#7a7886'}}>{data[0].phone_number}</Text>
+                                 <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>{data.username}</Text>
+                                 <Text style={{fontSize:14, fontFamily:'NunitoSans_Regular', marginTop:5, color:'#7a7886'}}>{data.phone_number}</Text>
                               </View>
                            </View>               
                         

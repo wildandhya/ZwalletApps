@@ -4,6 +4,7 @@ import {getContactApi, searchContactApi} from '../../utils/api'
 
 
 export const getContactAction = () => {
+   
     return{
         type:getContact,
         payload: getContactApi()

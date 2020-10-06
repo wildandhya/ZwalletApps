@@ -19,8 +19,6 @@ const Home = ({navigation})=> {
 
     const {user} = useSelector(state=>state.auth)
     const {history} = useSelector(state => state.contact)
-    console.log(history)
-    console.log('iniuser',user)
 
     const handleGoTo = (screen)=>{
         navigation.navigate(screen)

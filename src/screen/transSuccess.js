@@ -7,6 +7,7 @@ import { successIcon , prof3} from '../assets'
 import { DateTime } from "luxon"
 
 import { useSelector} from 'react-redux'
+import {localhost} from '../utils/api'
 
 
 
@@ -14,9 +15,8 @@ import { useSelector} from 'react-redux'
 
 const TransSuccess = ({navigation})=> {
 
-    const {form} = useSelector(state => state.contact)
+    const {data} = useSelector(state => state.contact)
     const {nota} = useSelector(state => state.contact)
-    console.log('nini',form)
 
     const datetime = DateTime.local()
 
@@ -24,7 +24,7 @@ const TransSuccess = ({navigation})=> {
         navigation.navigate(screen)
     }
 
-    const localhost = '192.168.43.107'
+   
 
     return (
         <View style={styles.container}>
@@ -36,7 +36,7 @@ const TransSuccess = ({navigation})=> {
                 <Text style={{fontFamily:Bold, fontSize:18}}>Details</Text>  
                     <View style={styles.resi}>
                           <Text style={{fontSize:16, fontFamily:regular, color:subTitle}}>Amount</Text>
-                          <Text style={{fontSize:18, fontFamily:Bold, marginTop:5, color:drak}}>Rp.{form[1].amount}</Text>
+                          <Text style={{fontSize:18, fontFamily:Bold, marginTop:5, color:drak}}>Rp.{data.amount}</Text>
                    </View>
                    <View  style={styles.resi}>
                           <Text style={{fontSize:16, fontFamily:regular, color:subTitle}}>Balance left</Text>
@@ -54,17 +54,20 @@ const TransSuccess = ({navigation})=> {
                    <View style={styles.resi}>
                    
                           <Text style={{fontSize:16, fontFamily:regular, color:subTitle}}>Notes</Text>
-                          <Text style={{fontSize:18, fontFamily:Bold, marginTop:5, color:drak}}>{form[1].notes}</Text>
+                          <Text style={{fontSize:18, fontFamily:Bold, marginTop:5, color:drak}}>{data.notes}</Text>
                    </View>
                                                                      
             </View>
             <View style={{marginHorizontal:17, marginTop:14}}>    
                 <Text style={{fontFamily:Bold, fontSize:18}}>Transfer to</Text>  
                 <View style={styles.card}>
-                    <Image source={{uri:form[0].image.replace('localhost', localhost)}} style={styles.img}/>
+                       {data.image === null?(<Image source={userIcon} style={styles.img}/>):(
+                            <Image source={{uri:data.image.replace('localhost', localhost)}} style={styles.img}/>
+                        )}
+                        
                     <View style={{marginLeft:15}}>
-                          <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>{form[0].username}</Text>
-                          <Text style={{fontSize:14, fontFamily:'NunitoSans-Regular', marginTop:5, color:'#7a7886'}}>{form[0].phone_number}</Text>
+                          <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>{data.username}</Text>
+                          <Text style={{fontSize:14, fontFamily:'NunitoSans-Regular', marginTop:5, color:'#7a7886'}}>{data.phone_number}</Text>
                    </View>
                 </View>            
             </View>
