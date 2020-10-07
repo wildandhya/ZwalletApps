@@ -5,7 +5,6 @@ import {
     addContact,
     addToConfrim,
     transfer,
-    getHistory,
     checkPin
   } from "../action/actionType";
   
@@ -14,6 +13,7 @@ import {
     error: [],
     nota:[],
     pin:[],
+    history:[],
     isPending:false,
     isRejected:false,
     isFulfilled:false,
@@ -68,33 +68,6 @@ import {
             isError:false
            
           }
-
-          case getHistory + pending:
-            return {
-              ...prevState,
-              isPending: true,
-              
-            };
-      
-          case getHistory + rejected:
-            return {
-              ...prevState,
-              isRejected: true,
-              error: payload,
-              isPending: false,
-              
-            };
-          case getHistory + fulfilled:
-    
-              return {
-                ...prevState,
-                isFulfilled: true,
-                history: payload.data.data,
-                isPending: false,
-                isError:false,
-                isPinMatch:false
-               
-              }
               case checkPin + pending:
                 return {
                   ...prevState,

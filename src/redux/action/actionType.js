@@ -27,4 +27,6 @@ export const getHistory = "GET_HISTORY";
 
 export const checkPin = "CHECK_PIN";
 
+export const checkPass = "CHECK_PASSWORD";
+
 

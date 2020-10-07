@@ -13,7 +13,6 @@ export const addToConfirmAction = (data) => {
 }
 
 export const transferAction = (data) => {
-    console.log('trans', data)
     return{
         type:transfer,
         payload:transferApi(data)
@@ -21,10 +20,10 @@ export const transferAction = (data) => {
 
 }
 
-export const getHistoryAction = (pin, email) => {
+export const getHistoryAction = (id) => {
     return{
         type:getHistory,
-        payload:getHistoryApi(pin, email)
+        payload:getHistoryApi(id)
     };
 
 }

@@ -7,13 +7,14 @@ import Icon from 'react-native-vector-icons/Feather';
 import { Input} from 'react-native-elements';
 import Arrow from 'react-native-vector-icons/AntDesign'
 
-import {editUserAction} from '../../redux/action/auth'
-import { useDispatch } from 'react-redux'
+import {checkPassAction} from '../../redux/action/user'
+import { useDispatch , useSelector} from 'react-redux'
 
 
 const ChangePassword = ({navigation})=> {
 
     const dispatch = useDispatch()
+    const {user} = useSelector(state=>state.auth)
 
     const [msgError, setMsgError] = useState(false)
     return (
@@ -34,12 +35,12 @@ const ChangePassword = ({navigation})=> {
                 <Text style={styles.loginDesc}>You must enter your current password and then type your new password twice</Text>
             <View style={styles.form}>
                 <Formik 
-                initialValues={{currentPassword:'', newPassword:'', repeatPassword:''}}
+                initialValues={{password:'', newPassword:'', repeatPassword:''}}
                 onSubmit={(values, action)=>{
-                    action.resetForm()
                     if(values.newPassword === values.repeatPassword){
-                        alert('ok')
-                        dispatch(editUserAction(values))
+                        action.resetForm()
+                        dispatch(checkPassAction(user.email, values.password, values.newPassword))
+                        setMsgError(false)
                     }else{
                         setMsgError(true)
                     }
@@ -68,8 +69,8 @@ const ChangePassword = ({navigation})=> {
                                  }
                                 style={styles.input} 
                                 placeholder='Current Password'
-                                value={formikProps.values.currentPassword}
-                                onChangeText={formikProps.handleChange('currentPassword')}
+                                value={formikProps.values.password}
+                                onChangeText={formikProps.handleChange('password')}
                                 />
                             </View>
                             <View style={styles.passwordWrapp}>
@@ -121,7 +122,7 @@ const ChangePassword = ({navigation})=> {
                                 onChangeText={formikProps.handleChange('repeatPassword')}
                                 />
 
-                                {msgError?(<Text style={{color:'red'}}>password no match</Text>):null}
+                                {msgError?(<Text style={{color:'red'}}>password do not match</Text>):null}
                             </View>
                             <TouchableOpacity style={styles.btn} onPress={formikProps.handleSubmit}>
                                 <Text style={styles.btnText}>Change Password</Text>

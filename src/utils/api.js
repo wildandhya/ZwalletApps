@@ -31,7 +31,7 @@ export const createPinApi = (id, pin)=>{
 }
 
 export const getHistoryApi = (id)=>{
-    return Axios.post(`${ip}/transfer/${id}`)
+    return Axios.get(`${ip}/history/${id}`)
 
 }
 
@@ -67,22 +67,12 @@ export const editUserApi = (username, password, pin, image, email) => {
   };
 
   export const checkPinApi = (email, pin)=>{
-    // let data = new FormData();
-    // data.append('email', email);
-    // data.append('pin', pin);
-    // const config = {
-    //   headers: {
-    //     'content-type': 'multipart/form-data',
-    //     contentType: false,
-    //     mimeType: 'multipart/form-data',
-    //     'cache-control': 'no-cache',
-    //     accept: 'application/json',
-    //   },
-    // };
-    // console.log('formdata',data)
-    // const url = `${ip}/checkPin`;
-
     return Axios.post(`${ip}/checkPin`, {email: email, pin:pin} )
+
+}
+
+export const checkPassApi = (email, password, newPassword)=>{
+  return Axios.post(`${ip}/checkPass`, {email: email, password:password, newPassword:newPassword} )
 
 }
 

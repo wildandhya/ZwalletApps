@@ -2,13 +2,13 @@ import React from 'react'
 
 import {createStackNavigator} from '@react-navigation/stack'
 import {SplashScreen, Login, SignUp, CreatePin, PinSuccess, Home, TransactionHistory, SearchContact, Transfer, Confrim,
-     InputPin, TransSuccess, Profile, ChangePassword, ChangePin, Notification} from "../screen/index"
+     InputPin, TransSuccess, Profile, ChangePassword, ChangePin, Notification, ResetPassword, ResetPassword2} from "../screen/index"
 
 const Stack = createStackNavigator()
 
 const Router = ()=>{
     return(
-        <Stack.Navigator >
+        <Stack.Navigator initialRouteName="ResetPassword">
             <Stack.Screen name='SplashScreen' component={SplashScreen} options={{headerShown:false}}/>
             <Stack.Screen name='Login' component={Login} options={{headerShown:false}}/>
             <Stack.Screen name='SignUp' component={SignUp} options={{headerShown:false}}/>
@@ -25,6 +25,8 @@ const Router = ()=>{
             <Stack.Screen name='ChangePassword' component={ChangePassword} options={{headerShown:false}}/>
             <Stack.Screen name='ChangePin' component={ChangePin} options={{headerShown:false}}/>
             <Stack.Screen name='Notification' component={Notification} options={{headerShown:false}}/>
+            <Stack.Screen name='ResetPassword' component={ResetPassword} options={{headerShown:false}}/>
+            <Stack.Screen name='ResetPassword2' component={ResetPassword2} options={{headerShown:false}}/>
         </Stack.Navigator>
     )
 }

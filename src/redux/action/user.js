@@ -1,6 +1,6 @@
-import {getContact, searchContact, addContact} from './actionType'
+import {getContact, searchContact, addContact, checkPass} from './actionType'
 
-import {getContactApi, searchContactApi} from '../../utils/api'
+import {getContactApi, searchContactApi, checkPassApi} from '../../utils/api'
 
 
 export const getContactAction = () => {
@@ -23,6 +23,13 @@ export const addContactAction = (data) => {
     return{
         type:addContact,
         payload: data
+    };
+
+}
+export const checkPassAction = (email, password, newPassword) => {
+    return{
+        type:checkPass,
+        payload:checkPassApi(email, password, newPassword)
     };
 
 }

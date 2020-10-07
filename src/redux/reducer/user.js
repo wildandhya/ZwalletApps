@@ -4,12 +4,16 @@ import {
     fulfilled,
     rejected,
     getContact,
-    searchContact
+    getHistory,
+    searchContact,
+    checkPass
   } from "../action/actionType";
   
   const initialState = {
-    user: [],
+    data: [],
     error: [],
+    history:[],
+    password:[],
     isPending: false,
     isFulfilled: false,
     isRejected: false,
@@ -39,7 +43,7 @@ import {
           return {
             ...prevState,
             isFulfilled: true,
-            user: payload.data.data,
+            data: payload.data.data,
             isPending: false,
             isLogged:true,
             isError:false
@@ -71,7 +75,58 @@ import {
                 isError:false
                
               }
-         
+              case getHistory + pending:
+                return {
+                  ...prevState,
+                  isPending: true,
+                  
+                };
+          
+              case getHistory + rejected:
+                return {
+                  ...prevState,
+                  isRejected: true,
+                  error: payload,
+                  isPending: false,
+                  
+                };
+              case getHistory + fulfilled:
+        
+                  return {
+                    ...prevState,
+                    isFulfilled: true,
+                    history: payload.data.data,
+                    isPending: false,
+                    isError:false,
+                    isPinMatch:false
+                   
+                  }
+                  case checkPass + pending:
+                    return {
+                      ...prevState,
+                      isPending: true,
+                      
+                    };
+              
+                  case checkPass + rejected:
+                    return {
+                      ...prevState,
+                      isRejected: true,
+                      error: payload,
+                      isPending: false,
+                      
+                    };
+                  case checkPass + fulfilled:
+            
+                      return {
+                        ...prevState,
+                        isFulfilled: true,
+                        password: payload.data.data,
+                        isPending: false,
+                        isError:false,
+                        isPinMatch:false
+                       
+                      }
           
         
       default:
