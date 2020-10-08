@@ -28,10 +28,10 @@ export const getHistoryAction = (id) => {
 
 }
 
-export const checkPinAction = (email, pin) => {
-    return{
-        type:checkPin,
-        payload:checkPinApi(email, pin)
-    };
+// export const checkPinAction = (email, pin) => {
+//     return{
+//         type:checkPin,
+//         payload:checkPinApi(email, pin)
+//     };
 
-}
+// }

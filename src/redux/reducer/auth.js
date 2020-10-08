@@ -6,19 +6,27 @@ import {
     rejected,
     logout,
     editUser,
-    
+    checkEmail,
+    resetPassword,
+    editImage,
+    editPin,
+    checkPin,
+    clearPin
   } from "../action/actionType";
   
   const initialState = {
     user: [],
+    userEdit:[],
     error: [],
+    pinCheck:[],
     isPending: false,
     isFulfilled: false,
     isRejected: false,
     isLogged:false,
     isRegister:false,
     isError:false,
-    isPin:false
+    pinUpdate:false,
+    pinMatch:false
   };
   
   const authReducer = (prevState = initialState, { type, payload }) => {
@@ -40,7 +48,6 @@ import {
         };
       case login + fulfilled:
         if(payload.data.success){
-          console.log(payload.data.data)
           return {
             ...prevState,
             isFulfilled: true,
@@ -111,12 +118,14 @@ import {
               isPending: false,
             };
           case editUser + fulfilled:
-            console.log(payload.data.data)
             if(payload.data.success){
               return {
                 ...prevState,
                 isFulfilled: true,
-                user: payload.data.data,
+                user: {
+                  ...prevState.user,
+                  pin:payload.data.data
+                },
                 isPending: false,
                 isPin:true
                
@@ -131,6 +140,199 @@ import {
                     
                    
                   }
+            }
+            case checkEmail + pending:
+              return {
+                ...prevState,
+                isPending: true,
+              };
+        
+            case checkEmail + rejected:
+              return {
+                ...prevState,
+                isRejected: true,
+                error: payload,
+                isPending: false,
+              };
+            case checkEmail + fulfilled:
+              if(payload.data.success){
+                return {
+                  ...prevState,
+                  isFulfilled: true,
+                  user: payload.data.data,
+                  isPending: false,
+                 
+                }
+              }else{
+                  return {
+                      ...prevState,
+                      isFulfilled: true,
+                      error: payload.data,
+                      isPending: false,
+                    }
+              }
+              case resetPassword + pending:
+                return {
+                  ...prevState,
+                  isPending: true,
+                };
+          
+              case resetPassword + rejected:
+                return {
+                  ...prevState,
+                  isRejected: true,
+                  error: payload,
+                  isPending: false,
+                };
+              case resetPassword + fulfilled:
+                if(payload.data.success){
+                  return {
+                    ...prevState,
+                    isFulfilled: true,
+                    user: {
+                      ...prevState.user,
+                      password:payload.data.data
+                    },
+                    isPending: false,
+                    isPin:true
+                   
+                  }
+                }else{
+                    return {
+                        ...prevState,
+                        isFulfilled: true,
+                        error: payload.data,
+                        isPending: false,
+                        isPin:false
+                        
+                       
+                      }
+                }
+
+                case editImage + pending:
+                  return {
+                    ...prevState,
+                    isPending: true,
+                  };
+            
+                case editImage + rejected:
+                  return {
+                    ...prevState,
+                    isRejected: true,
+                    error: payload,
+                    isPending: false,
+                  };
+                case editImage + fulfilled:
+                  if(payload.data.success){
+                    return {
+                      ...prevState,
+                      isFulfilled: true,
+                      user: {
+                        ...prevState.user,
+                        image:payload.data.data.image
+                      },
+                      isPending: false,
+                      isPin:true
+                     
+                    }
+                  }else{
+                      return {
+                          ...prevState,
+                          isFulfilled: true,
+                          error: payload.data,
+                          isPending: false,
+                          isPin:false
+                          
+                         
+                        }
+                  }
+                  case editPin + pending:
+                    return {
+                      ...prevState,
+                      isPending: true,
+                      pinUpdate:false
+                    };
+              
+                  case editPin + rejected:
+                    return {
+                      ...prevState,
+                      isRejected: true,
+                      error: payload,
+                      isPending: false,
+                      pinUpdate:false
+                    };
+                  case editPin + fulfilled:
+                    if(payload.data.success){
+                      return {
+                        ...prevState,
+                        isFulfilled: true,
+                        user: {
+                          ...prevState.user,
+                          pin:payload.data.data.pin
+                        },
+                        isPending: false,
+                        pinUpdate:true
+                       
+                      }
+                    }else{
+                        return {
+                            ...prevState,
+                            isFulfilled: true,
+                            error: payload.data,
+                            isPending: false,
+                            pinUpdate:false
+                            
+                           
+                          }
+                    }
+                    case checkPin + pending:
+                      return {
+                        ...prevState,
+                        isPending: true,
+                        pinMatch:false
+                        
+                      };
+                
+                    case checkPin + rejected:
+                      return {
+                        ...prevState,
+                        isRejected: true,
+                        error: payload,
+                        isPending: false,
+                        pinMatch:false
+                        
+                      };
+                    case checkPin + fulfilled:
+                      if(payload.data.success){
+                        return {
+                          ...prevState,
+                          isFulfilled: true,
+                          pinCheck: payload.data.data,
+                          isPending: false,
+                          isError:false,
+                          pinMatch:true
+                         
+                        }
+                      }else{
+                          return {
+                              ...prevState,
+                              isFulfilled: true,
+                              error: payload.data,
+                              isPending: false,
+                              isError:true,
+                              pinMatch:false
+                             
+                             
+                        }
+                      }
+          case clearPin:
+             return {
+               ...prevState,
+                  pinCheck: [],
+                  isLogged:false,
+                  isRegister:false,
+                  pinMatch:false,
+                  pinUpdate:false
             }
           case logout:
               return {

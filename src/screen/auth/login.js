@@ -118,7 +118,7 @@ const Login = ({navigation})=> {
                                 />
                                 <Text style={styles.msgError}>{formikProps.errors.email}</Text>
                             </View>
-                              <TouchableOpacity style={{alignItems:'flex-end', paddingRight:19, }} onPress={()=> navigation.navigate('ResetPassword')}>
+                              <TouchableOpacity style={{alignItems:'flex-end', paddingRight:19, }} onPress={()=> navigation.navigate('CheckEmail')}>
                                 <Text>Forgot password?</Text>
                               </TouchableOpacity >
                               {isError?(<Text style={styles.textError}>Email or Password Invalid</Text>

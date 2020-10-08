@@ -29,4 +29,17 @@ export const checkPin = "CHECK_PIN";
 
 export const checkPass = "CHECK_PASSWORD";
 
+export const checkEmail = "CHECK_EMAIL";
+
+export const resetPassword = "RESET_PASSWORD";
+
+export const editImage = "EDIT_IMAGE";
+    
+export const editPin = "EDIT_PIN";
+
+export const createPin = "CREATE_PIN";
+
+
+export const clearPin = "CLEAR_PIN";
+
 

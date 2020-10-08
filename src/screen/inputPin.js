@@ -11,6 +11,8 @@ import SmoothPinCodeInput from 'react-native-smooth-pincode-input'
 import {checkPinAction, transferAction} from '../redux/action/transfer'
 import { useDispatch , useSelector} from 'react-redux'
 import { DateTime } from "luxon"
+import PushNotification from 'react-native-push-notification';
+import {showLocalNotification} from '../notif/handleNotification'
 
 
 
@@ -37,11 +39,21 @@ const InputPin = ({navigation})=> {
         navigation.navigate(screen)
     }
 
+    const channelId = 'transaction';
+
     useEffect(()=>{
+        PushNotification.createChannel(
+            {
+              channelId,
+              channelName: 'transaction',
+            },
+          );
         if(pinConql.msg === "Pin Match"){
             dispatch(transferAction(trans))
             setMsg(null)
             handleGoTo('TransSuccess')
+            showLocalNotification('New Transaction', 'Selamat Datang', channelId)
+
         }else{
             setMsg('Your PIN Dont Match')
         }

@@ -14,9 +14,10 @@ import Profile from './profile'
 import ChangePassword from './pin/changePassword'
 import ChangePin from './pin/changePin'
 import Notification from './notification'
+import CheckEmail from './pin/checkEmail'
 import ResetPassword from './pin/resetPassword'
-import ResetPassword2 from './pin/resetPassword2'
+import ChangePinFilled from './pin/chnagePinFilled'
 
 
 export{SplashScreen, Login, SignUp, CreatePin, PinSuccess, Home, TransactionHistory, SearchContact,
-Transfer, Confrim, InputPin, TransSuccess, Profile, ChangePassword, ChangePin, Notification, ResetPassword, ResetPassword2}
+Transfer, Confrim, InputPin, TransSuccess, Profile, ChangePassword, ChangePin, Notification, CheckEmail, ResetPassword, ChangePinFilled}

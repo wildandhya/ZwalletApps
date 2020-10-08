@@ -1,32 +1,38 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { View, StyleSheet, Text, Dimensions, TextInput, Button} from 'react-native'
-import { primary, background, white, drak, secondry, subTitle , btn} from '../../assets/color/color'
+import { primary, background, white, drak, secondry, subTitle , btn, success} from '../../assets/color/color'
 import {Formik} from 'formik'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Arrow from 'react-native-vector-icons/AntDesign'
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input'
 import { useSelector, useDispatch } from 'react-redux'
-import {checkPinAction, clearPinAction} from '../../redux/action/auth'
+import {editPinAction, clearPinAction} from '../../redux/action/auth'
+import { useEffect } from 'react'
 
 
-const ChangePin = ({navigation})=> {
+const ChangePinFilled = ({navigation})=> {
 
 
     const [pin, setPin] = React.useState('')
     const [focused, setFocused] = React.useState(false)
+    const [msg, setMsg] = React.useState('')
     const dispatch = useDispatch()
-    const {user, pinCheck} = useSelector(state => state.auth)
+    const {user, pinUpdate} = useSelector(state => state.auth)
 
     useEffect(()=>{
-        if(pinCheck.msg === 'Pin Match'){
-            navigation.navigate('ChangePinFilled')
+        if(pinUpdate){
+            setMsg('Change PIN Success')
+            navigation.navigate("Profile")
+            dispatch(clearPinAction())
+        }else{
+            // setMsg('Change PIN Failed')
         }
-    }, [pinCheck.msg])
+    }, [])
     return (
         <View style={styles.container}>
              <View style={styles.header}>
                  <View style={{flexDirection:'row', marginTop:30, marginLeft:17}}>
-                <TouchableOpacity onPress={()=> navigation.navigate('Profile')}>
+                <TouchableOpacity onPress={()=> navigation.navigate('ChangePin')}>
                  <Arrow 
                  name='arrowleft'
                  size={28}
@@ -37,7 +43,7 @@ const ChangePin = ({navigation})=> {
                 </View>  
             </View>
             <View style={styles.formWraper}>
-                <Text style={styles.loginDesc}>Enter your current 6 digits Zwallet PIN below to continue to the next steps.</Text>
+                <Text style={styles.loginDesc}>Type your new 6 digits security PIN to use in Zwallet.</Text>
                 <View style={{alignItems:'center', marginTop:50}}>
                 <SmoothPinCodeInput
                 codeLength={6}
@@ -50,22 +56,23 @@ const ChangePin = ({navigation})=> {
                 onBackspace={()=> setMsg(true)}
                 />      
                 </View> 
-            </View>    
-               {pinCheck.msg === 'Pin Match'? (<Text>{pinCheck.msg}</Text>):(<Text>{pinCheck.msg}</Text>)}
+                
+            </View>  
+            {pinUpdate === true? (<Text style={{color:success}}>{msg}</Text>):null}  
                 <TouchableOpacity style={focused? {...styles.btn, backgroundColor:primary} :styles.btn} onPress={()=>{
                      if(pin.length === 6){
-                        dispatch(checkPinAction(pin, user.email))}
+                        dispatch(editPinAction(Number(pin), user.email))}
                     }
                 }>
-                    <Text style={focused?{...styles.btnText, color:white} :styles.btnText}>Continue</Text>
+                    <Text style={focused?{...styles.btnText, color:white} :styles.btnText}>Change PIN</Text>
                 </TouchableOpacity>   
         </View>
         
     )
 }
 
-// Type your new 6 digits security PIN to use in Zwallet.
-export default ChangePin
+
+export default ChangePinFilled
 
 const {height, width} = Dimensions.get('screen')
 const styles = StyleSheet.create({

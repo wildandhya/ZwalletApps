@@ -1,10 +1,15 @@
-import React from 'react'
-import { View, StyleSheet, Text, Dimensions, TextInput, Button, Image, StatusBar} from 'react-native'
+import React, { useEffect } from 'react'
+import { View, StyleSheet, Text, Dimensions, TextInput, Button, Image, SectionList, StatusBar} from 'react-native'
 import { primary, background, white, drak, secondry, subTitle , btn, success, bgImge, error, trans} from '../assets/color/color'
 
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler'
-import { prof2, bell, arrowUp, plus, prof3, spotify, netflix } from '../assets'
 import Icon from 'react-native-vector-icons/AntDesign'
+
+import { DateTime } from 'luxon';
+import { useDispatch, useSelector } from 'react-redux'
+import {getHistoryAction} from '../redux/action/transfer'
+
+import {localhost} from '../utils/api'
 
 
 
@@ -15,7 +20,73 @@ const TransactionHistory = ({navigation})=> {
         navigation.navigate(screen)
     }
 
-    
+    const dispatch = useDispatch()
+    const {history} = useSelector(state => state.user)
+    const {user} = useSelector(state=>state.auth)
+
+    useEffect(()=>{
+        dispatch(getHistoryAction(user.id))
+    },[])
+
+
+   const startDateWeek = DateTime.local().startOf('week').toISODate();
+   const endDateWeek = DateTime.local().startOf('week').plus({ days: 7 }).toISODate();
+   const getThisMonth = DateTime.local().month;
+
+
+    const thisWeek = history.filter((item) => {
+        return (
+           DateTime.fromISO(item.transfer_date).toISODate() >= startDateWeek &&
+           DateTime.fromISO(item.transfer_date).toISODate() <= endDateWeek
+        );
+     });
+  
+     const thisMonth = history.filter((item) => {
+        return (
+           !thisWeek.includes(item) &&
+           DateTime.fromISO(item.transfer_date).month === getThisMonth
+        );
+     });
+  
+     const beforeAgain = history.filter((item) => {
+        return (
+           !thisWeek.includes(item) &&
+           !thisMonth.includes(item)
+        );
+     });
+
+     const Item = ({data})=>{
+         return(
+            <View style={styles.card}>
+                 {data.image === null?(
+                    <Image source={userIcon} style={styles.img}/>
+                ):(<Image source={{uri:data.image.replace('localhost',localhost)}} style={styles.img}/>)}
+                <View style={{marginRight:70}}>
+                    <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>{data.username}</Text>
+                    <Text style={{fontSize:14, fontWeight:'400', marginTop:9}}>Transfer</Text>
+              </View>
+              <View style={{justifyContent:'center'}}>
+                 <Text style={{color:success, fontSize:18, fontWeight:'700'}}>-{data.trans_amount}</Text>
+             </View>
+        </View>
+         )
+     }
+
+
+     const historyData = [
+        {
+           date: 'This Week',
+           data: thisWeek,
+        },
+        {
+           date: 'This Month',
+           data: thisMonth,
+        },
+        {
+           date: 'Before Again',
+           data: beforeAgain,
+        },
+     ];
     
 
     return (
@@ -32,52 +103,18 @@ const TransactionHistory = ({navigation})=> {
                   
             </View>
             <View>
-                <Text style={styles.titleWeek}>This Week</Text>
-                <View style={styles.card}>
-                    <Image source={prof3}/>
-                    <View style={{marginRight:70}}>
-                          <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>Samuel Suhi</Text>
-                          <Text style={{fontSize:14, fontWeight:'400', marginTop:9}}>Transfer</Text>
-                   </View>
-                   <View style={{justifyContent:'center'}}>
-                       <Text style={{color:success, fontSize:18, fontWeight:'700'}}>+Rp50.000</Text>
-                   </View>
-                </View>
-                <View style={styles.card}>
-                    <View style={styles.imgWarpp}>
-                      <Image source={spotify}/>
-                    </View>
-                    <View style={{marginRight:70}}>
-                          <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>Spotify</Text>
-                          <Text style={{fontSize:14, fontWeight:'400', marginTop:9}}>Subcription</Text>
-                   </View>
-                   <View style={{justifyContent:'center'}}>
-                       <Text style={{color:error, fontSize:18, fontWeight:'700'}}>-Rp50.000</Text>
-                   </View>
-                </View>
-            </View>
-            <View>
-                <Text style={styles.titleWeek}>This Month</Text>
-                <View style={styles.card}>
-                    <Image source={netflix} style={{backgroundColor:background}}/>
-                    <View style={{marginRight:70}}>
-                          <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>Samuel Suhi</Text>
-                          <Text style={{fontSize:14, fontWeight:'400', marginTop:9}}>Transfer</Text>
-                   </View>
-                   <View style={{justifyContent:'center'}}>
-                       <Text style={{color:success, fontSize:18, fontWeight:'700'}}>+Rp50.000</Text>
-                   </View>
-                </View>
-                <View style={styles.card}>
-                    <Image source={prof3}/>
-                    <View style={{marginRight:70}}>
-                          <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>Samuel Suhi</Text>
-                          <Text style={{fontSize:14, fontWeight:'400', marginTop:9}}>Transfer</Text>
-                   </View>
-                   <View style={{justifyContent:'center'}}>
-                       <Text style={{color:success, fontSize:18, fontWeight:'700'}}>+Rp50.000</Text>
-                   </View>
-                </View>
+                <SectionList
+                 sections={historyData}
+                 keyExtractor={(item, index) => item + index}
+                 renderItem={({ item }) => <Item data={item} />}
+                 renderSectionHeader={({ section: { date, data } }) => (
+                    data.length === 0 ? null :
+                       <View>
+                          <Text style={styles.titleWeek}>{date}</Text>
+                       </View>
+                 )
+                 }
+                />
             </View>
             <View style={{flexDirection:'row', marginTop:20, marginHorizontal:15, justifyContent:'space-between'}}>
                 <TouchableOpacity style={styles.btnFilter}>
@@ -177,5 +214,10 @@ const styles = StyleSheet.create({
         paddingVertical:16,
         elevation:3,
         marginLeft:5
-    }
+    },
+    img:{
+        width:58,
+        height:58,
+        borderRadius:7
+    },
 })

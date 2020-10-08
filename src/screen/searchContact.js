@@ -22,7 +22,7 @@ const SearchContact = ({navigation})=> {
 
     const dispatch = useDispatch()
 
-    const user = useSelector(state => state.user.user)
+    const user = useSelector(state => state.user.data)
    
     useEffect(()=>{
         dispatch(getContactAction())

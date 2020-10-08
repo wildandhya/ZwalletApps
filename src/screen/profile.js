@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/AntDesign'
 import Pencil from 'react-native-vector-icons/MaterialCommunityIcons'
 import { ListItem } from 'react-native-elements'
 
-import {loginAction, logoutAction, editUserAction} from '../redux/action/auth'
+import {logoutAction, editImageAction} from '../redux/action/auth'
 import { useDispatch, useSelector } from 'react-redux'
 
 import ImagePicker from 'react-native-image-picker'
@@ -29,6 +29,7 @@ const Profile = ({navigation})=> {
     const [image, setImage] = useState(null)
     const {user} = useSelector(state=>state.auth)
     console.log(user)
+    console.log(image)
 
     const [isSwitchEnable, setSwitch] = React.useState(false)
 
@@ -83,7 +84,8 @@ const Profile = ({navigation})=> {
 
             }else{
                 const source = Response
-                setImage( source)
+                setImage(source)
+                dispatch(editImageAction( source, user.email,))
             }
         })
     }
@@ -105,7 +107,7 @@ const Profile = ({navigation})=> {
                  <View style={styles.imgBg}>
                  {user.image === undefined?(
                         <Image source={userIcon}  style={styles.img}/>
-                    ):(<Image source={{uri:user.image.replace('localhost', localhost)}} style={styles.img} />)}
+                    ):(<Image source={{uri:user.image.replace('localhost', localhost)}} style={styles.img} />)} 
                 
                 </View>
                

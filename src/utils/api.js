@@ -1,11 +1,11 @@
 import Axios from 'axios'
 
-export const ip = 'http://192.168.1.101:8000'
+export const ip = 'http://192.168.1.100:8000'
 
 // 192.168.43.107
 //10.0.2.2
 
-export const localhost = '192.168.1.101'
+export const localhost = '192.168.1.100'
 
 export const getContactApi = ()=>{
     return Axios.get(`${ip}/user`)
@@ -61,18 +61,57 @@ export const editUserApi = (username, password, pin, image, email) => {
         accept: 'application/json',
       },
     };
-    console.log('formdata',data)
     const url = `${ip}/user/edit`;
     return Axios.patch(url, data, config);
   };
 
-  export const checkPinApi = (email, pin)=>{
-    return Axios.post(`${ip}/checkPin`, {email: email, pin:pin} )
+  export const checkPinApi = (pin, email)=>{
+    return Axios.post(`${ip}/checkPin`, {pin:pin, email: email,} )
 
 }
 
 export const checkPassApi = (email, password, newPassword)=>{
   return Axios.post(`${ip}/checkPass`, {email: email, password:password, newPassword:newPassword} )
+
+}
+
+export const checkEmailApi = (email)=>{
+  return Axios.post(`${ip}/checkEmail`, email )
+
+}
+
+export const resetPasswordApi = (email, password)=>{
+  return Axios.patch(`${ip}/resetPassword`, {email: email, password:password} )
+
+}
+export const editPinApi = (pin, email)=>{
+  return Axios.patch(`${ip}/editPin`, {pin: pin, email:email} )
+
+}
+
+export const editImageApi = (image, email)=>{
+  let data = new FormData();
+  if (image !== null) {
+    data.append('image', {
+      uri: `file://${image.path}`,
+      type: image.type,
+      name: image.fileName,
+      size: image.fileSize,
+    });
+  }
+  data.append('email', email);
+  const config = {
+    headers: {
+      'content-type': 'multipart/form-data',
+      contentType: false,
+      mimeType: 'multipart/form-data',
+      'cache-control': 'no-cache',
+      accept: 'application/json',
+    },
+  };
+  console.log(data)
+  const url = `${ip}/editImage`;
+  return Axios.patch(url, data, config);
 
 }
 

@@ -9,7 +9,7 @@ import { Input} from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux'
 import * as yup from 'yup'
 
-import {loginAction} from '../../redux/action/auth'
+import {resetPasswordAction} from '../../redux/action/auth'
 
 
 
@@ -27,7 +27,6 @@ const ResetPassword = ({navigation})=> {
     const [showError, setShowError] = React.useState(false)
 
     const formValidation = yup.object().shape({
-        email:yup.string().required().label('email').email(),
         password:yup.string().required().label('password').min(5, 'too short').max(15)
     })
 
@@ -52,41 +51,93 @@ const ResetPassword = ({navigation})=> {
                 
             <View style={styles.form}>
                 <Formik 
-                initialValues={{email:''}}
+                initialValues={{password:'', confirmPassword:''}}
                 validationSchema={formValidation}
                 onSubmit={(values, action)=>{
-                    action.resetForm()
-                    // dispatch(loginAction(values))
+                    if(values.password === values.confirmPassword){
+                        action.resetForm()
+                        dispatch(resetPasswordAction(user.email, values.password))
+                        // setMsgError(false)
+                        alert('ok')
+                    }else{
+                        alert('salah')
+                    }
                 }}
                 >
                 {(formikProps) => (                       
                      <View style={styles.formWrapp}>
-                            <View style={styles.emailWrapp}>
+                                          <View style={styles.passwordWrapp}>
                                 <Input 
-                                leftIcon={
-                                    <Email
-                                    name='envelope'
-                                    color= {focused? primary : secondry  && isError? error : secondry}
-                                    size={30}
+                                secureTextEntry={!show}
+                                 leftIcon={
+                                    <Icon
+                                    name='lock'
+                                    color= {focused? primary : secondry && isError? error : secondry}
+                                    size={25}
                             
                                     />
-                                }
-                                inputContainerStyle={focused? 
-                                    {borderBottomColor:primary, borderBottomWidth:2}:{borderBottomColor:secondry, borderBottomWidth:1} 
+                                 }
+                                 rightIcon={
+                                     <TouchableOpacity onPress={()=>{
+                                        setShow(!show)
+                                        
+                                     }}>
+                                          <Icon
+                                              name={show === false? 'eye-off' : 'eye'}
+                                              color= {focused? primary : secondry && isError? error : secondry}
+                                              size={23}
+                                    />
+                                     </TouchableOpacity>
+                                 }
+                                 inputContainerStyle={focused? 
+                                    {borderBottomColor:primary, borderBottomWidth:2}:{borderBottomColor:secondry, borderBottomWidth:1}
                                     && isError? {borderBottomColor:error, borderBottomWidth:2}:{borderBottomColor:secondry, borderBottomWidth:1}
-                                } 
-                                containerStyle={{height:50}}
-                                placeholder='Enter your e-mail'
-                                onFocus={()=> setFocused(!focused)}
-                                value={formikProps.values.email}
-                                onChangeText={formikProps.handleChange('email')}
+                                }
+                                containerStyle={{height:50, marginTop:10}}
+                                placeholder='Create new password'
+                                value={formikProps.values.password}
+                                onChangeText={formikProps.handleChange('password')}
+                                />
+                                <Text style={styles.msgError}>{formikProps.errors.email}</Text>
+                            </View>
+                            <View style={styles.passwordWrapp}>
+                                <Input 
+                                secureTextEntry={!show}
+                                 leftIcon={
+                                    <Icon
+                                    name='lock'
+                                    color= {focused? primary : secondry && isError? error : secondry}
+                                    size={25}
+                            
+                                    />
+                                 }
+                                 rightIcon={
+                                     <TouchableOpacity onPress={()=>{
+                                        setShow(!show)
+                                        
+                                     }}>
+                                          <Icon
+                                              name={show === false? 'eye-off' : 'eye'}
+                                              color= {focused? primary : secondry && isError? error : secondry}
+                                              size={23}
+                                    />
+                                     </TouchableOpacity>
+                                 }
+                                 inputContainerStyle={focused? 
+                                    {borderBottomColor:primary, borderBottomWidth:2}:{borderBottomColor:secondry, borderBottomWidth:1}
+                                    && isError? {borderBottomColor:error, borderBottomWidth:2}:{borderBottomColor:secondry, borderBottomWidth:1}
+                                }
+                                containerStyle={{height:50, marginTop:10}}
+                                placeholder='Confirm new password'
+                                value={formikProps.values.confirmpassword}
+                                onChangeText={formikProps.handleChange('confirmPassword')}
                                 />
                                 <Text style={styles.msgError}>{formikProps.errors.email}</Text>
                             </View>
                               {isError?(<Text style={styles.textError}>Email Invalid</Text>
                              ):null}
                                <TouchableOpacity style={focused? {...styles.btn, backgroundColor:primary} :styles.btn}
-                               onPress={()=>navigation.navigate('ResetPassword2')}>
+                               onPress={formikProps.handleSubmit}>
                                 <Text style={focused?{...styles.btnText, color:white} :styles.btnText}>Confirm</Text>
                              </TouchableOpacity>
                            </View>    

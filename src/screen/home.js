@@ -19,8 +19,7 @@ const Home = ({navigation})=> {
 
     const {user} = useSelector(state=>state.auth)
     const {history} = useSelector(state => state.user)
-    // console.log('nawi', history)
-
+    
     const handleGoTo = (screen)=>{
         navigation.navigate(screen)
     }
@@ -33,7 +32,7 @@ const Home = ({navigation})=> {
         <View style={styles.container}>
             <StatusBar backgroundColor={primary}/>
             <View style={styles.header}>
-                <TouchableOpacity onPress={()=> handleGoTo('Profile')}>
+                <TouchableOpacity onPress={()=> handleGoTo('Profile')} style={styles.imgBg}>
                     {user.image === undefined?(
                         <Image source={userIcon}  style={styles.img}/>
                     ):(<Image source={{uri:user.image.replace('localhost', localhost)}} style={styles.img} />)}
@@ -66,33 +65,11 @@ const Home = ({navigation})=> {
                 </TouchableOpacity>
             </View>
             <View style={{marginTop:10}}>
-                {/* <FlatList
-                 data={history}
-                 keyExtractor={item => item.id}
-                 renderItem={({item})=>
-                    (
-                        item.length === 0 ? <Text>You have never done any transactions</Text>:
-                        <View style={styles.card}>
-                            {item.image === null?(
-                                <Image source={userIcon}/>
-                            ):(<Image source={{uri:item.image.replace('localhost',localhost)}} style={styles.img}/>)}
-                            <View style={{flex:1, marginLeft:15}}>
-                               <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>{item.username}</Text>
-                                <Text style={{fontSize:14, fontWeight:'400', marginTop:9}}>Transfer</Text>
-                             </View>
-                             <View style={{justifyContent:'center', flex:1, alignItems:'flex-end'}}>
-                             <Text style={{color:success, fontSize:18, fontWeight:'700'}}>+{item.trans_amount}</Text>
-                            </View>
-                        </View>
-                    )
-                 }
-                
-                /> */}
                 {
-                    history.map(item =>{
+                    history.map((item, index) =>{
                         return(
                             item.length === 0?(<Text>You have never done any transactions</Text>):(
-                                <View style={styles.card}>
+                                <View style={styles.card} key={index}>
                             {item.image === null?(
                                 <Image source={userIcon}/>
                             ):(<Image source={{uri:item.image.replace('localhost',localhost)}} style={styles.img}/>)}
@@ -126,6 +103,16 @@ const styles = StyleSheet.create({
         width:58,
         height:58,
         borderRadius:7
+    },
+    imgBg:{
+        width:58,
+        height:58,
+        backgroundColor:'#ebeef2',
+        borderRadius:10,
+        alignItems:'center',
+        justifyContent:'center',
+        alignSelf:'center'
+       
     },
     header:{
         backgroundColor:primary,

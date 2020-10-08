@@ -37,7 +37,8 @@ import {
       case addToConfrim :
         return {
         ...prevState,
-        data: {...prevState.data,
+        data: {
+          ...prevState.data,
                 amount: payload.amount,
                 notes:payload.notes
 
@@ -68,44 +69,44 @@ import {
             isError:false
            
           }
-              case checkPin + pending:
-                return {
-                  ...prevState,
-                  isPending: true,
+              // case checkPin + pending:
+              //   return {
+              //     ...prevState,
+              //     isPending: true,
                   
-                };
+              //   };
           
-              case checkPin + rejected:
-                return {
-                  ...prevState,
-                  isRejected: true,
-                  error: payload,
-                  isPending: false,
+              // case checkPin + rejected:
+              //   return {
+              //     ...prevState,
+              //     isRejected: true,
+              //     error: payload,
+              //     isPending: false,
                   
-                };
-              case checkPin + fulfilled:
-                if(payload.data.success === true){
-                  return {
-                    ...prevState,
-                    isFulfilled: true,
-                    pin: payload.data.data,
-                    isPending: false,
-                    isError:false,
-                    isPinMatch:true
+              //   };
+              // case checkPin + fulfilled:
+              //   if(payload.data.success === true){
+              //     return {
+              //       ...prevState,
+              //       isFulfilled: true,
+              //       pin: payload.data.data,
+              //       isPending: false,
+              //       isError:false,
+              //       isPinMatch:true
                    
-                  }
-                }else{
-                    return {
-                        ...prevState,
-                        isFulfilled: true,
-                        error: payload.data,
-                        isPending: false,
-                        isError:true,
-                        isPinMatch:false
+              //     }
+              //   }else{
+              //       return {
+              //           ...prevState,
+              //           isFulfilled: true,
+              //           error: payload.data,
+              //           isPending: false,
+              //           isError:true,
+              //           isPinMatch:false
                        
                        
-                  }
-                }
+              //     }
+              //   }
       default:
         return prevState;
     }
