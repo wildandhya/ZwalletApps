@@ -1,6 +1,6 @@
-import {login, register, editUser, checkEmail, logout, resetPassword, editImage, editPin, checkPin, clearPin} from './actionType'
+import {login, register, editUser, checkEmail, logout, resetPassword, editImage, editPin, checkPin, clearPin, clearPassword} from './actionType'
 
-import {loginApi, registerApi, editUserApi, checkEmailApi, resetPasswordApi, editImageApi, editPinApi, checkPinApi, } from '../../utils/api'
+import {loginApi, registerApi, editUserApi, checkEmailApi, resetPasswordApi, editImageApi, editPinApi, checkPinApi } from '../../utils/api'
 
 
 export const loginAction = (data) => {
@@ -76,6 +76,13 @@ export const checkPinAction = (pin, email) => {
 export const clearPinAction = () => {
     return{
         type:clearPin,
+       
+    };
+}
+
+export const clearPasswordAction = () => {
+    return{
+        type:clearPassword,
        
     };
 }

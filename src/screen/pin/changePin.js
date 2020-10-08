@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { View, StyleSheet, Text, Dimensions, TextInput, Button} from 'react-native'
-import { primary, background, white, drak, secondry, subTitle , btn} from '../../assets/color/color'
+import { primary, background, white, drak, secondry, subTitle , btn, success, error} from '../../assets/color/color'
 import {Formik} from 'formik'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Arrow from 'react-native-vector-icons/AntDesign'
@@ -15,7 +15,7 @@ const ChangePin = ({navigation})=> {
     const [pin, setPin] = React.useState('')
     const [focused, setFocused] = React.useState(false)
     const dispatch = useDispatch()
-    const {user, pinCheck} = useSelector(state => state.auth)
+    const {user, pinCheck, error} = useSelector(state => state.auth)
 
     useEffect(()=>{
         if(pinCheck.msg === 'Pin Match'){
@@ -50,8 +50,9 @@ const ChangePin = ({navigation})=> {
                 onBackspace={()=> setMsg(true)}
                 />      
                 </View> 
+                {pinCheck.msg === 'Pin Match'? (<Text style={styles.pinSuccess}>{pinCheck.msg}</Text>):null}
             </View>    
-               {pinCheck.msg === 'Pin Match'? (<Text>{pinCheck.msg}</Text>):(<Text>{pinCheck.msg}</Text>)}
+               
                 <TouchableOpacity style={focused? {...styles.btn, backgroundColor:primary} :styles.btn} onPress={()=>{
                      if(pin.length === 6){
                         dispatch(checkPinAction(pin, user.email))}
@@ -132,5 +133,17 @@ const styles = StyleSheet.create({
         height:60
         
     },
+    pinSuccess:{
+        fontSize:18,
+        color:success,
+        textAlign:'center',
+        marginTop:30
+    },
+    pinError:{
+        fontSize:18,
+        color:error,
+        textAlign:'center',
+        marginTop:30
+    }
 
 })

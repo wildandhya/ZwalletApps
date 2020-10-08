@@ -1,4 +1,4 @@
-import {getContact, searchContact, addContact, checkPass} from './actionType'
+import {getContact, searchContact, addContact, checkPass, clearUser} from './actionType'
 
 import {getContactApi, searchContactApi, checkPassApi} from '../../utils/api'
 
@@ -30,6 +30,14 @@ export const checkPassAction = (email, password, newPassword) => {
     return{
         type:checkPass,
         payload:checkPassApi(email, password, newPassword)
+    };
+
+}
+
+export const clearUserAction = () => {
+    return{
+        type:clearUser,
+       
     };
 
 }

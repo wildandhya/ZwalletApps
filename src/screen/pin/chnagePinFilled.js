@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, Text, Dimensions, TextInput, Button} from 'react-native'
-import { primary, background, white, drak, secondry, subTitle , btn, success} from '../../assets/color/color'
+import { primary, background, white, drak, secondry, subTitle , btn, success, error} from '../../assets/color/color'
 import {Formik} from 'formik'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Arrow from 'react-native-vector-icons/AntDesign'
@@ -17,17 +17,21 @@ const ChangePinFilled = ({navigation})=> {
     const [focused, setFocused] = React.useState(false)
     const [msg, setMsg] = React.useState('')
     const dispatch = useDispatch()
-    const {user, pinUpdate} = useSelector(state => state.auth)
+    const {user, pinUpdate, error} = useSelector(state => state.auth)
 
     useEffect(()=>{
         if(pinUpdate){
-            setMsg('Change PIN Success')
-            navigation.navigate("Profile")
+            // setMsg('Change PIN Success')
+            navigation.navigate('Profile')
+            // setTimeout(()=>{
+               
+            // }, 300)
             dispatch(clearPinAction())
+            
         }else{
             // setMsg('Change PIN Failed')
         }
-    }, [])
+    }, [pinUpdate, navigation])
     return (
         <View style={styles.container}>
              <View style={styles.header}>
@@ -56,12 +60,13 @@ const ChangePinFilled = ({navigation})=> {
                 onBackspace={()=> setMsg(true)}
                 />      
                 </View> 
+                {pinUpdate === true? (<Text style={styles.pinSuccess}>Change Pin Success</Text>):null}
                 
             </View>  
-            {pinUpdate === true? (<Text style={{color:success}}>{msg}</Text>):null}  
+              
                 <TouchableOpacity style={focused? {...styles.btn, backgroundColor:primary} :styles.btn} onPress={()=>{
                      if(pin.length === 6){
-                        dispatch(editPinAction(Number(pin), user.email))}
+                        dispatch(editPinAction(pin, user.email))}
                     }
                 }>
                     <Text style={focused?{...styles.btnText, color:white} :styles.btnText}>Change PIN</Text>
@@ -139,5 +144,17 @@ const styles = StyleSheet.create({
         height:60
         
     },
+    pinSuccess:{
+        fontSize:18,
+        color:success,
+        textAlign:'center',
+        marginTop:30
+    },
+    pinError:{
+        fontSize:18,
+        color:error,
+        textAlign:'center',
+        marginTop:30
+    }
 
 })

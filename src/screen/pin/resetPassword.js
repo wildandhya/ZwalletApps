@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { View, StyleSheet, Text, Dimensions, TextInput, Button, StatusBar} from 'react-native'
-import { primary, background, white, drak, secondry, subTitle , btn, Bold, error} from '../../assets/color/color'
+import { primary, background, white, drak, secondry, subTitle , btn, Bold, error, success} from '../../assets/color/color'
 import {Formik} from 'formik'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/Feather';
@@ -9,7 +9,7 @@ import { Input} from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux'
 import * as yup from 'yup'
 
-import {resetPasswordAction} from '../../redux/action/auth'
+import {resetPasswordAction, clearPasswordAction} from '../../redux/action/auth'
 
 
 
@@ -20,10 +20,11 @@ const ResetPassword = ({navigation})=> {
     }
 
     const dispatch = useDispatch()
-    const {isError, user, isLogged} = useSelector(state => state.auth)
+    const {isError, user, passUpdate} = useSelector(state => state.auth)
 
     const [show, setShow] = React.useState(false)
     const [focused, setFocused] = React.useState(false)
+    const [msgError, setMsgError] = React.useState('')
     const [showError, setShowError] = React.useState(false)
 
     const formValidation = yup.object().shape({
@@ -31,13 +32,14 @@ const ResetPassword = ({navigation})=> {
     })
 
    useEffect(()=>{
-       if(isLogged){
+       if(passUpdate){
            setShowError(false)
-           navigation.navigate('Home')
+           navigation.navigate('Login')
+           dispatch(clearPasswordAction())
        }else{
            setShowError(true)
        }
-   }, [isLogged])
+   }, [passUpdate, navigation])
 
     return (
         <View style={styles.container}>
@@ -54,13 +56,12 @@ const ResetPassword = ({navigation})=> {
                 initialValues={{password:'', confirmPassword:''}}
                 validationSchema={formValidation}
                 onSubmit={(values, action)=>{
+                    // action.resetForm(values)
                     if(values.password === values.confirmPassword){
-                        action.resetForm()
                         dispatch(resetPasswordAction(user.email, values.password))
-                        // setMsgError(false)
-                        alert('ok')
+                        setMsgError('')
                     }else{
-                        alert('salah')
+                        setMsgError('Password Wrong')
                     }
                 }}
                 >
@@ -132,9 +133,9 @@ const ResetPassword = ({navigation})=> {
                                 value={formikProps.values.confirmpassword}
                                 onChangeText={formikProps.handleChange('confirmPassword')}
                                 />
-                                <Text style={styles.msgError}>{formikProps.errors.email}</Text>
+                                <Text style={styles.msgError}>{msgError}</Text>
                             </View>
-                              {isError?(<Text style={styles.textError}>Email Invalid</Text>
+                              {passUpdate === true?(<Text style={styles.textError}>Reset Password Success</Text>
                              ):null}
                                <TouchableOpacity style={focused? {...styles.btn, backgroundColor:primary} :styles.btn}
                                onPress={formikProps.handleSubmit}>
@@ -219,7 +220,7 @@ const styles = StyleSheet.create({
         marginTop:20
     },
     textError:{
-        color:error,
+        color:success,
         fontSize:16,
         fontFamily:'NunitoSans-Semi-bold',
         alignSelf:'center',

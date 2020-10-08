@@ -43,7 +43,7 @@ const TransactionHistory = ({navigation})=> {
   
      const thisMonth = history.filter((item) => {
         return (
-           !thisWeek.includes(item) &&
+        //    !thisWeek.includes(item) &&
            DateTime.fromISO(item.transfer_date).month === getThisMonth
         );
      });
@@ -102,7 +102,7 @@ const TransactionHistory = ({navigation})=> {
                 <Text style={styles.title}>History</Text>
                   
             </View>
-            <View>
+           
                 <SectionList
                  sections={historyData}
                  keyExtractor={(item, index) => item + index}
@@ -114,19 +114,24 @@ const TransactionHistory = ({navigation})=> {
                        </View>
                  )
                  }
+                //  ListFooterComponent={()=>{
+                //      return(
+                     
+                //      )
+                //  }}
                 />
-            </View>
-            <View style={{flexDirection:'row', marginTop:20, marginHorizontal:15, justifyContent:'space-between'}}>
-                <TouchableOpacity style={styles.btnFilter}>
-                    <Icon name='arrowup' color={error} size={28} style={{alignItems:'center', justifyContent:'center'}}/>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.btnFilter}>
-                    <Icon name='arrowdown' color={success} size={28} style={{alignItems:'center', justifyContent:'center'}}/>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.filterWrapp}>
-                    <Text style={styles.filterText}>Filter by Date</Text>
-                </TouchableOpacity>
-            </View>
+           
+            <View style={styles.footer}>
+                            <TouchableOpacity style={styles.btnFilter}>
+                            <Icon name='arrowup' color={error} size={28} style={{alignItems:'center', justifyContent:'center'}}/>
+                           </TouchableOpacity>
+                           <TouchableOpacity style={styles.btnFilter}>
+                            <Icon name='arrowdown' color={success} size={28} style={{alignItems:'center', justifyContent:'center'}}/>
+                         </TouchableOpacity>
+                          <TouchableOpacity style={styles.filterWrapp}>
+                            <Text style={styles.filterText}>Filter by Date</Text>
+                          </TouchableOpacity>
+        </View>
         </View>
     )
 }
@@ -137,13 +142,14 @@ const {height, width} = Dimensions.get('screen')
 const styles = StyleSheet.create({
     container:{
         backgroundColor:"#fafcff",
-        height
+        flex:1
     },
     header:{
         flexDirection:'row',
         marginHorizontal:19,
         paddingTop:25,
-        alignItems:'center'
+        alignItems:'center',
+        paddingBottom:18
     },
     title:{
         color:drak,
@@ -220,4 +226,12 @@ const styles = StyleSheet.create({
         height:58,
         borderRadius:7
     },
+    footer:{
+        flexDirection:'row', 
+        paddingVertical:20, 
+        marginHorizontal:15, 
+        justifyContent:'space-between',
+        // backgroundColor:'red',
+        // position:'absolute'
+    }
 })

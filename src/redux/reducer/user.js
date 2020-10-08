@@ -6,7 +6,8 @@ import {
     getContact,
     getHistory,
     searchContact,
-    checkPass
+    checkPass,
+    clearUser
   } from "../action/actionType";
   
   const initialState = {
@@ -16,9 +17,8 @@ import {
     password:[],
     isPending: false,
     isFulfilled: false,
-    isRejected: false,
-    isLogged:false,
-    isError:false
+    isError:false,
+    passMatch:false
   };
   
   const userReducer = (prevState = initialState, { type, payload }) => {
@@ -117,16 +117,33 @@ import {
                       
                     };
                   case checkPass + fulfilled:
-            
+                    if(payload.data.success){
                       return {
                         ...prevState,
                         isFulfilled: true,
                         password: payload.data.data,
                         isPending: false,
                         isError:false,
-                        isPinMatch:false
+                        passMatch:true
                        
-                      }
+                      };
+                    }else{
+                      return {
+                        ...prevState,
+                        isFulfilled: true,
+                        password: payload.data.data,
+                        isPending: false,
+                        isError:false,
+                        passMatch:false
+                       
+                      };
+                    }
+                    case clearUser:
+                        return {
+                          ...prevState,
+                          password: [],
+                          
+                    };
           
         
       default:

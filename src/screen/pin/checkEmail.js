@@ -32,13 +32,13 @@ const CheckEmail = ({navigation})=> {
     })
 
    useEffect(()=>{
-       if(userEdit.msg === 'your email match'){
+       if(user.msg === 'your email match'){
            setShowError(false)
-           alert('ok')
+           handleGoTo('ResetPassword')
        }else{
            setShowError(true)
        }
-   }, [userEdit])
+   }, [user.msg])
 
     return (
         <View style={styles.container}>

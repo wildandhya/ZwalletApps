@@ -11,7 +11,8 @@ import {
     editImage,
     editPin,
     checkPin,
-    clearPin
+    clearPin,
+    clearPassword
   } from "../action/actionType";
   
   const initialState = {
@@ -26,7 +27,8 @@ import {
     isRegister:false,
     isError:false,
     pinUpdate:false,
-    pinMatch:false
+    pinMatch:false,
+    passUpdate:false
   };
   
   const authReducer = (prevState = initialState, { type, payload }) => {
@@ -161,6 +163,9 @@ import {
                   isFulfilled: true,
                   user: payload.data.data,
                   isPending: false,
+                  isError:false,
+                  
+
                  
                 }
               }else{
@@ -194,7 +199,8 @@ import {
                       password:payload.data.data
                     },
                     isPending: false,
-                    isPin:true
+                    passUpdate:true,
+                    isError:false,
                    
                   }
                 }else{
@@ -203,7 +209,7 @@ import {
                         isFulfilled: true,
                         error: payload.data,
                         isPending: false,
-                        isPin:false
+                        passUpdate:false
                         
                        
                       }
@@ -272,7 +278,6 @@ import {
                         },
                         isPending: false,
                         pinUpdate:true
-                       
                       }
                     }else{
                         return {
@@ -280,9 +285,7 @@ import {
                             isFulfilled: true,
                             error: payload.data,
                             isPending: false,
-                            pinUpdate:false
-                            
-                           
+                            pinUpdate:false  
                           }
                     }
                     case checkPin + pending:
@@ -297,7 +300,7 @@ import {
                       return {
                         ...prevState,
                         isRejected: true,
-                        error: payload,
+                        error: payload.data.error,
                         isPending: false,
                         pinMatch:false
                         
@@ -334,6 +337,15 @@ import {
                   pinMatch:false,
                   pinUpdate:false
             }
+         case clearPassword:
+            return {
+              ...prevState,
+                   user: [],
+                   isLogged:false,
+                   isRegister:false,
+                   passUpdate:false,
+                   isError:false,
+          }
           case logout:
               return {
                   ...prevState,

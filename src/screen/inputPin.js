@@ -8,11 +8,11 @@ import Icon from 'react-native-vector-icons/AntDesign'
 
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input'
 
-import {checkPinAction, transferAction} from '../redux/action/transfer'
+import {checkPinAction, pinConfirmAction, transferAction} from '../redux/action/transfer'
 import { useDispatch , useSelector} from 'react-redux'
 import { DateTime } from "luxon"
-import PushNotification from 'react-native-push-notification';
-import {showLocalNotification} from '../notif/handleNotification'
+// import PushNotification from 'react-native-push-notification';
+// import {showLocalNotification} from '../notif/handleNotification'
 
 
 
@@ -39,20 +39,20 @@ const InputPin = ({navigation})=> {
         navigation.navigate(screen)
     }
 
-    const channelId = 'transaction';
+    // const channelId = 'transaction';
 
     useEffect(()=>{
-        PushNotification.createChannel(
-            {
-              channelId,
-              channelName: 'transaction',
-            },
-          );
+        // PushNotification.createChannel(
+        //     {
+        //       channelId,
+        //       channelName: 'transaction',
+        //     },
+        //   );
         if(pinConql.msg === "Pin Match"){
             dispatch(transferAction(trans))
             setMsg(null)
             handleGoTo('TransSuccess')
-            showLocalNotification('New Transaction', 'Selamat Datang', channelId)
+            
 
         }else{
             setMsg('Your PIN Dont Match')
@@ -91,9 +91,9 @@ const InputPin = ({navigation})=> {
                 />       
                 </View>                                          
             </View>
-             {msg !== null? (<Text style={{color:'red'}}>{msg}</Text>):null}
+             {/* {msg !== null? (<Text style={{color:'red'}}>{msg}</Text>):null} */}
             <TouchableOpacity style={focused? {...styles.btn, backgroundColor:primary} :styles.btn} onPress={
-                ()=> dispatch(checkPinAction(user.email, pin))
+                ()=> dispatch(pinConfirmAction( pin, user.email ))
                 
                 }>
                 <Text style={focused?{...styles.btnText, color:white} :styles.btnText}>Transfer Now</Text>

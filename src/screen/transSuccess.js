@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, StyleSheet, Text, Dimensions, TextInput, Button, Image} from 'react-native'
 import { primary,  white, drak, btn, regular, Bold, subTitle} from '../assets/color/color'
 
@@ -8,7 +8,8 @@ import { DateTime } from "luxon"
 
 import { useSelector} from 'react-redux'
 import {localhost} from '../utils/api'
-
+import PushNotification from 'react-native-push-notification';
+import {showLocalNotification} from '../notif/handleNotification'
 
 
 
@@ -23,8 +24,19 @@ const TransSuccess = ({navigation})=> {
     const handleGoTo = (screen)=>{
         navigation.navigate(screen)
     }
+    const channelId = 'transaction';
+    
+      
 
-   
+   useEffect(()=>{
+    PushNotification.createChannel(
+        {
+          channelId,
+          channelName: 'transaction',
+        },
+      );
+    showLocalNotification('Zwallet', 'You have made the transfer', channelId)
+   }, [])
 
     return (
         <View style={styles.container}>

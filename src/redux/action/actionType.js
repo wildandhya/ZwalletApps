@@ -39,7 +39,13 @@ export const editPin = "EDIT_PIN";
 
 export const createPin = "CREATE_PIN";
 
-
 export const clearPin = "CLEAR_PIN";
+
+export const clearPassword = "CLEAR_PASSWORD";
+
+export const clearUser = "CLEAR_USER";
+
+
+export const pinConfirm = "PIN_CONFIRM";
 
 

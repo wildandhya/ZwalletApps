@@ -33,7 +33,7 @@ const Home = ({navigation})=> {
             <StatusBar backgroundColor={primary}/>
             <View style={styles.header}>
                 <TouchableOpacity onPress={()=> handleGoTo('Profile')} style={styles.imgBg}>
-                    {user.image === undefined?(
+                    {user.image === null?(
                         <Image source={userIcon}  style={styles.img}/>
                     ):(<Image source={{uri:user.image.replace('localhost', localhost)}} style={styles.img} />)}
                 

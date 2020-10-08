@@ -1,4 +1,4 @@
-import {addToConfrim, transfer, getHistory, checkPin} from './actionType'
+import {addToConfrim, transfer, getHistory, checkPin, pinConfirm} from './actionType'
 
 import {transferApi, getHistoryApi, checkPinApi} from '../../utils/api'
 
@@ -28,10 +28,10 @@ export const getHistoryAction = (id) => {
 
 }
 
-// export const checkPinAction = (email, pin) => {
-//     return{
-//         type:checkPin,
-//         payload:checkPinApi(email, pin)
-//     };
+export const pinConfirmAction = (pin, email) => {
+    return{
+        type:pinConfirm,
+        payload:checkPinApi(pin, email)
+    };
 
-// }
+}

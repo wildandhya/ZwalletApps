@@ -5,7 +5,8 @@ import {
     addContact,
     addToConfrim,
     transfer,
-    checkPin
+    checkPin,
+    pinConfirm
   } from "../action/actionType";
   
   const initialState = {
@@ -69,44 +70,44 @@ import {
             isError:false
            
           }
-              // case checkPin + pending:
-              //   return {
-              //     ...prevState,
-              //     isPending: true,
+              case pinConfirm + pending:
+                return {
+                  ...prevState,
+                  isPending: true,
                   
-              //   };
+                };
           
-              // case checkPin + rejected:
-              //   return {
-              //     ...prevState,
-              //     isRejected: true,
-              //     error: payload,
-              //     isPending: false,
+              case pinConfirm + rejected:
+                return {
+                  ...prevState,
+                  isRejected: true,
+                  error: payload,
+                  isPending: false,
                   
-              //   };
-              // case checkPin + fulfilled:
-              //   if(payload.data.success === true){
-              //     return {
-              //       ...prevState,
-              //       isFulfilled: true,
-              //       pin: payload.data.data,
-              //       isPending: false,
-              //       isError:false,
-              //       isPinMatch:true
+                };
+              case pinConfirm + fulfilled:
+                if(payload.data.success === true){
+                  return {
+                    ...prevState,
+                    isFulfilled: true,
+                    pin: payload.data.data,
+                    isPending: false,
+                    isError:false,
+                    isPinMatch:true
                    
-              //     }
-              //   }else{
-              //       return {
-              //           ...prevState,
-              //           isFulfilled: true,
-              //           error: payload.data,
-              //           isPending: false,
-              //           isError:true,
-              //           isPinMatch:false
+                  }
+                }else{
+                    return {
+                        ...prevState,
+                        isFulfilled: true,
+                        error: payload.data,
+                        isPending: false,
+                        isError:true,
+                        isPinMatch:false
                        
                        
-              //     }
-              //   }
+                  }
+                }
       default:
         return prevState;
     }

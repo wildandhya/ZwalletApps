@@ -9,7 +9,7 @@ import { Input} from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux'
 import * as yup from 'yup'
 
-import {loginAction} from '../../redux/action/auth'
+import {loginAction, clearPasswordAction} from '../../redux/action/auth'
 
 
 
@@ -118,7 +118,9 @@ const Login = ({navigation})=> {
                                 />
                                 <Text style={styles.msgError}>{formikProps.errors.email}</Text>
                             </View>
-                              <TouchableOpacity style={{alignItems:'flex-end', paddingRight:19, }} onPress={()=> navigation.navigate('CheckEmail')}>
+                              <TouchableOpacity style={{alignItems:'flex-end', paddingRight:19, }} onPress={()=> {
+                                  dispatch(clearPasswordAction())
+                                  navigation.navigate('CheckEmail')}}>
                                 <Text>Forgot password?</Text>
                               </TouchableOpacity >
                               {isError?(<Text style={styles.textError}>Email or Password Invalid</Text>
