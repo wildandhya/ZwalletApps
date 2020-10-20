@@ -48,4 +48,6 @@ export const clearUser = "CLEAR_USER";
 
 export const pinConfirm = "PIN_CONFIRM";
 
+export const sendEmail = "SEND_EMAIL";
+
 

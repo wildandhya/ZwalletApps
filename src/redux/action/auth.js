@@ -1,6 +1,6 @@
-import {login, register, editUser, checkEmail, logout, resetPassword, editImage, editPin, checkPin, clearPin, clearPassword} from './actionType'
+import {login, register, sendEmail, editUser, checkEmail, logout, resetPassword, editImage, editPin, checkPin, clearPin, clearPassword} from './actionType'
 
-import {loginApi, registerApi, editUserApi, checkEmailApi, resetPasswordApi, editImageApi, editPinApi, checkPinApi } from '../../utils/api'
+import {loginApi, registerApi, sendEmailApi, editUserApi, checkEmailApi, resetPasswordApi, editImageApi, editPinApi, checkPinApi } from '../../utils/api'
 
 
 export const loginAction = (data) => {
@@ -48,6 +48,14 @@ export const checkEmailAction = (email) => {
         payload: checkEmailApi(email)
     };
 
+}
+
+
+export const sendEmailAction = (email) => {
+    return{
+        type:sendEmail,
+        payload: sendEmailApi(email)
+    };
 }
 
 export const resetPasswordAction = (email, password) => {
