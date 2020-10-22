@@ -1,15 +1,14 @@
 import React, { useEffect } from 'react'
 import { View, StyleSheet, Text, Dimensions, TextInput, Button, StatusBar} from 'react-native'
-import { primary, background, white, drak, secondry, subTitle , btn, Bold, error} from '../../assets/color/color'
+import { primary, background, white, drak, secondry, subTitle , btn, Bold, error, success} from '../../assets/color/color'
 import {Formik} from 'formik'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import Icon from 'react-native-vector-icons/Feather';
 import Email from 'react-native-vector-icons/EvilIcons';
 import { Input} from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux'
 import * as yup from 'yup'
 
-import {checkEmailAction} from '../../redux/action/auth'
+import {sendEmailAction, checkEmailAction} from '../../redux/action/auth'
 
 
 
@@ -20,25 +19,29 @@ const CheckEmail = ({navigation})=> {
     }
 
     const dispatch = useDispatch()
-    const {isError, user, isLogged, userEdit} = useSelector(state => state.auth)
+    const {isError, user,  errorMsg, otp} = useSelector(state => state.auth)
 
 
     const [show, setShow] = React.useState(false)
     const [focused, setFocused] = React.useState(false)
-    const [showError, setShowError] = React.useState(false)
+    const [msg, setMsg] = React.useState(false)
 
     const formValidation = yup.object().shape({
         email:yup.string().required().label('email').email(),
     })
 
    useEffect(()=>{
-       if(user.msg === 'your email match'){
-           setShowError(false)
-           handleGoTo('ResetPassword')
-       }else{
-           setShowError(true)
+       if(otp.msg === 'Email Valid'){
+           setMsg('Check your Email')
+           setTimeout(()=>{
+            handleGoTo('Otp')
+           }, 2000)
+           
        }
-   }, [user.msg])
+    //    if(errorMsg.msg === 'Invalid Email'){
+    //      setMsg('Your Email Invalid')
+    //    }
+   }, [otp])
 
     return (
         <View style={styles.container}>
@@ -48,15 +51,16 @@ const CheckEmail = ({navigation})=> {
             </View>
             <View style={styles.loginWraper}>
                 <Text style={styles.loginTitle}>Reset Password</Text>
-                <Text style={styles.loginDesc}>Enter your Zwallet e-mail so we can send you a password reset link.</Text>
+                <Text style={styles.loginDesc}>Enter your Zwallet e-mail so we can send you a OTP Code to your Email.</Text>
                 
             <View style={styles.form}>
                 <Formik 
                 initialValues={{email:''}}
                 validationSchema={formValidation}
-                onSubmit={(values, action)=>{
+                onSubmit={(value, action)=>{
                     action.resetForm()
-                    dispatch(checkEmailAction(values))
+                    dispatch(sendEmailAction(value.email))
+                    
                 }}
                 >
                 {(formikProps) => (                       
@@ -83,8 +87,8 @@ const CheckEmail = ({navigation})=> {
                                 />
                                 <Text style={styles.msgError}>{formikProps.errors.email}</Text>
                             </View>
-                              {isError?(<Text style={styles.textError}>Email Invalid</Text>
-                             ):null}
+                            {isError !== true?(<Text style={styles.msgSuccess}>{msg}</Text>
+                             ):(<Text style={styles.msgError}>Your Email Invalid</Text>)}
                                <TouchableOpacity style={focused? {...styles.btn, backgroundColor:primary} :styles.btn}
                                onPress={formikProps.handleSubmit}>
                                 <Text style={focused?{...styles.btnText, color:white} :styles.btnText}>Confirm</Text>
@@ -167,18 +171,19 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         marginTop:20
     },
-    textError:{
+    msgError:{
         color:error,
         fontSize:16,
         fontFamily:'NunitoSans-Semi-bold',
         alignSelf:'center',
         marginTop:15
     },
-    msgError:{
-        color:error,
-        marginHorizontal:19,
-        marginTop:5,
-        paddingTop:0
+    msgSuccess:{
+        color:success,
+        fontSize:16,
+        fontFamily:'NunitoSans-Semi-bold',
+        alignSelf:'center',
+        marginTop:15
     }
 
 })

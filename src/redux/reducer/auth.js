@@ -12,7 +12,8 @@ import {
     editPin,
     checkPin,
     clearPin,
-    clearPassword
+    clearPassword,
+    sendEmail
   } from "../action/actionType";
   
   const initialState = {
@@ -20,6 +21,7 @@ import {
     userEdit:[],
     error: [],
     pinCheck:[],
+    otp:null,
     isPending: false,
     isFulfilled: false,
     isRejected: false,
@@ -288,46 +290,43 @@ import {
                             pinUpdate:false  
                           }
                     }
-                    case checkPin + pending:
-                      return {
-                        ...prevState,
-                        isPending: true,
-                        pinMatch:false
-                        
-                      };
-                
-                    case checkPin + rejected:
-                      return {
-                        ...prevState,
-                        isRejected: true,
-                        error: payload.data.error,
-                        isPending: false,
-                        pinMatch:false
-                        
-                      };
-                    case checkPin + fulfilled:
-                      if(payload.data.success){
+                      case sendEmail + pending:
                         return {
                           ...prevState,
-                          isFulfilled: true,
-                          pinCheck: payload.data.data,
+                          isPending: true,
+                          pinMatch:false
+                          
+                        };
+                  
+                      case sendEmail + rejected:
+                        return {
+                          ...prevState,
+                          isRejected: true,
+                          error: payload.data.error,
                           isPending: false,
-                          isError:false,
-                          pinMatch:true
-                         
-                        }
-                      }else{
+                          pinMatch:false
+                          
+                        };
+                      case sendEmail + fulfilled:
+                        if(payload.data.success){
                           return {
-                              ...prevState,
-                              isFulfilled: true,
-                              error: payload.data,
-                              isPending: false,
-                              isError:true,
-                              pinMatch:false
-                             
-                             
+                            ...prevState,
+                            isFulfilled: true,
+                            otp: payload.data.data,
+                            isPending: false,
+                            isError:false,
+                           
+                          }
+                        }else{
+                            return {
+                                ...prevState,
+                                isFulfilled: true,
+                                error: payload.data,
+                                isPending: false,
+                                isError:true,
+                               
+                          }
                         }
-                      }
           case clearPin:
              return {
                ...prevState,
@@ -341,6 +340,7 @@ import {
             return {
               ...prevState,
                    user: [],
+                   otp:[],
                    isLogged:false,
                    isRegister:false,
                    passUpdate:false,

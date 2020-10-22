@@ -18,7 +18,7 @@ export const registerAction = (data) => {
     };
 
 }
-export const logoutAction = (data) => {
+export const logoutAction = () => {
     return{
         type:logout
     };
@@ -41,17 +41,17 @@ export const editImageAction = (image, email) => {
 }
 
 
-export const checkEmailAction = (email) => {
-    // console.log(data)
-    return{
-        type:checkEmail,
-        payload: checkEmailApi(email)
-    };
+// export const checkEmailAction = (email) => {
+//     return{
+//         type:checkEmail,
+//         payload: checkEmailApi(email)
+//     };
 
-}
+// }
 
 
 export const sendEmailAction = (email) => {
+    // console.log(email)
     return{
         type:sendEmail,
         payload: sendEmailApi(email)
@@ -59,7 +59,6 @@ export const sendEmailAction = (email) => {
 }
 
 export const resetPasswordAction = (email, password) => {
-    // console.log(data)
     return{
         type:resetPassword,
         payload: resetPasswordApi(email, password)

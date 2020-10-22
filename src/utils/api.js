@@ -1,11 +1,11 @@
 import Axios from 'axios'
 
-export const ip = 'http://192.168.1.101:8000'
+export const ip = 'http://192.168.1.100:8000'
 
 // 192.168.43.107
 //10.0.2.2
 
-export const localhost = '192.168.1.101'
+export const localhost = '192.168.1.100'
 
 export const getContactApi = ()=>{
     return Axios.get(`${ip}/user`)
@@ -86,7 +86,7 @@ export const resetPasswordApi = (email, password)=>{
 }
 
 export const sendEmailApi = (email)=>{
-  return Axios.patch(`${ip}/sendEmail`, email )
+  return Axios.get(`${ip}/sendEmail?email=${email}`)
 
 }
 

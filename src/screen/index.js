@@ -17,7 +17,8 @@ import Notification from './notification'
 import CheckEmail from './pin/checkEmail'
 import ResetPassword from './pin/resetPassword'
 import ChangePinFilled from './pin/chnagePinFilled'
+import Otp from './pin/otp'
 
 
 export{SplashScreen, Login, SignUp, CreatePin, PinSuccess, Home, TransactionHistory, SearchContact,
-Transfer, Confrim, InputPin, TransSuccess, Profile, ChangePassword, ChangePin, Notification, CheckEmail, ResetPassword, ChangePinFilled}
+Transfer, Confrim, InputPin, TransSuccess, Profile, ChangePassword, ChangePin, Notification, CheckEmail, ResetPassword, ChangePinFilled, Otp}

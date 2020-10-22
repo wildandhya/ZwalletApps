@@ -2,7 +2,7 @@ import React from 'react'
 
 import {createStackNavigator} from '@react-navigation/stack'
 import {SplashScreen, Login, SignUp, CreatePin, PinSuccess, Home, TransactionHistory, SearchContact, Transfer, Confrim,
-     InputPin, TransSuccess, Profile, ChangePassword, ChangePin, Notification, CheckEmail, ResetPassword, ChangePinFilled} from "../screen/index"
+     InputPin, TransSuccess, Profile, ChangePassword, ChangePin, Notification, CheckEmail, ResetPassword, ChangePinFilled, Otp} from "../screen/index"
 
 
 const Stack = createStackNavigator()
@@ -29,6 +29,7 @@ const Router = ()=>{
             <Stack.Screen name='CheckEmail' component={CheckEmail} options={{headerShown:false}}/>
             <Stack.Screen name='ResetPassword' component={ResetPassword} options={{headerShown:false}}/>
             <Stack.Screen name='ChangePinFilled' component={ChangePinFilled} options={{headerShown:false}}/>
+            <Stack.Screen name='Otp' component={Otp} options={{headerShown:false}}/>
         </Stack.Navigator>
     )
 }

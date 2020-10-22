@@ -20,7 +20,7 @@ const ResetPassword = ({navigation})=> {
     }
 
     const dispatch = useDispatch()
-    const {isError, user, passUpdate} = useSelector(state => state.auth)
+    const {isError, otp, passUpdate} = useSelector(state => state.auth)
 
     const [show, setShow] = React.useState(false)
     const [focused, setFocused] = React.useState(false)
@@ -34,7 +34,9 @@ const ResetPassword = ({navigation})=> {
    useEffect(()=>{
        if(passUpdate){
            setShowError(false)
-           navigation.navigate('Login')
+           setTimeout(()=>{
+            navigation.navigate('Login')
+           }, 2000)
            dispatch(clearPasswordAction())
        }else{
            setShowError(true)
@@ -58,16 +60,16 @@ const ResetPassword = ({navigation})=> {
                 onSubmit={(values, action)=>{
                     // action.resetForm(values)
                     if(values.password === values.confirmPassword){
-                        dispatch(resetPasswordAction(user.email, values.password))
+                        dispatch(resetPasswordAction(otp.email, values.password))
                         setMsgError('')
                     }else{
-                        setMsgError('Password Wrong')
+                        setMsgError('Password do not match')
                     }
                 }}
                 >
                 {(formikProps) => (                       
                      <View style={styles.formWrapp}>
-                                          <View style={styles.passwordWrapp}>
+                            <View style={styles.passwordWrapp}>
                                 <Input 
                                 secureTextEntry={!show}
                                  leftIcon={
@@ -96,10 +98,11 @@ const ResetPassword = ({navigation})=> {
                                 }
                                 containerStyle={{height:50, marginTop:10}}
                                 placeholder='Create new password'
+                                onFocus={()=> setFocused(!focused)}
                                 value={formikProps.values.password}
                                 onChangeText={formikProps.handleChange('password')}
                                 />
-                                <Text style={styles.msgError}>{formikProps.errors.email}</Text>
+                                <Text style={styles.msgError}>{formikProps.errors.password}</Text>
                             </View>
                             <View style={styles.passwordWrapp}>
                                 <Input 
@@ -130,6 +133,7 @@ const ResetPassword = ({navigation})=> {
                                 }
                                 containerStyle={{height:50, marginTop:10}}
                                 placeholder='Confirm new password'
+                                onFocus={()=> setFocused(!focused)}
                                 value={formikProps.values.confirmpassword}
                                 onChangeText={formikProps.handleChange('confirmPassword')}
                                 />
