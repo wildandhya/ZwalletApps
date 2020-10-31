@@ -1,15 +1,16 @@
 import Axios from 'axios'
 
-export const ip = 'http://192.168.1.100:8000'
+export const ip = 'http://3.87.168.244:7000'
 
 // 192.168.43.107
 //10.0.2.2
 
-export const localhost = '192.168.1.100'
+export const localhost = '3.87.168.244'
 
 export const getContactApi = ()=>{
     return Axios.get(`${ip}/user`)
 }
+
 export const searchContactApi = (username)=>{
     return Axios.get(`${ip}/user?search=${username}`)
 }
@@ -31,7 +32,7 @@ export const createPinApi = (id, pin)=>{
 }
 
 export const getHistoryApi = (id)=>{
-    return Axios.get(`${ip}/history/${id}`)
+    return Axios.get(`${ip}/history?sender_id=${id}&reciever_id=${id}`)
 
 }
 

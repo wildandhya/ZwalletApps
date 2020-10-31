@@ -7,7 +7,8 @@ import {
     getHistory,
     searchContact,
     checkPass,
-    clearUser
+    clearUser,
+    checkPin
   } from "../action/actionType";
   
   const initialState = {

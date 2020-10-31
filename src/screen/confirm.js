@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, Text, Dimensions, TextInput, Button, Image} from 'react-native'
+import { View, StyleSheet, Text, Dimensions, StatusBar, TextInput, Button, Image} from 'react-native'
 import { primary,  white, drak, btn, regular, Bold, subTitle} from '../assets/color/color'
 
 import { TouchableOpacity, ScrollView, FlatList } from 'react-native-gesture-handler'
@@ -30,9 +30,10 @@ const Confirm = ({navigation})=> {
     }
     return (
         <View style={styles.container}>
+            <StatusBar backgroundColor={primary}/>
              <View style={styles.header}>
                  <View style={{flexDirection:'row', marginTop:50, marginLeft:17}}>
-                <TouchableOpacity onPress={()=> handleGoTo('Home')}>
+                <TouchableOpacity onPress={()=> handleGoTo('Transfer')}>
                  <Icon 
                  name='arrowleft'
                  size={28}
@@ -48,7 +49,7 @@ const Confirm = ({navigation})=> {
                         
                         <View style={{marginLeft:15}}>
                              <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>{data.username}</Text>
-                             <Text style={{fontSize:14, marginTop:5, color:'#7a7886'}}>{data.phone_number}</Text>
+                             <Text style={{fontSize:14, marginTop:5, color:'#7a7886'}}>{data.phone_number === null?'No Phone Number':data.phone_number}</Text>
                        </View>
                     </View>                
             </View>

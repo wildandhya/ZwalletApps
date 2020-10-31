@@ -1,20 +1,25 @@
 import React, { useEffect } from 'react'
-import { View, StyleSheet, Text, Dimensions, TextInput, Button, Image} from 'react-native'
+import { View, StyleSheet, Text, Dimensions, StatusBar, TextInput, Button, Image} from 'react-native'
 import { primary,  white, drak, btn, regular, Bold, subTitle} from '../assets/color/color'
 
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler'
 import { successIcon , prof3} from '../assets'
 import { DateTime } from "luxon"
 
-import { useSelector} from 'react-redux'
+import { useSelector, useDispatch} from 'react-redux'
+import {deletePinAction} from '../redux/action/transfer'
+
 import {localhost} from '../utils/api'
 import PushNotification from 'react-native-push-notification';
 import {showLocalNotification} from '../notif/handleNotification'
+import {getContactAction} from '../redux/action/user'
 
 
 
 
 const TransSuccess = ({navigation})=> {
+
+    const dispatch = useDispatch()
 
     const {data} = useSelector(state => state.contact)
     const {nota} = useSelector(state => state.contact)
@@ -25,8 +30,12 @@ const TransSuccess = ({navigation})=> {
         navigation.navigate(screen)
     }
     const channelId = 'transaction';
-    
-      
+
+    const handleBackHome = ()=>{
+        dispatch(getContactAction())
+        dispatch(deletePinAction())
+        handleGoTo('Home')
+    }
 
    useEffect(()=>{
     PushNotification.createChannel(
@@ -40,6 +49,7 @@ const TransSuccess = ({navigation})=> {
 
     return (
         <View style={styles.container}>
+            <StatusBar backgroundColor="#fafcff"/>
              <View style={styles.header}>
                  <Image source={successIcon}/>
                 <Text style={styles.title}>Transfer Details</Text>   
@@ -79,11 +89,11 @@ const TransSuccess = ({navigation})=> {
                         
                     <View style={{marginLeft:15}}>
                           <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>{data.username}</Text>
-                          <Text style={{fontSize:14, fontFamily:'NunitoSans-Regular', marginTop:5, color:'#7a7886'}}>{data.phone_number}</Text>
+                          <Text style={{fontSize:14, fontFamily:'NunitoSans-Regular', marginTop:5, color:'#7a7886'}}>{data.phone_number === null?'No Phone Number':data.phone_number}</Text>
                    </View>
                 </View>            
             </View>
-            <TouchableOpacity style={styles.btn} onPress={()=>handleGoTo('Home')}>
+            <TouchableOpacity style={styles.btn} onPress={handleBackHome}>
                 <Text style={styles.btnText}>Back to Home</Text>
             </TouchableOpacity>
            

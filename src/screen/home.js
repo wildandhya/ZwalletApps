@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
 import { View, StyleSheet, Text, Dimensions, StatusBar, Image, FlatList} from 'react-native'
-import { primary,  white, drak, success, trans, } from '../assets/color/color'
+import { primary,  white, drak, success, trans, error, } from '../assets/color/color'
 
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler'
 import { bell, arrowUp, plus, prof3, userIcon } from '../assets'
 import { useDispatch, useSelector } from 'react-redux'
 import { getHistoryAction} from '../redux/action/transfer'
+import {getContactAction} from '../redux/action/user'
 
 import {localhost} from '../utils/api'
 
@@ -18,7 +19,18 @@ const Home = ({navigation})=> {
     const dispatch = useDispatch()
 
     const {user} = useSelector(state=>state.auth)
+    const contact = useSelector(state => state.user.data)
     const {history} = useSelector(state => state.user)
+
+    
+
+    const item = contact.filter((x)=>{
+        return x.id === user.id
+    })
+
+    console.log(history.length)
+
+    
     
     const handleGoTo = (screen)=>{
         navigation.navigate(screen)
@@ -26,7 +38,8 @@ const Home = ({navigation})=> {
     
     useEffect(()=>{
         dispatch(getHistoryAction(user.id))
-    },[])
+        dispatch(getContactAction())
+    },[dispatch])
 
     return (
         <View style={styles.container}>
@@ -38,13 +51,13 @@ const Home = ({navigation})=> {
                     ):(<Image source={{uri:user.image.replace('localhost', localhost)}} style={styles.img} />)}
                 
                 </TouchableOpacity>
-                <View style={{marginRight:100}}>
+                <View style={{flex:1, marginLeft:15}}>
                   <Text style={styles.title}>Balance</Text>
-                  {user.balance === null?(<Text style={styles.price}>Rp.0</Text>):(
-                      <Text style={styles.price}>Rp{user.balance}</Text>
+                  {user.balance === null ?(<Text style={styles.price}>Rp 0</Text>):(
+                      <Text style={styles.price}>Rp {user.balance.toLocaleString("id-ID")}</Text>
                   )}
                 </View>
-                <TouchableOpacity onPress={()=> handleGoTo('Notification')}>
+                <TouchableOpacity onPress={()=> handleGoTo('Notification')} style={{flex:1, alignItems:'flex-end',justifyContent:'center'}}>
                     <Image source={bell} />
                 </TouchableOpacity>
             </View>
@@ -65,23 +78,24 @@ const Home = ({navigation})=> {
                 </TouchableOpacity>
             </View>
             <View style={{marginTop:10}}>
-                {
+                {history.length === 0? (<Text style={{textAlign:'center', marginTop:30, fontSize:17}}>You have never done any transactions</Text>):
                     history.map((item, index) =>{
                         return(
-                            item.length === 0?(<Text>You have never done any transactions</Text>):(
+                          
                                 <View style={styles.card} key={index}>
                             {item.image === null?(
                                 <Image source={userIcon}/>
                             ):(<Image source={{uri:item.image.replace('localhost',localhost)}} style={styles.img}/>)}
                             <View style={{flex:1, marginLeft:15}}>
-                               <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>{item.username}</Text>
+                               <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>{item.username
+                               }</Text>
                                 <Text style={{fontSize:14, fontWeight:'400', marginTop:9}}>Transfer</Text>
                              </View>
                              <View style={{justifyContent:'center', flex:1, alignItems:'flex-end'}}>
-                             <Text style={{color:success, fontSize:18, fontWeight:'700'}}>+{item.trans_amount}</Text>
+                                 {user.id === item.reciever_id?(<Text style={{color:success, fontSize:18, fontWeight:'700'}}>+{item.trans_amount.toLocaleString("id-ID")}</Text>):(<Text style={{color:error, fontSize:18, fontWeight:'700'}}>-{item.trans_amount.toLocaleString("id-ID")}</Text>)}
                             </View>
                         </View>
-                            )
+                            
                           
                         )
                     })

@@ -15,16 +15,23 @@ const ChangePassword = ({navigation})=> {
 
     const dispatch = useDispatch()
     const {password, passMatch} = useSelector(state=>state.user)
-    const {user} = useSelector(state=>state.auth)
+    const {user, isError} = useSelector(state=>state.auth)
+    const [msg, setMsg] = React.useState('')
+    const [show, setShow] = React.useState(false)
+    const [focused, setFocused] = React.useState(false)
 
     const [msgError, setMsgError] = useState(false)
+    const [msgApi, setMsgApi] = useState(null)
 
     useEffect(()=>{
         if(password.msg === 'Password Match'){
             navigation.navigate('Profile')
+            setMsgApi(false)
             dispatch(clearUserAction())
+        }else{
+            setMsgApi(true)
         }
-    },[password.msg, navigation])
+    },[password.msg, navigation, msgApi])
     return (
         <View style={styles.container}>
              <View style={styles.header}>
@@ -61,52 +68,68 @@ const ChangePassword = ({navigation})=> {
                                  leftIcon={
                                     <Icon
                                     name='lock'
-                                    color= {secondry}
+                                    color= {focused? primary : secondry && isError? error : secondry}
                                     size={23}
                             
                                     />
                                  }
                                  rightIcon={
-                                    <Icon
-                                    name='eye-off'
-                                    color= {secondry}
-                                    size={20}
-                            
+                                    <TouchableOpacity onPress={()=>{
+                                        setShow(!show)
+                                        
+                                     }}>
+                                          <Icon
+                                              name={show === false? 'eye-off' : 'eye'}
+                                              color= {focused? primary : secondry && isError? error : secondry}
+                                              size={23}
                                     />
-
+                                     </TouchableOpacity>
                                  }
                                 style={styles.input} 
                                 placeholder='Current Password'
                                 value={formikProps.values.password}
+                                onFocus={()=> setFocused(!focused)}
                                 onChangeText={formikProps.handleChange('password')}
-                                secureTextEntry={true}
+                                inputContainerStyle={focused? 
+                                    {borderBottomColor:primary, borderBottomWidth:2}:{borderBottomColor:secondry, borderBottomWidth:1}
+                                    && isError? {borderBottomColor:error, borderBottomWidth:2}:{borderBottomColor:secondry, borderBottomWidth:1}
+                                }
+                                secureTextEntry={!show}
                                 />
-                                {passMatch === false? (<Text style={{color:'red'}}>wrong password</Text>):null}
+                                {/* {msgApi === true? (<Text style={{color:'red', marginLeft:16}}>wrong password</Text>):''} */}
                             </View>
                             <View style={styles.passwordWrapp}>
                                 <Input 
                                  leftIcon={
                                     <Icon
                                     name='lock'
-                                    color= {secondry}
+                                    color= {focused? primary : secondry && isError? error : secondry}
                                     size={23}
                             
                                     />
                                  }
                                  rightIcon={
-                                    <Icon
-                                    name='eye-off'
-                                    color= {secondry}
-                                    size={20}
-                            
+                                    <TouchableOpacity onPress={()=>{
+                                        setShow(!show)
+                                        
+                                     }}>
+                                          <Icon
+                                              name={show === false? 'eye-off' : 'eye'}
+                                              color= {focused? primary : secondry && isError? error : secondry}
+                                              size={23}
                                     />
+                                     </TouchableOpacity>
 
                                  }
                                 style={styles.input} 
                                 placeholder='New Password'
                                 value={formikProps.values.newPassword}
                                 onChangeText={formikProps.handleChange('newPassword')}
-                                secureTextEntry={true}
+                                inputContainerStyle={focused? 
+                                    {borderBottomColor:primary, borderBottomWidth:2}:{borderBottomColor:secondry, borderBottomWidth:1}
+                                    && isError? {borderBottomColor:error, borderBottomWidth:2}:{borderBottomColor:secondry, borderBottomWidth:1}
+                                }
+                                secureTextEntry={!show}
                                 />
                             </View>
                             <View style={styles.passwordWrapp}>
@@ -114,31 +137,39 @@ const ChangePassword = ({navigation})=> {
                                  leftIcon={
                                     <Icon
                                     name='lock'
-                                    color= {secondry}
+                                    color= {focused? primary : secondry && isError? error : secondry}
                                     size={23}
                                     />
                                  }
                                  rightIcon={
-                                    <Icon
-                                    name='eye-off'
-                                    color= {secondry}
-                                    size={20}
-                            
+                                    <TouchableOpacity onPress={()=>{
+                                        setShow(!show)
+                                        
+                                     }}>
+                                          <Icon
+                                              name={show === false? 'eye-off' : 'eye'}
+                                              color= {focused? primary : secondry && isError? error : secondry}
+                                              size={23}
                                     />
+                                     </TouchableOpacity>
 
                                  }
                                 style={styles.input} 
                                 placeholder='Repeat Password'
                                 value={formikProps.values.repeatPassword}
                                 onChangeText={formikProps.handleChange('repeatPassword')}
-                                secureTextEntry={true}
+                                inputContainerStyle={focused? 
+                                    {borderBottomColor:primary, borderBottomWidth:2}:{borderBottomColor:secondry, borderBottomWidth:1}
+                                    && isError? {borderBottomColor:error, borderBottomWidth:2}:{borderBottomColor:secondry, borderBottomWidth:1}
+                                }
+                                secureTextEntry={!show}
                                 />
 
                                 {msgError?(<Text style={{color:'red'}}>password do not match</Text>):null}
                             </View>
                             {password.msg === 'Password Match'? (<Text style={{color:success}}>Change Password Success</Text>):null}
-                            <TouchableOpacity style={styles.btn} onPress={formikProps.handleSubmit}>
-                                <Text style={styles.btnText}>Change Password</Text>
+                            <TouchableOpacity style={focused? {...styles.btn, backgroundColor:primary} :styles.btn} onPress={formikProps.handleSubmit}>
+                                <Text style={focused?{...styles.btnText, color:white} :styles.btnText}>Change Password</Text>
                            </TouchableOpacity>
                            </View>    
                         )}

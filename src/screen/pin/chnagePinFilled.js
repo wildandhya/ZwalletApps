@@ -66,7 +66,9 @@ const ChangePinFilled = ({navigation})=> {
               
                 <TouchableOpacity style={focused? {...styles.btn, backgroundColor:primary} :styles.btn} onPress={()=>{
                      if(pin.length === 6){
-                        dispatch(editPinAction(pin, user.email))}
+                        dispatch(editPinAction(pin, user.email))
+                        dispatch(clearPinAction())
+                    }
                     }
                 }>
                     <Text style={focused?{...styles.btnText, color:white} :styles.btnText}>Change PIN</Text>

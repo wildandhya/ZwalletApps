@@ -6,7 +6,8 @@ import {
     addToConfrim,
     transfer,
     checkPin,
-    pinConfirm
+    pinConfirm,
+    deletePin
   } from "../action/actionType";
   
   const initialState = {
@@ -108,6 +109,12 @@ import {
                        
                   }
                 }
+                case deletePin:
+                  return {
+                    ...prevState,
+                    pin: [],
+                    
+                  };
       default:
         return prevState;
     }

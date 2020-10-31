@@ -1,5 +1,5 @@
 import React, {useState}from 'react'
-import { View, StyleSheet, Text, Dimensions, TextInput, Button, Image} from 'react-native'
+import { View, StyleSheet, Text, Dimensions,StatusBar, TextInput, Button, Image} from 'react-native'
 import { primary, background, white, drak, secondry, subTitle , btn, success, bgImge, error, trans, shadowStyle} from '../assets/color/color'
 
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler'
@@ -16,6 +16,9 @@ const Transfer = ({navigation})=> {
 
     const {data} = useSelector(state => state.contact)
     const {user} = useSelector(state=>state.auth)
+    const [focused, setFocused] = React.useState(false)
+    const [msg, setMsg] = React.useState(false)
+    const [saldoEnough, setSaldoEnough] = React.useState(false)
     const dispatch = useDispatch()
 
     const [form, setForm ]=useState({
@@ -39,6 +42,7 @@ const Transfer = ({navigation})=> {
 
     return (
         <View style={styles.container} >
+            <StatusBar backgroundColor="#fafcff"/>
              <View style={styles.header}>
                  <View style={{flexDirection:'row', marginTop:50, marginLeft:17}}>
                 <TouchableOpacity onPress={()=> handleGoTo('SearchContact')}>
@@ -61,7 +65,7 @@ const Transfer = ({navigation})=> {
                               
                                <View style={{marginLeft:15}}>
                                  <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>{data.username}</Text>
-                                 <Text style={{fontSize:14, fontFamily:'NunitoSans_Regular', marginTop:5, color:'#7a7886'}}>{data.phone_number}</Text>
+                                 {data.phone_number === null?(<Text style={{fontSize:14, fontFamily:'NunitoSans_Regular', marginTop:5, color:'#7a7886'}}>No Phone number</Text>):( <Text style={{fontSize:14, fontFamily:'NunitoSans_Regular', marginTop:5, color:'#7a7886'}}>{data.phone_number}</Text>)}
                               </View>
                            </View>               
                         
@@ -69,14 +73,17 @@ const Transfer = ({navigation})=> {
             </View>
             <View style={styles.content}>
             {user.balance === null?(<Text style={styles.titleFilled}>Rp.0 Available</Text>):(
-                      <Text style={styles.titleFilled}>Rp {user.balance} Available</Text>
+                      <Text style={styles.titleFilled}>Rp {user.balance.toLocaleString("id-ID")} Available</Text>
                   )}
                 <TextInput
                 placeholder='0.00'
                 keyboardType='number-pad'
-                style={{marginVertical:40, fontSize:42}}
+                style={{...styles.inputNumber, color:primary}}
                 value={form.amount}
+                onFocus={()=> setFocused(!focused)}
+                // onBlur={()=>setFocused(false)}
                 onChangeText={(value)=> inputChange(value, 'amount')}
+                
                 />
                 <Input
                 placeholder='Add some notes'
@@ -84,18 +91,37 @@ const Transfer = ({navigation})=> {
                     <Icon 
                     name='pencil-outline'
                     size={25}
-                    color={subTitle}
+                    color={focused?primary:subTitle}
                     />
                 }
                 value={form.notes}
-                onChangeText={(value)=> inputChange(value, 'notes')}
+                inputContainerStyle={focused? 
+                    {borderBottomColor:primary, borderBottomWidth:1}:{borderBottomColor:secondry, borderBottomWidth:1} 
+                } 
+                onFocus={()=> setFocused(true)}
+                // onBlur={()=>setFocused(false)}
+                onChangeText={(value)=> {
+                    inputChange(value, 'notes');
+                }}
                 />
             </View>
-            <TouchableOpacity style={styles.btn} onPress={()=>{
-                sendData()
-                handleGoTo('Confirm')
+            {msg?(<Text style={styles.msgError}>Please input your money first</Text>):null}
+            {saldoEnough?(<Text style={styles.msgError}>Sorry your balance not enough</Text>):null}
+            <TouchableOpacity style={focused?{...styles.btn, backgroundColor:primary, color:'#fff'}:{...styles.btn, backgroundColor:btn}} onPress={()=>{
+                if(user.balance === null){
+                    setSaldoEnough(true)
+                }else{
+                    if(form.amount === ''){
+                        setMsg(true)
+                    }else{
+                        setMsg(false)
+                        sendData()
+                        handleGoTo('Confirm')
+                        setSaldoEnough(true)
+                    }
+                }
                 }}>
-                <Text style={styles.btnText}>Next</Text>
+                <Text style={focused?{...styles.btnText,color:'#fff'}:{...styles.btnText, color:'#88888f'}}>Next</Text>
             </TouchableOpacity>
         </View>
     )
@@ -170,7 +196,7 @@ const styles = StyleSheet.create({
         color:'#7c7895'
     },
     btn:{
-        backgroundColor:btn,
+        
         marginHorizontal:19,
         paddingVertical:16,
         marginTop:25,
@@ -182,4 +208,13 @@ const styles = StyleSheet.create({
         color:'#88888f'
 
     },
+    inputNumber:{
+        marginVertical:40, 
+        fontSize:42
+    },
+    msgError:{
+        color:error,
+        textAlign:'center',
+        fontSize:16
+    }
 })

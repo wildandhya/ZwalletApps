@@ -24,6 +24,9 @@ const TransactionHistory = ({navigation})=> {
     const {history} = useSelector(state => state.user)
     const {user} = useSelector(state=>state.auth)
 
+    const historyIn = history.filter((x)=>{x.reciever_id === user.id})
+    const historyOut = history.filter((x)=>{x.reciever_id !== user.id})
+
     useEffect(()=>{
         dispatch(getHistoryAction(user.id))
     },[])
@@ -33,7 +36,9 @@ const TransactionHistory = ({navigation})=> {
    const endDateWeek = DateTime.local().startOf('week').plus({ days: 7 }).toISODate();
    const getThisMonth = DateTime.local().month;
 
+   if(historyIn === null && historyOut === null){
 
+   }
     const thisWeek = history.filter((item) => {
         return (
            DateTime.fromISO(item.transfer_date).toISODate() >= startDateWeek &&
@@ -61,12 +66,12 @@ const TransactionHistory = ({navigation})=> {
                  {data.image === null?(
                     <Image source={userIcon} style={styles.img}/>
                 ):(<Image source={{uri:data.image.replace('localhost',localhost)}} style={styles.img}/>)}
-                <View style={{marginRight:70}}>
+                <View style={{flex:1, marginLeft:15}}>
                     <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>{data.username}</Text>
                     <Text style={{fontSize:14, fontWeight:'400', marginTop:9}}>Transfer</Text>
               </View>
-              <View style={{justifyContent:'center'}}>
-                 <Text style={{color:success, fontSize:18, fontWeight:'700'}}>-{data.trans_amount}</Text>
+              <View style={{justifyContent:'center', flex:1, alignItems:'flex-end'}}>
+                 <Text style={{color:success, fontSize:18, fontWeight:'700'}}>{user.id === data.reciever_id?(<Text style={{color:success, fontSize:18, fontWeight:'700'}}>+{data.trans_amount.toLocaleString("id-ID")}</Text>):(<Text style={{color:error, fontSize:18, fontWeight:'700'}}>-{data.trans_amount.toLocaleString("id-ID")}</Text>)}</Text>
              </View>
         </View>
          )
@@ -102,7 +107,6 @@ const TransactionHistory = ({navigation})=> {
                 <Text style={styles.title}>History</Text>
                   
             </View>
-           
                 <SectionList
                  sections={historyData}
                  keyExtractor={(item, index) => item + index}
@@ -114,11 +118,6 @@ const TransactionHistory = ({navigation})=> {
                        </View>
                  )
                  }
-                //  ListFooterComponent={()=>{
-                //      return(
-                     
-                //      )
-                //  }}
                 />
            
             <View style={styles.footer}>

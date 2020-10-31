@@ -22,11 +22,13 @@ const SearchContact = ({navigation})=> {
 
     const dispatch = useDispatch()
 
-    const user = useSelector(state => state.user.data)
+    const {user} = useSelector(state => state.auth)
+    const contact = useSelector(state => state.user.data)
+
+    const listContact = contact.filter((x)=>{
+        return x.id !== user.id
+    })
    
-    useEffect(()=>{
-        dispatch(getContactAction())
-    }, [])
     return (
         <View style={styles.container}>
              <View style={styles.header}>
@@ -59,10 +61,10 @@ const SearchContact = ({navigation})=> {
             </View>
             <View style={{ marginHorizontal:16, marginTop:20, paddingBottom:10}}>
                 <Text style={{fontSize:18, fontWeight:'700'}}>Contact</Text>
-                <Text style={{fontSize:14, fontFamily:'NunitoSans-Regular', color:'#8f8f8f', paddingTop:5}}>{user.length} Contact Founds</Text>
+                <Text style={{fontSize:14, fontFamily:'NunitoSans-Regular', color:'#8f8f8f', paddingTop:5}}>{listContact.length} Contact Founds</Text>
             </View>
             <ScrollView>
-                {user.map((item, index)=>{
+                {listContact.map((item, index)=>{
                     return(
                         <TouchableOpacity onPress={()=>{
                             dispatch(addContactAction({id:item.id, username:item.username, phone_number:item.phone_number, image:item.image}))
@@ -73,7 +75,7 @@ const SearchContact = ({navigation})=> {
                             ):(<Image source={{uri:item.image.replace('localhost',localhost)}} style={styles.img}/>)}
                          <View style={{marginLeft:15}}>
                            <Text style={{fontSize:16, color:drak, fontWeight:'700'}}>{item.username}</Text>
-                           {item.phone_number === null?(<Text style={{fontSize:14, fontFamily:'NunitoSans_Regular', marginTop:5, color:'#7a7886'}}>Phone Number not Found</Text>):(
+                           {item.phone_number === null?(<Text style={{fontSize:14, fontFamily:'NunitoSans_Regular', marginTop:5, color:'#7a7886'}}>No Phone Number</Text>):(
                                <Text style={{fontSize:14, fontFamily:'NunitoSans_Regular', marginTop:5, color:'#7a7886'}}>{item.phone_number}</Text>
                            )}
                          

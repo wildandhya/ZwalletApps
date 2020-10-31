@@ -211,11 +211,47 @@ import {
                         isFulfilled: true,
                         error: payload.data,
                         isPending: false,
-                        passUpdate:false
+                        passUpdate:false,
+                        isError:true
                         
                        
                       }
                 }
+                case checkPin + pending:
+                  return {
+                    ...prevState,
+                    isPending: true,
+                  };
+            
+                case checkPin + rejected:
+                  return {
+                    ...prevState,
+                    isRejected: true,
+                    error: payload,
+                    isPending: false,
+                  };
+                case checkPin + fulfilled:
+                  if(payload.data.success){
+                    return {
+                      ...prevState,
+                      isFulfilled: true,
+                      pinCheck: payload.data.data,
+                      isPending: false,
+                      passUpdate:true,
+                      isError:false,
+                     
+                    }
+                  }else{
+                      return {
+                          ...prevState,
+                          isFulfilled: true,
+                          error: payload.data,
+                          isPending: false,
+                          isError:true
+                          
+                         
+                        }
+                  }
 
                 case editImage + pending:
                   return {
@@ -334,7 +370,8 @@ import {
                   isLogged:false,
                   isRegister:false,
                   pinMatch:false,
-                  pinUpdate:false
+                  pinUpdate:false,
+                  isError:false
             }
          case clearPassword:
             return {

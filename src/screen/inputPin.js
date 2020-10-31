@@ -38,16 +38,7 @@ const InputPin = ({navigation})=> {
     const handleGoTo = (screen)=>{
         navigation.navigate(screen)
     }
-
-    // const channelId = 'transaction';
-
     useEffect(()=>{
-        // PushNotification.createChannel(
-        //     {
-        //       channelId,
-        //       channelName: 'transaction',
-        //     },
-        //   );
         if(pinConql.msg === "Pin Match"){
             dispatch(transferAction(trans))
             setMsg(null)

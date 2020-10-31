@@ -41,15 +41,6 @@ export const editImageAction = (image, email) => {
 }
 
 
-// export const checkEmailAction = (email) => {
-//     return{
-//         type:checkEmail,
-//         payload: checkEmailApi(email)
-//     };
-
-// }
-
-
 export const sendEmailAction = (email) => {
     // console.log(email)
     return{

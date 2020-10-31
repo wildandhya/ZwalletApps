@@ -13,20 +13,25 @@ const ChangePin = ({navigation})=> {
 
 
     const [pin, setPin] = React.useState('')
+    const [msg, setMsg] = React.useState('')
     const [focused, setFocused] = React.useState(false)
     const dispatch = useDispatch()
-    const {user, pinCheck, error} = useSelector(state => state.auth)
+    const {user, pinCheck, isError} = useSelector(state => state.auth)
 
     useEffect(()=>{
         if(pinCheck.msg === 'Pin Match'){
             navigation.navigate('ChangePinFilled')
+            setMsg('Your PIN Match')
         }
     }, [pinCheck.msg])
     return (
         <View style={styles.container}>
              <View style={styles.header}>
                  <View style={{flexDirection:'row', marginTop:30, marginLeft:17}}>
-                <TouchableOpacity onPress={()=> navigation.navigate('Profile')}>
+                <TouchableOpacity onPress={()=> {
+                     dispatch(clearPinAction())
+                    navigation.navigate('Profile')
+                    }}>
                  <Arrow 
                  name='arrowleft'
                  size={28}
@@ -50,7 +55,7 @@ const ChangePin = ({navigation})=> {
                 onBackspace={()=> setMsg(true)}
                 />      
                 </View> 
-                {pinCheck.msg === 'Pin Match'? (<Text style={styles.pinSuccess}>{pinCheck.msg}</Text>):null}
+            {isError !== true? (<Text style={styles.pinSuccess}>{msg}</Text>):(<Text style={styles.pinError}>Your PIN Wrong</Text>)}
             </View>    
                
                 <TouchableOpacity style={focused? {...styles.btn, backgroundColor:primary} :styles.btn} onPress={()=>{
@@ -65,7 +70,7 @@ const ChangePin = ({navigation})=> {
     )
 }
 
-// Type your new 6 digits security PIN to use in Zwallet.
+
 export default ChangePin
 
 const {height, width} = Dimensions.get('screen')

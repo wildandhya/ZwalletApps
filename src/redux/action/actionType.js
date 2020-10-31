@@ -41,13 +41,16 @@ export const createPin = "CREATE_PIN";
 
 export const clearPin = "CLEAR_PIN";
 
+export const deletePin = "DELETE_PIN";
+
 export const clearPassword = "CLEAR_PASSWORD";
 
 export const clearUser = "CLEAR_USER";
 
-
 export const pinConfirm = "PIN_CONFIRM";
 
 export const sendEmail = "SEND_EMAIL";
+
+
 
 
