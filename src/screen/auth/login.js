@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import * as yup from 'yup'
 
 import {loginAction, clearPasswordAction} from '../../redux/action/auth'
+import {getContactAction} from '../../redux/action/user'
 
 
 
@@ -35,11 +36,13 @@ const Login = ({navigation})=> {
    useEffect(()=>{
        if(isLogged){
            setShowError(false)
+          
            navigation.navigate('Home')
        }else{
            setShowError(true)
        }
-   }, [isLogged])
+
+   }, [isLogged, dispatch])
 
     return (
         <View style={styles.container}>

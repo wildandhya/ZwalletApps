@@ -1,4 +1,4 @@
-import {login, register, sendEmail, editUser, checkEmail, logout, resetPassword, editImage, editPin, checkPin, clearPin, clearPassword} from './actionType'
+import {login, register, sendEmail, editUser, checkEmail, logout, resetPassword, editImage, editPin, checkPin, clearPin, clearPassword, pinClear} from './actionType'
 
 import {loginApi, registerApi, sendEmailApi, editUserApi, checkEmailApi, resetPasswordApi, editImageApi, editPinApi, checkPinApi } from '../../utils/api'
 
@@ -74,6 +74,13 @@ export const checkPinAction = (pin, email) => {
 export const clearPinAction = () => {
     return{
         type:clearPin,
+       
+    };
+}
+
+export const pinClearAction = () => {
+    return{
+        type:pinClear,
        
     };
 }

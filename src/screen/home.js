@@ -28,7 +28,7 @@ const Home = ({navigation})=> {
         return x.id === user.id
     })
 
-    console.log(history.length)
+    console.log(item)
 
     
     

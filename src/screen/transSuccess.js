@@ -13,6 +13,7 @@ import {localhost} from '../utils/api'
 import PushNotification from 'react-native-push-notification';
 import {showLocalNotification} from '../notif/handleNotification'
 import {getContactAction} from '../redux/action/user'
+import { getHistoryAction} from '../redux/action/transfer'
 
 
 
@@ -23,6 +24,7 @@ const TransSuccess = ({navigation})=> {
 
     const {data} = useSelector(state => state.contact)
     const {nota} = useSelector(state => state.contact)
+    const {user} = useSelector(state=>state.auth)
 
     const datetime = DateTime.local()
 
@@ -34,6 +36,7 @@ const TransSuccess = ({navigation})=> {
     const handleBackHome = ()=>{
         dispatch(getContactAction())
         dispatch(deletePinAction())
+        dispatch(getHistoryAction(user.id))
         handleGoTo('Home')
     }
 

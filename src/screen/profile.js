@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, Text, Dimensions, TextInput, Button, Image, Switch} from 'react-native'
+import { View, StyleSheet, Text, Dimensions, TextInput, Button, Image, Switch, StatusBar} from 'react-native'
 import { primary,  white, drak, Bold, regular, background} from '../assets/color/color'
 
 import { TouchableOpacity, FlatList} from 'react-native-gesture-handler'
@@ -91,6 +91,7 @@ const Profile = ({navigation})=> {
     }
     return (
         <View style={styles.container}>
+             <StatusBar backgroundColor="#fafcff"/>
              <View style={styles.header}>
                  <View style={{flexDirection:'row', marginTop:50, marginLeft:17}}>
                 <TouchableOpacity onPress={()=> handleGoTo('Home') }>
@@ -105,7 +106,7 @@ const Profile = ({navigation})=> {
             </View>
             <View style={{alignItems:'center', marginTop:15}}>
                  <View style={styles.imgBg}>
-                 {user.image === undefined?(
+                 {user.image === null || user.image === undefined?(
                         <Image source={userIcon}  style={styles.img}/>
                     ):(<Image source={{uri:user.image.replace('localhost', localhost)}} style={styles.img} />)} 
                 

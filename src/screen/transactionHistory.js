@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { View, StyleSheet, Text, Dimensions, TextInput, Button, Image, SectionList, StatusBar} from 'react-native'
 import { primary, background, white, drak, secondry, subTitle , btn, success, bgImge, error, trans} from '../assets/color/color'
-
+import userIcon from '../assets/icon/user.png'
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/AntDesign'
 

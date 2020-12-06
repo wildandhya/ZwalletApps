@@ -4,11 +4,15 @@ import { primary, background, white, drak, secondry, subTitle , btn} from '../..
 import {Formik} from 'formik'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { successIcon } from '../../assets'
+import {clearPinAction} from '../../redux/action/auth'
+import { useDispatch } from 'react-redux'
 
 
 
 
 const PinSuccess = ({navigation})=> {
+
+    const dispatch = useDispatch()
 
     const handleGoTo = (screen)=>{
         navigation.navigate(screen)
@@ -28,7 +32,9 @@ const PinSuccess = ({navigation})=> {
                 <Text style={styles.pinDesc}>now access all the features in Zwallet. Login to</Text>
                 <Text style={styles.pinDesc}> your new account and start exploring!</Text>
             <View style={styles.btnWarp}>
-            <TouchableOpacity style={styles.btn} onPress={()=> handleGoTo('Login')}>
+            <TouchableOpacity style={styles.btn} onPress={()=> {
+                dispatch(clearPinAction())
+                handleGoTo('Login')}}>
                     <Text style={styles.btnText}>Login Now</Text>
             </TouchableOpacity>
             </View>

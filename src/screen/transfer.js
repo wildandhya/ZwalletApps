@@ -106,11 +106,9 @@ const Transfer = ({navigation})=> {
                 />
             </View>
             {msg?(<Text style={styles.msgError}>Please input your money first</Text>):null}
-            {saldoEnough?(<Text style={styles.msgError}>Sorry your balance not enough</Text>):null}
+            {/* {saldoEnough?(<Text style={styles.msgError}>Sorry your balance not enough</Text>):null} */}
             <TouchableOpacity style={focused?{...styles.btn, backgroundColor:primary, color:'#fff'}:{...styles.btn, backgroundColor:btn}} onPress={()=>{
-                if(user.balance === null){
-                    setSaldoEnough(true)
-                }else{
+               
                     if(form.amount === ''){
                         setMsg(true)
                     }else{
@@ -119,7 +117,7 @@ const Transfer = ({navigation})=> {
                         handleGoTo('Confirm')
                         setSaldoEnough(true)
                     }
-                }
+                
                 }}>
                 <Text style={focused?{...styles.btnText,color:'#fff'}:{...styles.btnText, color:'#88888f'}}>Next</Text>
             </TouchableOpacity>

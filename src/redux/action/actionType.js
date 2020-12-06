@@ -51,6 +51,8 @@ export const pinConfirm = "PIN_CONFIRM";
 
 export const sendEmail = "SEND_EMAIL";
 
+export const pinClear = "PIN_CLEAR";
+
 
 
 

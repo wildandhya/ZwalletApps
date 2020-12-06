@@ -30,7 +30,8 @@ import {
     isError:false,
     pinUpdate:false,
     pinMatch:false,
-    passUpdate:false
+    passUpdate:false,
+    isPin:false
   };
   
   const authReducer = (prevState = initialState, { type, payload }) => {
@@ -69,8 +70,6 @@ import {
                 isPending: false,
                 isLogged:false,
                 isError:true,
-               
-               
               }
         }
         
@@ -112,6 +111,7 @@ import {
             return {
               ...prevState,
               isPending: true,
+              isPin:false
             };
       
           case editUser + rejected:
@@ -120,6 +120,7 @@ import {
               isRejected: true,
               error: payload,
               isPending: false,
+              isPin:false
             };
           case editUser + fulfilled:
             if(payload.data.success){
@@ -371,7 +372,8 @@ import {
                   isRegister:false,
                   pinMatch:false,
                   pinUpdate:false,
-                  isError:false
+                  isError:false,
+                  isPin:false
             }
          case clearPassword:
             return {
