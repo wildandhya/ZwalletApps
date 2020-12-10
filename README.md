@@ -2,7 +2,7 @@
 
  <h1  align="center">Zwallet
  <br>
-    <img src="https://img.shields.io/badge/Build%20with-React%20.js-61dbfb?style=popout&logo=react" >
+    <img src="https://img.shields.io/badge/Build%20with-React%20Native-61dbfb?style=popout&logo=react" >
  <h1>
   
 ## Contents
