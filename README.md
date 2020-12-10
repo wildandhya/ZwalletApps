@@ -10,6 +10,7 @@
 - [Features](#features)
 - [Installation](#installation-for-development)
 - [Screenshoots](#screenshoots)
+- [APK Release](#apk-release)
 
 ## Description
 
@@ -52,4 +53,11 @@ npm start
     <img width="250" src="./src/assets/images/2.png">
     <img width="250" src="./src/assets/images/3.png">
 </div>
+
+## APK Release
+
+<a href="https://bit.ly/3lXqpwg">
+  <img src="https://img.shields.io/badge/Download%20on%20the-Google%20Drive-blue.svg?style=popout&logo=google-drive"/>
+</a>
+
 
