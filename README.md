@@ -1,6 +1,7 @@
 <!-- @format -->
 
  <h1  align="center">Zwallet
+ <br>
     <img src="https://img.shields.io/badge/Build%20with-React%20.js-61dbfb?style=popout&logo=react" align="center">
  <h1>
 
