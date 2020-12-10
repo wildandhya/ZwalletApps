@@ -13,7 +13,7 @@
 
 ## Description
 
-Zwallet is a mobile digital payment application that can transfer money to people who contact you on your cellphone. Zwallet also comes with a PIN security
+Zwallet is a mobile digital payment application that can transfer money and is equipped with a PIN security during the transfer process
 
 ## Features
 
