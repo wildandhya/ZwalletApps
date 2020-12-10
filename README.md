@@ -18,18 +18,19 @@ Cafe is a website application that can make it easier for customers to choose th
 ## Features
 
 1. Authentication (Login & Register)
-2. Add New Menu
-3. Update Menu
-4. Delete Menu
-5. Checkout Menu
-6. Logout
+2. Reset Password
+3. Transfer money
+4. Edit Profile
+5. Change PIN
+6. Change Password
+7. Notification
 
 ## Installation
 
 1. Clone this Repository
 
 ```sh
-  git clone https://github.com/wildandhya/Cafeweb.git
+  git clone https://github.com/wildandhya/ZwalletApps.git
 ```
 
 2. Install NPM Packages
