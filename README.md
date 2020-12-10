@@ -13,7 +13,7 @@
 
 ## Description
 
-Cafe is a website application that can make it easier for customers to choose their favorite food or drink directly from our website
+Zwallet is a mobile digital payment application that can transfer money to people who contact you on your cellphone. Zwallet also comes with a PIN security
 
 ## Features
 
